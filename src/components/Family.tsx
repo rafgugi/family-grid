@@ -1,5 +1,5 @@
 import React from 'react';
-import { Person, Marriage } from '../familyData';
+import { Person, Marriage } from '../family.interface';
 
 interface FamilyProps {
   person: Person;

@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
-import { Person, enrichTreeData } from './familyData';
+import { Person } from './family.interface';
+import { enrichTreeData } from './family.util';
 import rawFamilyData from './data.yml';
+import './App.css';
 
 import 'bootstrap/dist/css/bootstrap.css';
 

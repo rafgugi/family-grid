@@ -1,6 +1,7 @@
 import { Container, Table } from 'reactstrap';
 import { Family } from './Family';
-import { Person } from '../familyData';
+import { Person } from '../family.interface';
+import FamilyDiagram from './FamilyDiagram';
 
 interface AppProps {
   trees: Person[];
@@ -15,6 +16,7 @@ function App({ trees }: AppProps) {
     <div className="App">
       <Container fluid="sm">
         <h1>Family Grid</h1>
+        <FamilyDiagram trees={trees} />
         <Table size="sm" bordered hover responsive>
           <thead></thead>
           <tbody>
