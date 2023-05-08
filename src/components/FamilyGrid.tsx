@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table } from 'reactstrap';
 import { Person, Marriage } from '../family.interface';
 
@@ -9,7 +8,18 @@ interface FamilyGridProps {
 export default function FamilyGrid({ person }: FamilyGridProps) {
   return (
     <Table size="sm" bordered hover responsive>
-      <thead></thead>
+      <thead>
+        <tr>
+          <th className="text-left" style={{ width: "7.5em" }}>Code</th>
+          <th className="text-left" style={{ }}>Name</th>
+          <th className="text-center" style={{ width: "30px" }} hidden>Sex</th>
+          <th className="text-left" style={{ width: "7em" }}>Birthplace</th>
+          <th className="text-left" style={{ width: "7em" }}>Birthdate</th>
+          <th className="text-left" style={{ width: "8.5em" }}>Phone</th>
+          <th className="text-left" style={{ }}>Address</th>
+          <th className="text-left" style={{ width: "8.5em" }}>IG</th>
+        </tr>
+      </thead>
       <tbody>
         <Family key={person.id} person={person} />
       </tbody>
@@ -53,17 +63,17 @@ function PersonRow({ person }: PersonRowProps) {
 
   return (
     <tr>
-      <td className="text-left" style={{ width: "7.5em" }}>{person.code}</td>
-      <td className="text-left" style={{ }}>
+      <td className="text-left">{person.code}</td>
+      <td className="text-left">
         {name}
         {person.name && <small className="fw-light"> ({person.id})</small>}
       </td>
-      <td className="text-center" style={{ width: "30px" }} hidden>{person.sex}</td>
-      <td className="text-left" style={{ width: "7em" }}>{person.birthplace}</td>
-      <td className="text-left" style={{ width: "7em" }}>{person.birthdate}</td>
-      <td className="text-left" style={{ width: "8.5em" }}>{person.ig}</td>
-      <td className="text-left" style={{ width: "8.5em" }}>{person.phone}</td>
-      <td className="text-left" style={{ }}>{person.address}</td>
+      <td className="text-center" hidden>{person.sex}</td>
+      <td className="text-left">{person.birthplace}</td>
+      <td className="text-left">{person.birthdate}</td>
+      <td className="text-left">{person.phone}</td>
+      <td className="text-left">{person.address}</td>
+      <td className="text-left">{person.ig}</td>
     </tr>
   )
 }
