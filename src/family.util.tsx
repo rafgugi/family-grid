@@ -87,7 +87,7 @@ function personToPersonNode(
     node.attributes.push('S');
   }
 
-  if (depth == 0 || level < depth) {
+  if (depth === 0 || level < depth) {
     person.marriages.forEach(function (marriage) {
       const spouse = marriage.spouse;
       const parents = [person, spouse];

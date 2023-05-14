@@ -42,10 +42,11 @@ function renderFamilies(trees: Person[]) {
 
 function renderFamily(trees: Person[]) {
   return (
-    <>
+    <Fragment>
+      <hr className="d-print-none" />
       <h3 className="text-center">Family Grid</h3>
       <FamilyDiagram trees={trees} />
       <FamilyGrid trees={trees} split={false} />
-    </>
+    </Fragment>
   );
 }
