@@ -4,25 +4,37 @@ import { Person, Marriage } from '../family.interface';
 interface FamilyGridProps {
   trees: Person[];
   split: boolean;
+  hideCode: boolean;
 }
 
-export default function FamilyGrid({ trees, split }: FamilyGridProps) {
+export default function FamilyGrid({
+  trees,
+  split,
+  hideCode,
+}: FamilyGridProps) {
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
         <tr>
-          <th className="text-left" style={{ width: "7.5em" }}>Code</th>
-          <th className="text-left" style={{ width: "18.5em" }}>Name</th>
-          <th className="text-left" style={{ width: "7em" }}>Birthplace</th>
-          <th className="text-left" style={{ width: "7em" }}>Birthdate</th>
-          <th className="text-left" style={{ width: "8.5em" }}>Phone</th>
-          <th className="text-left" style={{ width: "18.5em" }}>Address</th>
-          <th className="text-left" style={{ width: "8.5em" }}>IG</th>
+          <th style={{ width: '7em' }} hidden={hideCode}>
+            Code
+          </th>
+          <th style={{ width: '15.5em' }}>Name</th>
+          <th style={{ width: '7em' }}>Birthplace</th>
+          <th style={{ width: '7em' }}>Birthdate</th>
+          <th style={{ width: '8.5em' }}>Phone</th>
+          <th style={{ width: '18.5em' }}>Address</th>
+          <th style={{ width: '8.5em' }}>IG</th>
         </tr>
       </thead>
       <tbody>
         {trees.map(person => (
-          <Family key={person.id} person={person} split={split} />
+          <Family
+            key={person.id}
+            person={person}
+            hideCode={hideCode}
+            split={split}
+          />
         ))}
       </tbody>
     </Table>
@@ -32,10 +44,11 @@ export default function FamilyGrid({ trees, split }: FamilyGridProps) {
 interface FamilyProps {
   person: Person;
   split: boolean;
+  hideCode: boolean;
   showAddress?: boolean;
 }
 
-function Family({ person, split, showAddress }: FamilyProps) {
+function Family({ person, split, showAddress, hideCode }: FamilyProps) {
   const heirs: Person[] = [];
   person.marriages.forEach(function (marriage: Marriage) {
     heirs.push(marriage.spouse);
@@ -46,7 +59,7 @@ function Family({ person, split, showAddress }: FamilyProps) {
 
   return (
     <>
-      <PersonRow key={person.id} person={person} />
+      <PersonRow key={person.id} person={person} hideCode={hideCode} />
       <tr
         key="address"
         hidden={!showAddress || !person.address}
@@ -56,9 +69,14 @@ function Family({ person, split, showAddress }: FamilyProps) {
       </tr>
       {heirs.map((person: Person) =>
         split ? (
-          <PersonRow key={person.id} person={person} />
+          <PersonRow key={person.id} person={person} hideCode={hideCode} />
         ) : (
-          <Family key={person.id} person={person} split={split} />
+          <Family
+            key={person.id}
+            person={person}
+            split={split}
+            hideCode={hideCode}
+          />
         )
       )}
     </>
@@ -67,24 +85,24 @@ function Family({ person, split, showAddress }: FamilyProps) {
 
 interface PersonRowProps {
   person: Person;
+  hideCode: boolean;
 }
 
-function PersonRow({ person }: PersonRowProps) {
+function PersonRow({ person, hideCode }: PersonRowProps) {
   const name = person.name || person.id;
 
   return (
     <tr>
-      <td className="text-left">{person.code}</td>
-      <td className="text-left">
+      <td hidden={hideCode}>{person.code}</td>
+      <td>
         {name}
         {person.name && <small className="fw-light"> ({person.id})</small>}
       </td>
-      <td className="text-center" hidden>{person.sex}</td>
-      <td className="text-left">{person.birthplace}</td>
-      <td className="text-left">{person.birthdate}</td>
-      <td className="text-left">{person.phone}</td>
-      <td className="text-left">{person.address}</td>
-      <td className="text-left">{person.ig}</td>
+      <td>{person.birthplace}</td>
+      <td>{person.birthdate}</td>
+      <td>{person.phone}</td>
+      <td>{person.address}</td>
+      <td>{person.ig}</td>
     </tr>
   );
 }

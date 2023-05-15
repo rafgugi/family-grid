@@ -6,13 +6,18 @@ import FamilyDiagram from './FamilyDiagram';
 interface FamilyProps {
   trees: Person[];
   split: boolean;
+  hideCode: boolean;
 }
 
-export default function Family({ trees, split }: FamilyProps) {
-  return <>{split ? renderFamilies(trees) : renderFamily(trees)}</>;
+export default function Family({ trees, split, hideCode }: FamilyProps) {
+  return (
+    <>
+      {split ? renderFamilies(trees, hideCode) : renderFamily(trees, hideCode)}
+    </>
+  );
 }
 
-function renderFamilies(trees: Person[]) {
+function renderFamilies(trees: Person[], hideCode: boolean) {
   const heirs: Person[] = [];
   trees.forEach(function (person: Person) {
     person.marriages.forEach(function (marriage: Marriage) {
@@ -32,21 +37,21 @@ function renderFamilies(trees: Person[]) {
       <hr className="d-print-none" />
       <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
       <FamilyDiagram trees={[tree]} depth={2} />
-      <FamilyGrid trees={[tree]} split />
+      <FamilyGrid trees={[tree]} hideCode={hideCode} split />
       {heirs.map((person: Person) => (
-        <Family key={person.id} trees={[person]} split />
+        <Family key={person.id} trees={[person]} hideCode={hideCode} split />
       ))}
     </Fragment>
   ));
 }
 
-function renderFamily(trees: Person[]) {
+function renderFamily(trees: Person[], hideCode: boolean) {
   return (
     <Fragment>
       <hr className="d-print-none" />
       <h3 className="text-center">Family Grid</h3>
       <FamilyDiagram trees={trees} />
-      <FamilyGrid trees={trees} split={false} />
+      <FamilyGrid trees={trees} hideCode={hideCode} split={false} />
     </Fragment>
   );
 }
