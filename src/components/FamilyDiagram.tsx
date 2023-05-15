@@ -1,8 +1,7 @@
-import { Person } from '../family.interface';
+import { Person, PersonNode } from '../family.interface';
 import { treesToPersonNode } from '../family.util';
 import { Component, RefObject, createRef } from 'react';
 import * as go from 'gojs';
-import { ReactDiagram } from 'gojs-react';
 import GenogramLayout from '../GenogramLayout';
 
 interface FamilyDiagramProps {
@@ -12,27 +11,45 @@ interface FamilyDiagramProps {
 
 class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   /**
-   * Ref to keep a reference to the component, which provides access to the GoJS diagram via getDiagram().
+   * Ref to keep a reference to the component
    */
-  private diagramRef: RefObject<ReactDiagram>;
+  private divRef: RefObject<HTMLDivElement>;
 
   constructor(props: FamilyDiagramProps) {
     super(props);
-    this.diagramRef = createRef();
+    this.divRef = createRef();
   }
 
   /**
-   * Get the diagram reference and add any desired diagram listeners.
-   * Typically the same function will be used for each listener,
-   * with the function using a switch statement to handle the events.
-   * This is only necessary when you want to define additional app-specific diagram listeners.
+   * Here we only render a div. After component mounted we will append
+   * a diagram svg to this div.
+   */
+  public render() {
+    return (
+      <div ref={this.divRef} />
+    );
+  }
+
+  /**
+   * Setup the diagram based on the given props, then create a svg
+   * from it and append to the div element.
    */
   public componentDidMount() {
-    if (!this.diagramRef.current) return;
-    const diagram = this.diagramRef.current.getDiagram();
-    if (diagram instanceof go.Diagram) {
-      this.setupDiagram(diagram);
+    const { trees, depth } = this.props;
+    const personNodes = treesToPersonNode(trees, depth || 0);
+    const diagram = this.initDiagram();
+    this.setupDiagram(diagram, personNodes);
+
+    // We need to host the diagram into a temprary element so it can be rendered
+    const tempDiv = document.createElement("div");
+    diagram.div = tempDiv;
+
+    // Create svg from the diagram, then finally delete the div
+    const svg = diagram.makeSvg({ scale: 1 });
+    if (svg) {
+      this.divRef.current?.replaceChildren(svg);
     }
+    tempDiv.remove();
   }
 
   /**
@@ -42,7 +59,6 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
    * The model's data should not be set here, as the ReactDiagram component handles that via the other props.
    */
   private initDiagram(): go.Diagram {
-    // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";
     const $ = go.GraphObject.make;
 
     const myDiagram =
@@ -161,7 +177,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   }
 
   // create and initialize the Diagram.model given an array of node data representing people
-  private setupDiagram(diagram: go.Diagram) {
+  private setupDiagram(diagram: go.Diagram, nodeDataArray: PersonNode[]) {
     diagram.model =
       new go.GraphLinksModel(
         { // declare support for link label nodes
@@ -170,7 +186,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
           nodeCategoryProperty: "s",
           // if a node data object is copied, copy its data.attributes Array
           copiesArrays: true,
-          nodeDataArray: this.diagramRef.current?.props.nodeDataArray
+          nodeDataArray: nodeDataArray
         });
     this.setupMarriages(diagram);
     this.setupParents(diagram);
@@ -243,20 +259,6 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
       }
     }
     return null;
-  }
-
-  public render() {
-    const { trees, depth } = this.props;
-    const personNodes = treesToPersonNode(trees, depth || 0);
-
-    return (
-      <ReactDiagram
-        ref={this.diagramRef}
-        divClassName='diagram-component'
-        initDiagram={this.initDiagram}
-        nodeDataArray={personNodes}
-      />
-    );
   }
 }
 
