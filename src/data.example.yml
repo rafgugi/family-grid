@@ -1,0 +1,61 @@
+---
+trees:
+- id: satyr
+  marriages:
+  - spouse:
+      id: surtr
+    children:
+    - id: hound
+      marriages:
+      - spouse:
+          id: alpha
+        children:
+        - id: ryora
+  - spouse:
+      id: nala
+    children:
+    - id: mufasa
+people:
+  satyr:
+    name: Muhammad Satyr
+    birthplace: Surabaya
+    birthdate: '1982-02-13'
+    sex: M
+    phone: '085123456121'
+    address: |
+      Jl Redis no 6379 Bekasi
+    ig: '@satyr_ecom'
+  surtr:
+    name: Amalia Surtrain
+    birthplace: Surabaya
+    birthdate: '1987-11-21'
+    deathdate: '2021-01-13'
+    sex: F
+  hound:
+    name: Muhammad Hound
+    birthplace: Surabaya
+    birthdate: '2007-06-09'
+    sex: M
+    phone: '085123456121'
+    address: |
+      Jl MySql no 3306 Jakarta Barat
+    ig: '@huntofhounds'
+  alpha:
+    name: Siti Alphabeirt
+    birthplace: Surabaya
+    birthdate: '2008-06-19'
+    sex: F
+    phone: '085123456121'
+    address: |
+      Jl MySql no 3306 Jakarta Barat
+    ig: '@siti_alphabeirt08'
+  ryora:
+    name: Muhammad Ryorachman
+    birthplace: Surabaya
+    birthdate: '2030-03-12'
+    sex: M
+    address: |
+      Jl Mongo no 27017 Jakarta Barat
+    ig: '@ryorachman'
+  nala:
+    sex: F
