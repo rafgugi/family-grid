@@ -47,6 +47,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
     // Create svg from the diagram, then finally delete the div
     const svg = diagram.makeSvg({ scale: 1 });
     if (svg) {
+      svg.setAttribute("class", "my-3 m-auto img-fluid");
       this.divRef.current?.replaceChildren(svg);
     }
     tempDiv.remove();

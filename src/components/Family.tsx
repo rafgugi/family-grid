@@ -33,7 +33,8 @@ function renderFamilies(trees: Person[]) {
 
   return trees.map(tree =>
     <Fragment key={tree.id}>
-      <h1>{tree.name ?? tree.id} Family</h1>
+      <hr className="d-print-none" />
+      <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
       <FamilyDiagram trees={[tree]} depth={2} />
       <FamilyGrid trees={[tree]} split />
       {heirs.map((person: Person) =>
@@ -46,7 +47,7 @@ function renderFamilies(trees: Person[]) {
 function renderFamily(trees: Person[]) {
   return (
     <>
-      <h1>Family Grid</h1>
+      <h3 className="text-center">Family Grid</h3>
       <FamilyDiagram trees={trees} />
       <FamilyGrid trees={trees} split={false} />
     </>

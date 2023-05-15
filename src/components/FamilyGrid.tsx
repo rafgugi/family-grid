@@ -12,12 +12,11 @@ export default function FamilyGrid({ trees, split }: FamilyGridProps) {
       <thead>
         <tr>
           <th className="text-left" style={{ width: "7.5em" }}>Code</th>
-          <th className="text-left" style={{ }}>Name</th>
-          <th className="text-center" style={{ width: "30px" }} hidden>Sex</th>
+          <th className="text-left" style={{ width: "18.5em" }}>Name</th>
           <th className="text-left" style={{ width: "7em" }}>Birthplace</th>
           <th className="text-left" style={{ width: "7em" }}>Birthdate</th>
           <th className="text-left" style={{ width: "8.5em" }}>Phone</th>
-          <th className="text-left" style={{ }}>Address</th>
+          <th className="text-left" style={{ width: "18.5em" }}>Address</th>
           <th className="text-left" style={{ width: "8.5em" }}>IG</th>
         </tr>
       </thead>
@@ -51,11 +50,13 @@ function Family({ person, split, showAddress }: FamilyProps) {
       <tr key="address" hidden={!showAddress || !person.address} className="table-secondary">
         <td colSpan={7}>{person.address}</td>
       </tr>
-      {heirs.map((person: Person) => split ? (
-        <PersonRow key={person.id} person={person} />
-      ) : (
-        <Family key={person.id} person={person} split={split} />
-      ))}
+      {heirs.map((person: Person) =>
+        split ? (
+          <PersonRow key={person.id} person={person} />
+        ) : (
+          <Family key={person.id} person={person} split={split} />
+        )
+      )}
     </>
   );
 }
