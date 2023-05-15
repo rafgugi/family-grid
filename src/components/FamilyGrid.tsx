@@ -2,10 +2,11 @@ import { Table } from 'reactstrap';
 import { Person, Marriage } from '../family.interface';
 
 interface FamilyGridProps {
-  person: Person;
+  trees: Person[];
+  split: boolean;
 }
 
-export default function FamilyGrid({ person }: FamilyGridProps) {
+export default function FamilyGrid({ trees, split }: FamilyGridProps) {
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
@@ -21,7 +22,9 @@ export default function FamilyGrid({ person }: FamilyGridProps) {
         </tr>
       </thead>
       <tbody>
-        <Family key={person.id} person={person} />
+        {trees.map(person =>
+          <Family key={person.id} person={person} split={split} />
+        )}
       </tbody>
     </Table>
   )
@@ -29,10 +32,11 @@ export default function FamilyGrid({ person }: FamilyGridProps) {
 
 interface FamilyProps {
   person: Person;
+  split: boolean;
   showAddress?: boolean;
 }
 
-function Family({ person, showAddress }: FamilyProps) {
+function Family({ person, split, showAddress }: FamilyProps) {
   const heirs: Person[] = [];
   person.marriages.forEach(function (marriage: Marriage) {
     heirs.push(marriage.spouse);
@@ -47,9 +51,11 @@ function Family({ person, showAddress }: FamilyProps) {
       <tr key="address" hidden={!showAddress || !person.address} className="table-secondary">
         <td colSpan={7}>{person.address}</td>
       </tr>
-      {heirs.map((person: Person) =>
-        <Family key={person.id} person={person} />
-      )}
+      {heirs.map((person: Person) => split ? (
+        <PersonRow key={person.id} person={person} />
+      ) : (
+        <Family key={person.id} person={person} split={split} />
+      ))}
     </>
   );
 }

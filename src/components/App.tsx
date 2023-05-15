@@ -7,10 +7,12 @@ interface AppProps {
 }
 
 function App({ trees }: AppProps) {
+  const split = true;
+
   return (
     <div className="App">
       <Container fluid="sm">
-        <Family trees={trees} />
+        <Family trees={trees} split={split} />
       </Container>
     </div>
   );

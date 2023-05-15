@@ -1,23 +1,24 @@
 import { Person } from '../family.interface';
 import { treesToPersonNode } from '../family.util';
-import * as React from 'react';
+import { Component, RefObject, createRef } from 'react';
 import * as go from 'gojs';
 import { ReactDiagram } from 'gojs-react';
 import GenogramLayout from '../GenogramLayout';
 
 interface FamilyDiagramProps {
   trees: Person[];
+  depth?: number;
 }
 
-class FamilyDiagram extends React.Component<FamilyDiagramProps, {}> {
+class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   /**
    * Ref to keep a reference to the component, which provides access to the GoJS diagram via getDiagram().
    */
-  private diagramRef: React.RefObject<ReactDiagram>;
+  private diagramRef: RefObject<ReactDiagram>;
 
   constructor(props: FamilyDiagramProps) {
     super(props);
-    this.diagramRef = React.createRef();
+    this.diagramRef = createRef();
   }
 
   /**
@@ -245,7 +246,8 @@ class FamilyDiagram extends React.Component<FamilyDiagramProps, {}> {
   }
 
   public render() {
-    const personNodes = treesToPersonNode(this.props.trees);
+    const { trees, depth } = this.props;
+    const personNodes = treesToPersonNode(trees, depth || 0);
 
     return (
       <ReactDiagram
