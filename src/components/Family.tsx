@@ -9,11 +9,7 @@ interface FamilyProps {
 }
 
 export default function Family({ trees, split }: FamilyProps) {
-  return (
-    <>
-      {split ? renderFamilies(trees) : renderFamily(trees)}
-    </>
-  );
+  return <>{split ? renderFamilies(trees) : renderFamily(trees)}</>;
 }
 
 function renderFamilies(trees: Person[]) {
@@ -25,23 +21,23 @@ function renderFamilies(trees: Person[]) {
       }
       marriage.children.forEach(function (child: Person) {
         if (child.marriages.length > 0) {
-          heirs.push(child)
+          heirs.push(child);
         }
       });
     });
   });
 
-  return trees.map(tree =>
+  return trees.map(tree => (
     <Fragment key={tree.id}>
       <hr className="d-print-none" />
       <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
       <FamilyDiagram trees={[tree]} depth={2} />
       <FamilyGrid trees={[tree]} split />
-      {heirs.map((person: Person) =>
+      {heirs.map((person: Person) => (
         <Family key={person.id} trees={[person]} split />
-      )}
+      ))}
     </Fragment>
-  )
+  ));
 }
 
 function renderFamily(trees: Person[]) {

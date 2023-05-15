@@ -21,12 +21,12 @@ export default function FamilyGrid({ trees, split }: FamilyGridProps) {
         </tr>
       </thead>
       <tbody>
-        {trees.map(person =>
+        {trees.map(person => (
           <Family key={person.id} person={person} split={split} />
-        )}
+        ))}
       </tbody>
     </Table>
-  )
+  );
 }
 
 interface FamilyProps {
@@ -40,14 +40,18 @@ function Family({ person, split, showAddress }: FamilyProps) {
   person.marriages.forEach(function (marriage: Marriage) {
     heirs.push(marriage.spouse);
     marriage.children.forEach(function (person: Person) {
-      heirs.push(person)
+      heirs.push(person);
     });
   });
 
   return (
     <>
       <PersonRow key={person.id} person={person} />
-      <tr key="address" hidden={!showAddress || !person.address} className="table-secondary">
+      <tr
+        key="address"
+        hidden={!showAddress || !person.address}
+        className="table-secondary"
+      >
         <td colSpan={7}>{person.address}</td>
       </tr>
       {heirs.map((person: Person) =>
@@ -82,5 +86,5 @@ function PersonRow({ person }: PersonRowProps) {
       <td className="text-left">{person.address}</td>
       <td className="text-left">{person.ig}</td>
     </tr>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { Person, Marriage, PersonNode } from './family.interface'
+import { Person, Marriage, PersonNode } from './family.interface';
 
 // Enrich the trees from the people. Try to make trees unchanged.
 export function enrichTreeData(
@@ -13,10 +13,7 @@ export function enrichTreeData(
 }
 
 // Enrich the person from the people. Try to make person unchanged.
-function enrichPersonData(
-  person: any,
-  people: Record<string, any>
-): Person {
+function enrichPersonData(person: any, people: Record<string, any>): Person {
   person = { ...person };
   const detail = people[person.id];
   if (detail) {
@@ -29,17 +26,18 @@ function enrichPersonData(
     marriage = { ...marriage };
     marriage.spouse = {
       ...enrichPersonData(marriage.spouse, people),
-      code: marriage.spouse.code || person.code + 'M' + married
+      code: marriage.spouse.code || person.code + 'M' + married,
     };
 
     const children = marriage.children || [];
     marriage.children = children.map(function (child: Person, i: number) {
       child = { ...child };
-      child.code ||= person.code + '.' + married + String(i + 1).padStart(2, '0');
+      child.code ||=
+        person.code + '.' + married + String(i + 1).padStart(2, '0');
       return enrichPersonData(child, people);
     });
     return marriage;
-  })
+  });
   return createPerson(person);
 }
 
@@ -47,7 +45,7 @@ function enrichPersonData(
 function createPerson(data: any): Person {
   return {
     ...data,
-    marriages: data.marriages || []
+    marriages: data.marriages || [],
   };
 }
 
@@ -76,7 +74,7 @@ function personToPersonNode(
     name: person.id,
     s: person.sex ?? 'M',
     attributes: [],
-    spouses: []
+    spouses: [],
   };
   nodes.push(node);
 
@@ -109,7 +107,7 @@ export function explodePerson(person: Person): Person[] {
   person.marriages.forEach(function (marriage: Marriage) {
     people.push(marriage.spouse);
     marriage.children.forEach(function (person: Person) {
-      people.push(person)
+      people.push(person);
     });
   });
   return people;

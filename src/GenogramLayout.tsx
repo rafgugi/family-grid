@@ -7,7 +7,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     super();
     this.alignOption = go.LayeredDigraphLayout.AlignAll;
     this.initializeOption = go.LayeredDigraphLayout.InitDepthFirstIn;
-    this.spouseSpacing = 30;  // minimum space between spouses
+    this.spouseSpacing = 30; // minimum space between spouses
     this.isRouting = false;
   }
 
@@ -41,7 +41,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (node.isLinkLabel) {
         // get marriage Link
         const link = node?.labeledLink;
-        if (link?.category === "Marriage") {
+        if (link?.category === 'Marriage') {
           const spouseA = link.fromNode;
           const spouseB = link.toNode;
           // create vertex representing both husband and wife
@@ -67,7 +67,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
         // assume a marriage Link has a label Node
         let marriages = 0;
         node.linksConnected.each(l => {
-          if (l.category === "Marriage") marriages++;
+          if (l.category === 'Marriage') marriages++;
         });
         if (marriages === 0) {
           net.addNode(node);
@@ -84,14 +84,16 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (!link.isLayoutPositioned || !link.isVisible()) continue;
       if (nonmemberonly && link.containingGroup !== null) continue;
       // if it's a parent-child link, add a LayoutEdge for it
-      if (link.category === "" && link.data) {
-        const parent = net.findVertex(link.fromNode);  // should be a label node
+      if (link.category === '' && link.data) {
+        const parent = net.findVertex(link.fromNode); // should be a label node
         const child = net.findVertex(link.toNode);
-        if (child !== null) {  // an unmarried child
+        if (child !== null) { // an unmarried child
           net.linkVertexes(parent, child, link);
-        } else {  // a married child
+        } else { // a married child
           link.toNode?.linksConnected.each(l => {
-            if (l.category !== "Marriage" || !l.data) return;  // if it has no label node, it's a parent-child link
+            // if it has no label node, it's a parent-child link
+            if (l.category !== 'Marriage' || !l.data) return;
+
             // found the Marriage Link, now get its label Node
             const mlab = l.labelNodes.first();
             // parent-child link should connect with the label node,
@@ -117,11 +119,11 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       cohort.each((n: any) => {
         n.linksConnected.each((l: any) => {
           marriages.add(l);
-        })
+        });
       });
       marriages.each((link: any) => {
         // find the vertex for the marriage link (i.e. for the label node)
-        const mlab = link.labelNodes.first()
+        const mlab = link.labelNodes.first();
         const v = net.findVertex(mlab);
         if (v !== null) {
           net.linkVertexes(dummyvert, v, null);
@@ -137,7 +139,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     if (coll.has(node)) return;
     coll.add(node);
     node.linksConnected.each((l: any) => {
-      if (l.category === "Marriage") {  // if it's a marriage link, continue with both spouses
+      if (l.category === 'Marriage') { // if it's a marriage link, continue with both spouses
         this.extendCohort(coll, l.fromNode);
         this.extendCohort(coll, l.toNode);
       }
@@ -153,7 +155,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       const lay = v.layer;
       let max = maxsizes[lay];
       if (max === undefined) max = 0;
-      const sz = (horiz ? v.width : v.height);
+      const sz = horiz ? v.width : v.height;
       if (sz > max) maxsizes[lay] = sz;
     });
     // now make sure every vertex has the maximum width or height according to which layer it is in,
@@ -183,7 +185,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (e.toVertex?.node && e.toVertex?.node.isLinkLabel) {
         e.portToPos = vertical ? e.toVertex?.focusX : e.toVertex?.focusY;
       }
-    })
+    });
   }
 
   commitNodes() {
@@ -218,10 +220,13 @@ class GenogramLayout extends go.LayeredDigraphLayout {
         // see if the parents are on the desired sides, to avoid a link crossing
         const aParentsNode = this.findParentsMarriageLabelNode(spouseA);
         const bParentsNode = this.findParentsMarriageLabelNode(spouseB);
-        if (aParentsNode !== null && bParentsNode !== null &&
-            (horiz
-              ? aParentsNode.position.x > bParentsNode.position.x
-              : aParentsNode.position.y > bParentsNode.position.y)) {
+        if (
+          aParentsNode !== null &&
+          bParentsNode !== null &&
+          (horiz
+            ? aParentsNode.position.x > bParentsNode.position.x
+            : aParentsNode.position.y > bParentsNode.position.y)
+        ) {
           // swap the spouses
           const temp = spouseA;
           spouseA = spouseB;

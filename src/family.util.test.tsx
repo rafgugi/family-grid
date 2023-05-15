@@ -111,12 +111,12 @@ test('update nested tree data', () => {
   expect(person.birthdate).toEqual(people.ryora.birthdate);
   expect(person.sex).toEqual(people.ryora.sex);
 
-  person = tree.marriages[1].spouse
+  person = tree.marriages[1].spouse;
   expect(person.id).toEqual('nala');
   expect(person.code).toEqual('1M2');
   expect(person.sex).toEqual(people.nala.sex);
 
-  person = tree.marriages[1].children[0]
+  person = tree.marriages[1].children[0];
   expect(person.id).toEqual('mufasa');
   expect(person.code).toEqual('1.201');
 });

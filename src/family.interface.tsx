@@ -11,12 +11,12 @@ export interface Person {
   phone?: string;
   email?: string;
   ig?: string;
-};
+}
 
 export interface Marriage {
   spouse: Person;
   children: Person[];
-};
+}
 
 export interface PersonNode {
   key: number | string;
