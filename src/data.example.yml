@@ -15,6 +15,12 @@ trees:
       id: nala
     children:
     - id: mufasa
+      marriages:
+      - spouse:
+          id: sarabi
+        children:
+        - id: scar
+        - id: simba
 people:
   satyr:
     name: Muhammad Satyr
@@ -59,3 +65,35 @@ people:
     ig: '@ryorachman'
   nala:
     sex: F
+  mufasa:
+    name: Mufasa Satyr
+    birthplace: Surabaya
+    birthdate: '2005-10-25'
+    sex: M
+    address: |
+      Jl Redis no 6379 Bekasi
+    ig: '@mufasa_satyr'
+  scar:
+    name: Scar Lion
+    birthplace: Surabaya
+    birthdate: '2009-07-30'
+    sex: M
+    address: |
+      Jl Lion King no 123 Pride Lands
+    ig: '@scarlion'
+  sarabi:
+    name: Sarabi Lioness
+    birthplace: Surabaya
+    birthdate: '2010-03-15'
+    sex: F
+    address: |
+      Jl Lion King no 123 Pride Lands
+    ig: '@sarabilioness'
+  simba:
+    name: Simba Lion
+    birthplace: Surabaya
+    birthdate: '2035-08-08'
+    sex: M
+    address: |
+      Jl Lion King no 123 Pride Lands
+    ig: '@simbalion'
