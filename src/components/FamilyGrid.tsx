@@ -7,16 +7,12 @@ interface FamilyGridProps {
   hideCode: boolean;
 }
 
-export default function FamilyGrid({
-  trees,
-  split,
-  hideCode,
-}: FamilyGridProps) {
+export default function FamilyGrid(props: FamilyGridProps) {
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
         <tr>
-          <th style={{ width: '7em' }} hidden={hideCode}>
+          <th style={{ width: '7em' }} hidden={props.hideCode}>
             Code
           </th>
           <th style={{ width: '15.5em' }}>Name</th>
@@ -28,12 +24,12 @@ export default function FamilyGrid({
         </tr>
       </thead>
       <tbody>
-        {trees.map(person => (
-          <Family
+        {props.trees.map(person => (
+          <FamilyRows
             key={person.id}
             person={person}
-            hideCode={hideCode}
-            split={split}
+            hideCode={props.hideCode}
+            split={props.split}
           />
         ))}
       </tbody>
@@ -41,14 +37,13 @@ export default function FamilyGrid({
   );
 }
 
-interface FamilyProps {
+interface FamilyRowsProps {
   person: Person;
   split: boolean;
   hideCode: boolean;
-  showAddress?: boolean;
 }
 
-function Family({ person, split, showAddress, hideCode }: FamilyProps) {
+function FamilyRows({ person, split, hideCode }: FamilyRowsProps) {
   const heirs: Person[] = [];
   person.marriages.forEach(function (marriage: Marriage) {
     heirs.push(marriage.spouse);
@@ -60,18 +55,11 @@ function Family({ person, split, showAddress, hideCode }: FamilyProps) {
   return (
     <>
       <PersonRow key={person.id} person={person} hideCode={hideCode} />
-      <tr
-        key="address"
-        hidden={!showAddress || !person.address}
-        className="table-secondary"
-      >
-        <td colSpan={7}>{person.address}</td>
-      </tr>
       {heirs.map((person: Person) =>
         split ? (
           <PersonRow key={person.id} person={person} hideCode={hideCode} />
         ) : (
-          <Family
+          <FamilyRows
             key={person.id}
             person={person}
             split={split}
