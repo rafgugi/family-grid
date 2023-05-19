@@ -1,3 +1,4 @@
+import { Dispatch } from 'react';
 import { Table } from 'reactstrap';
 import { Person, Marriage } from '../family.interface';
 
@@ -5,6 +6,7 @@ interface FamilyGridProps {
   trees: Person[];
   split: boolean;
   hideCode: boolean;
+  setTreeValue: Dispatch<any>;
 }
 
 export default function FamilyGrid(props: FamilyGridProps) {
@@ -28,8 +30,9 @@ export default function FamilyGrid(props: FamilyGridProps) {
           <FamilyRows
             key={person.id}
             person={person}
-            hideCode={props.hideCode}
             split={props.split}
+            hideCode={props.hideCode}
+            setTreeValue={props.setTreeValue}
           />
         ))}
       </tbody>
@@ -37,13 +40,15 @@ export default function FamilyGrid(props: FamilyGridProps) {
   );
 }
 
-interface FamilyRowsProps {
+interface PersonRowProps {
   person: Person;
-  split: boolean;
+  split?: boolean;
   hideCode: boolean;
+  setTreeValue?: Dispatch<any>;
 }
 
-function FamilyRows({ person, split, hideCode }: FamilyRowsProps) {
+function FamilyRows(props: PersonRowProps) {
+  const person = props.person;
   const heirs: Person[] = [];
   person.marriages.forEach(function (marriage: Marriage) {
     heirs.push(marriage.spouse);
@@ -54,26 +59,32 @@ function FamilyRows({ person, split, hideCode }: FamilyRowsProps) {
 
   return (
     <>
-      <PersonRow key={person.id} person={person} hideCode={hideCode} />
+      <PersonRow
+        key={person.id}
+        person={person}
+        hideCode={props.hideCode}
+        setTreeValue={props.setTreeValue}
+      />
       {heirs.map((person: Person) =>
-        split ? (
-          <PersonRow key={person.id} person={person} hideCode={hideCode} />
+        props.split ? (
+          <PersonRow
+            key={person.id}
+            person={person}
+            hideCode={props.hideCode}
+            setTreeValue={props.setTreeValue}
+          />
         ) : (
           <FamilyRows
             key={person.id}
             person={person}
-            split={split}
-            hideCode={hideCode}
+            split={props.split}
+            hideCode={props.hideCode}
+            setTreeValue={props.setTreeValue}
           />
         )
       )}
     </>
   );
-}
-
-interface PersonRowProps {
-  person: Person;
-  hideCode: boolean;
 }
 
 function PersonRow({ person, hideCode }: PersonRowProps) {

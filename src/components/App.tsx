@@ -2,15 +2,17 @@ import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { ChangeEvent, useState } from 'react';
 import { Person } from '../family.interface';
 import Family from './Family';
+import { enrichTreeData } from '../family.util';
 
 interface AppProps {
   trees: Person[];
   split?: boolean;
 }
 
-function App({ trees, ...props }: AppProps) {
+function App(props: AppProps) {
   const [split, setSplitValue] = useState(!!props.split);
   const [hidePersonCode, setHidePersonCode] = useState(false);
+  const [trees, setTreesValue] = useState(props.trees);
 
   const handleHidePersonCodeChange = (event: ChangeEvent<any>) => {
     setHidePersonCode(event.target.checked);
@@ -18,6 +20,11 @@ function App({ trees, ...props }: AppProps) {
 
   const handleSplitChange = (event: ChangeEvent<any>) => {
     setSplitValue(event.target.checked);
+  };
+
+  const setTreeValue = function(person: Person) {
+    const personData: Record<string, Person> = { [person.id]: person };
+    setTreesValue(enrichTreeData(trees, personData));
   };
 
   return (
@@ -42,7 +49,12 @@ function App({ trees, ...props }: AppProps) {
           </FormGroup>
         </Form>
 
-        <Family trees={trees} split={split} hideCode={hidePersonCode} />
+        <Family
+          trees={trees}
+          split={split}
+          hideCode={hidePersonCode}
+          setTreeValue={setTreeValue}
+        />
       </Container>
     </div>
   );
