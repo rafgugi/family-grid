@@ -1,5 +1,5 @@
-import { Dispatch } from 'react';
-import { Table } from 'reactstrap';
+import { ChangeEvent, Dispatch } from 'react';
+import { Input, Table } from 'reactstrap';
 import { Person, Marriage } from '../family.interface';
 
 interface FamilyGridProps {
@@ -87,21 +87,65 @@ function FamilyRows(props: PersonRowProps) {
   );
 }
 
-function PersonRow({ person, hideCode }: PersonRowProps) {
+function PersonRow(props: PersonRowProps) {
+  const person = props.person;
   const name = person.name || person.id;
+
+  const updatePerson = function (e: ChangeEvent<any>, key: string) {
+    if (props.setTreeValue) {
+      props.setTreeValue({ ...person, [key]: e.target.value });
+    }
+  };
 
   return (
     <tr>
-      <td hidden={hideCode}>{person.code}</td>
+      <td hidden={props.hideCode}>
+        <span>{person.code}</span>
+      </td>
       <td>
         {name}
         {person.name && <small className="fw-light"> ({person.id})</small>}
       </td>
-      <td>{person.birthplace}</td>
-      <td>{person.birthdate}</td>
-      <td>{person.phone}</td>
-      <td>{person.address}</td>
-      <td>{person.ig}</td>
+      <td>
+        <Input
+          className="d-print-none"
+          value={person.birthplace || ''}
+          onChange={(e) => updatePerson(e, 'birthplace')}
+        />
+        <span className="d-none d-print-block">{person.birthplace}</span>
+      </td>
+      <td>
+        <Input
+          className="d-print-none"
+          value={person.birthdate || ''}
+          onChange={(e) => updatePerson(e, 'birthdate')}
+        />
+        <span className="d-none d-print-block">{person.birthdate}</span>
+      </td>
+      <td>
+        <Input
+          className="d-print-none"
+          value={person.phone || ''}
+          onChange={(e) => updatePerson(e, 'phone')}
+        />
+        <span className="d-none d-print-block">{person.phone}</span>
+      </td>
+      <td>
+        <Input
+          className="d-print-none"
+          value={person.address || ''}
+          onChange={(e) => updatePerson(e, 'address')}
+        />
+        <span className="d-none d-print-block">{person.address}</span>
+      </td>
+      <td>
+        <Input
+          className="d-print-none"
+          value={person.ig || ''}
+          onChange={(e) => updatePerson(e, 'ig')}
+        />
+        <span className="d-none d-print-block">{person.ig}</span>
+      </td>
     </tr>
   );
 }
