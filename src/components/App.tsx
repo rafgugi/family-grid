@@ -8,8 +8,8 @@ interface AppProps {
   split?: boolean;
 }
 
-function App({ trees, split }: AppProps) {
-  const [splitValue, setSplitValue] = useState(split!!);
+function App({ trees, ...props }: AppProps) {
+  const [split, setSplitValue] = useState(!!props.split);
   const [hidePeronCode, setHidePeronCode] = useState(false);
 
   const handleHidePersonCodeChange = (event: ChangeEvent<any>) => {
@@ -27,7 +27,7 @@ function App({ trees, split }: AppProps) {
           <FormGroup switch>
             <Input
               type="switch"
-              checked={splitValue}
+              checked={split}
               onChange={handleSplitChange}
             />
             <Label check>Split Family</Label>
@@ -42,7 +42,7 @@ function App({ trees, split }: AppProps) {
           </FormGroup>
         </Form>
 
-        <Family trees={trees} split={splitValue} hideCode={hidePeronCode} />
+        <Family trees={trees} split={split} hideCode={hidePeronCode} />
       </Container>
     </div>
   );
