@@ -10,10 +10,10 @@ interface AppProps {
 
 function App({ trees, ...props }: AppProps) {
   const [split, setSplitValue] = useState(!!props.split);
-  const [hidePeronCode, setHidePeronCode] = useState(false);
+  const [hidePersonCode, setHidePersonCode] = useState(false);
 
   const handleHidePersonCodeChange = (event: ChangeEvent<any>) => {
-    setHidePeronCode(event.target.checked);
+    setHidePersonCode(event.target.checked);
   };
 
   const handleSplitChange = (event: ChangeEvent<any>) => {
@@ -35,14 +35,14 @@ function App({ trees, ...props }: AppProps) {
           <FormGroup switch>
             <Input
               type="switch"
-              checked={hidePeronCode}
+              checked={hidePersonCode}
               onChange={handleHidePersonCodeChange}
             />
             <Label check>Hide Code</Label>
           </FormGroup>
         </Form>
 
-        <Family trees={trees} split={split} hideCode={hidePeronCode} />
+        <Family trees={trees} split={split} hideCode={hidePersonCode} />
       </Container>
     </div>
   );
