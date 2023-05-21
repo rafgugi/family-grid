@@ -6,6 +6,7 @@ import FamilyDiagram from './FamilyDiagram';
 interface FamilyProps {
   trees: Person[];
   split: boolean;
+  editMode: boolean;
   hideCode: boolean;
   setTreeValue: Dispatch<any>;
 }
@@ -41,6 +42,7 @@ function renderFamilies(props: FamilyProps) {
       <FamilyGrid
         trees={[tree]}
         split
+        editMode={props.editMode}
         hideCode={props.hideCode}
         setTreeValue={props.setTreeValue}
       />
@@ -50,6 +52,7 @@ function renderFamilies(props: FamilyProps) {
           key={person.id}
           trees={[person]}
           split
+          editMode={props.editMode}
           hideCode={props.hideCode}
           setTreeValue={props.setTreeValue}
         />
@@ -67,6 +70,7 @@ function renderFamily(props: FamilyProps) {
       <FamilyGrid
         trees={props.trees}
         split={false}
+        editMode={props.editMode}
         hideCode={props.hideCode}
         setTreeValue={props.setTreeValue}
       />

@@ -5,6 +5,7 @@ import { Person, Marriage } from '../family.interface';
 interface FamilyGridProps {
   trees: Person[];
   split: boolean;
+  editMode: boolean;
   hideCode: boolean;
   setTreeValue: Dispatch<any>;
 }
@@ -31,6 +32,7 @@ export default function FamilyGrid(props: FamilyGridProps) {
             key={person.id}
             person={person}
             split={props.split}
+            editMode={props.editMode}
             hideCode={props.hideCode}
             setTreeValue={props.setTreeValue}
           />
@@ -43,6 +45,7 @@ export default function FamilyGrid(props: FamilyGridProps) {
 interface PersonRowProps {
   person: Person;
   split?: boolean;
+  editMode: boolean;
   hideCode: boolean;
   setTreeValue?: Dispatch<any>;
 }
@@ -62,6 +65,7 @@ function FamilyRows(props: PersonRowProps) {
       <PersonRow
         key={person.id}
         person={person}
+        editMode={props.editMode}
         hideCode={props.hideCode}
         setTreeValue={props.setTreeValue}
       />
@@ -70,6 +74,7 @@ function FamilyRows(props: PersonRowProps) {
           <PersonRow
             key={person.id}
             person={person}
+            editMode={props.editMode}
             hideCode={props.hideCode}
             setTreeValue={props.setTreeValue}
           />
@@ -78,6 +83,7 @@ function FamilyRows(props: PersonRowProps) {
             key={person.id}
             person={person}
             split={props.split}
+            editMode={props.editMode}
             hideCode={props.hideCode}
             setTreeValue={props.setTreeValue}
           />
@@ -97,54 +103,75 @@ function PersonRow(props: PersonRowProps) {
     }
   };
 
+  let inputClass = 'd-none';
+  let spanClass = '';
+  if (props.editMode) {
+    inputClass = 'd-print-none';
+    spanClass = 'd-none d-print-block';
+  }
+
   return (
     <tr>
       <td hidden={props.hideCode}>
         <span>{person.code}</span>
       </td>
       <td>
-        {name}
-        {person.name && <small className="fw-light"> ({person.id})</small>}
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.name || ''}
+          placeholder={person.id}
+          onChange={(e) => updatePerson(e, 'name')}
+        />
+        <span className={spanClass}>
+          {name}
+          {person.name && <small className="fw-light"> ({person.id})</small>}
+        </span>
       </td>
       <td>
         <Input
-          className="d-print-none"
+          bsSize="sm"
+          className={inputClass}
           value={person.birthplace || ''}
           onChange={(e) => updatePerson(e, 'birthplace')}
         />
-        <span className="d-none d-print-block">{person.birthplace}</span>
+        <span className={spanClass}>{person.birthplace}</span>
       </td>
       <td>
         <Input
-          className="d-print-none"
+          bsSize="sm"
+          className={inputClass}
           value={person.birthdate || ''}
           onChange={(e) => updatePerson(e, 'birthdate')}
         />
-        <span className="d-none d-print-block">{person.birthdate}</span>
+        <span className={spanClass}>{person.birthdate}</span>
       </td>
       <td>
         <Input
-          className="d-print-none"
+          bsSize="sm"
+          className={inputClass}
           value={person.phone || ''}
           onChange={(e) => updatePerson(e, 'phone')}
         />
-        <span className="d-none d-print-block">{person.phone}</span>
+        <span className={spanClass}>{person.phone}</span>
       </td>
       <td>
         <Input
-          className="d-print-none"
+          bsSize="sm"
+          className={inputClass}
           value={person.address || ''}
           onChange={(e) => updatePerson(e, 'address')}
         />
-        <span className="d-none d-print-block">{person.address}</span>
+        <span className={spanClass}>{person.address}</span>
       </td>
       <td>
         <Input
-          className="d-print-none"
+          bsSize="sm"
+          className={inputClass}
           value={person.ig || ''}
           onChange={(e) => updatePerson(e, 'ig')}
         />
-        <span className="d-none d-print-block">{person.ig}</span>
+        <span className={spanClass}>{person.ig}</span>
       </td>
     </tr>
   );
