@@ -28,11 +28,23 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
     return <div ref={this.divRef} />;
   }
 
+  public componentDidMount() {
+    this.mountSvg();
+  }
+
+  public componentDidUpdate() {
+    this.mountSvg();
+  }
+  
+  public shouldComponentUpdate(nextProps: Readonly<FamilyDiagramProps>): boolean {
+    return !Object.is(nextProps, this.props);
+  }
+
   /**
    * Setup the diagram based on the given props, then create a svg
    * from it and append to the div element.
    */
-  public componentDidMount() {
+  private mountSvg() {
     const { trees, depth } = this.props;
     const personNodes = treesToPersonNode(trees, depth || 0);
     const diagram = this.initDiagram();
