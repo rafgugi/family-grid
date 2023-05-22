@@ -35,8 +35,10 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   public componentDidUpdate() {
     this.mountSvg();
   }
-  
-  public shouldComponentUpdate(nextProps: Readonly<FamilyDiagramProps>): boolean {
+
+  public shouldComponentUpdate(
+    nextProps: Readonly<FamilyDiagramProps>
+  ): boolean {
     return !Object.is(nextProps, this.props);
   }
 

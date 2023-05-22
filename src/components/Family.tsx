@@ -12,11 +12,7 @@ interface FamilyProps {
 }
 
 export default function Family(props: FamilyProps) {
-  return (
-    <>
-      {props.split ? renderFamilies(props) : renderFamily(props)}
-    </>
-  );
+  return <>{props.split ? renderFamilies(props) : renderFamily(props)}</>;
 }
 
 function renderFamilies(props: FamilyProps) {

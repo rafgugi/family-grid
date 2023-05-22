@@ -121,7 +121,7 @@ function PersonRow(props: PersonRowProps) {
           className={inputClass}
           value={person.name || ''}
           placeholder={person.id}
-          onChange={(e) => updatePerson(e, 'name')}
+          onChange={e => updatePerson(e, 'name')}
         />
         <span className={spanClass}>
           {name}
@@ -133,7 +133,7 @@ function PersonRow(props: PersonRowProps) {
           bsSize="sm"
           className={inputClass}
           value={person.birthplace || ''}
-          onChange={(e) => updatePerson(e, 'birthplace')}
+          onChange={e => updatePerson(e, 'birthplace')}
         />
         <span className={spanClass}>{person.birthplace}</span>
       </td>
@@ -142,7 +142,7 @@ function PersonRow(props: PersonRowProps) {
           bsSize="sm"
           className={inputClass}
           value={person.birthdate || ''}
-          onChange={(e) => updatePerson(e, 'birthdate')}
+          onChange={e => updatePerson(e, 'birthdate')}
         />
         <span className={spanClass}>{person.birthdate}</span>
       </td>
@@ -151,7 +151,7 @@ function PersonRow(props: PersonRowProps) {
           bsSize="sm"
           className={inputClass}
           value={person.phone || ''}
-          onChange={(e) => updatePerson(e, 'phone')}
+          onChange={e => updatePerson(e, 'phone')}
         />
         <span className={spanClass}>{person.phone}</span>
       </td>
@@ -160,7 +160,7 @@ function PersonRow(props: PersonRowProps) {
           bsSize="sm"
           className={inputClass}
           value={person.address || ''}
-          onChange={(e) => updatePerson(e, 'address')}
+          onChange={e => updatePerson(e, 'address')}
         />
         <span className={spanClass}>{person.address}</span>
       </td>
@@ -169,7 +169,7 @@ function PersonRow(props: PersonRowProps) {
           bsSize="sm"
           className={inputClass}
           value={person.ig || ''}
-          onChange={(e) => updatePerson(e, 'ig')}
+          onChange={e => updatePerson(e, 'ig')}
         />
         <span className={spanClass}>{person.ig}</span>
       </td>

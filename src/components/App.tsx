@@ -15,7 +15,7 @@ function App(props: AppProps) {
   const [hidePersonCode, setHidePersonCode] = useState(false);
   const [trees, setTreesValue] = useState(props.trees);
 
-  const setTreeValue = function(person: Person) {
+  const setTreeValue = function (person: Person) {
     const personData: Record<string, Person> = { [person.id]: person };
     setTreesValue(enrichTreeData(trees, personData));
   };
