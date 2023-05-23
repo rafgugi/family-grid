@@ -35,23 +35,10 @@ function renderFamilies(props: FamilyProps) {
       <hr className="d-print-none" />
       <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
       <FamilyDiagram trees={[tree]} depth={2} />
-      <FamilyGrid
-        trees={[tree]}
-        split
-        editMode={props.editMode}
-        hideCode={props.hideCode}
-        setTreeValue={props.setTreeValue}
-      />
+      <FamilyGrid {...props} trees={[tree]} />
 
       {heirs.map((person: Person) => (
-        <Family
-          key={person.id}
-          trees={[person]}
-          split
-          editMode={props.editMode}
-          hideCode={props.hideCode}
-          setTreeValue={props.setTreeValue}
-        />
+        <Family {...props} key={person.id} trees={[person]} />
       ))}
     </Fragment>
   ));
@@ -63,13 +50,7 @@ function renderFamily(props: FamilyProps) {
       <hr className="d-print-none" />
       <h3 className="text-center">Family Grid</h3>
       <FamilyDiagram trees={props.trees} />
-      <FamilyGrid
-        trees={props.trees}
-        split={false}
-        editMode={props.editMode}
-        hideCode={props.hideCode}
-        setTreeValue={props.setTreeValue}
-      />
+      <FamilyGrid {...props} />
     </Fragment>
   );
 }

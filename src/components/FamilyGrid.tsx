@@ -62,31 +62,12 @@ function FamilyRows(props: PersonRowProps) {
 
   return (
     <>
-      <PersonRow
-        key={person.id}
-        person={person}
-        editMode={props.editMode}
-        hideCode={props.hideCode}
-        setTreeValue={props.setTreeValue}
-      />
+      <PersonRow {...props} key={person.id} person={person} />
       {heirs.map((person: Person) =>
         props.split ? (
-          <PersonRow
-            key={person.id}
-            person={person}
-            editMode={props.editMode}
-            hideCode={props.hideCode}
-            setTreeValue={props.setTreeValue}
-          />
+          <PersonRow {...props} key={person.id} person={person} />
         ) : (
-          <FamilyRows
-            key={person.id}
-            person={person}
-            split={props.split}
-            editMode={props.editMode}
-            hideCode={props.hideCode}
-            setTreeValue={props.setTreeValue}
-          />
+          <FamilyRows {...props} key={person.id} person={person} />
         )
       )}
     </>
