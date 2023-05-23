@@ -28,25 +28,28 @@ function App(props: AppProps) {
             <Input
               type="switch"
               checked={split}
+              id="split-switch"
               onChange={() => setSplitValue(!split)}
             />
-            <Label check>Split Family</Label>
+            <Label for="split-switch" check>Split Family</Label>
           </FormGroup>
           <FormGroup switch>
             <Input
               type="switch"
               checked={hidePersonCode}
+              id="hidePersonCode-switch"
               onChange={() => setHidePersonCode(!hidePersonCode)}
             />
-            <Label check>Hide Code</Label>
+            <Label for="hidePersonCode-switch" check>Hide Code</Label>
           </FormGroup>
           <FormGroup switch>
             <Input
               type="switch"
               checked={editMode}
+              id="editMode-switch"
               onChange={() => setEditModeValue(!editMode)}
             />
-            <Label check>Edit Mode</Label>
+            <Label for="editMode-switch" check>Edit Mode</Label>
           </FormGroup>
         </Form>
 
