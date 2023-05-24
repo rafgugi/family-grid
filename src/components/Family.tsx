@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Dispatch, Fragment } from 'react';
 import { Marriage, Person } from '../family.interface';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
@@ -6,20 +6,18 @@ import FamilyDiagram from './FamilyDiagram';
 interface FamilyProps {
   trees: Person[];
   split: boolean;
+  editMode: boolean;
   hideCode: boolean;
+  setTreeValue: Dispatch<any>;
 }
 
-export default function Family({ trees, split, hideCode }: FamilyProps) {
-  return (
-    <>
-      {split ? renderFamilies(trees, hideCode) : renderFamily(trees, hideCode)}
-    </>
-  );
+export default function Family(props: FamilyProps) {
+  return <>{props.split ? renderFamilies(props) : renderFamily(props)}</>;
 }
 
-function renderFamilies(trees: Person[], hideCode: boolean) {
+function renderFamilies(props: FamilyProps) {
   const heirs: Person[] = [];
-  trees.forEach(function (person: Person) {
+  props.trees.forEach(function (person: Person) {
     person.marriages.forEach(function (marriage: Marriage) {
       if (marriage.spouse.marriages.length > 0) {
         heirs.push(marriage.spouse);
@@ -32,26 +30,27 @@ function renderFamilies(trees: Person[], hideCode: boolean) {
     });
   });
 
-  return trees.map(tree => (
+  return props.trees.map(tree => (
     <Fragment key={tree.id}>
       <hr className="d-print-none" />
       <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
       <FamilyDiagram trees={[tree]} depth={2} />
-      <FamilyGrid trees={[tree]} hideCode={hideCode} split />
+      <FamilyGrid {...props} trees={[tree]} />
+
       {heirs.map((person: Person) => (
-        <Family key={person.id} trees={[person]} hideCode={hideCode} split />
+        <Family {...props} key={person.id} trees={[person]} />
       ))}
     </Fragment>
   ));
 }
 
-function renderFamily(trees: Person[], hideCode: boolean) {
+function renderFamily(props: FamilyProps) {
   return (
     <Fragment>
       <hr className="d-print-none" />
       <h3 className="text-center">Family Grid</h3>
-      <FamilyDiagram trees={trees} />
-      <FamilyGrid trees={trees} hideCode={hideCode} split={false} />
+      <FamilyDiagram trees={props.trees} />
+      <FamilyGrid {...props} />
     </Fragment>
   );
 }

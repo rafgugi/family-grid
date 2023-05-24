@@ -1,10 +1,13 @@
-import { Table } from 'reactstrap';
+import { ChangeEvent, Dispatch } from 'react';
+import { Input, Table } from 'reactstrap';
 import { Person, Marriage } from '../family.interface';
 
 interface FamilyGridProps {
   trees: Person[];
   split: boolean;
+  editMode: boolean;
   hideCode: boolean;
+  setTreeValue: Dispatch<any>;
 }
 
 export default function FamilyGrid(props: FamilyGridProps) {
@@ -28,8 +31,10 @@ export default function FamilyGrid(props: FamilyGridProps) {
           <FamilyRows
             key={person.id}
             person={person}
-            hideCode={props.hideCode}
             split={props.split}
+            editMode={props.editMode}
+            hideCode={props.hideCode}
+            setTreeValue={props.setTreeValue}
           />
         ))}
       </tbody>
@@ -37,13 +42,16 @@ export default function FamilyGrid(props: FamilyGridProps) {
   );
 }
 
-interface FamilyRowsProps {
+interface PersonRowProps {
   person: Person;
-  split: boolean;
+  split?: boolean;
+  editMode: boolean;
   hideCode: boolean;
+  setTreeValue?: Dispatch<any>;
 }
 
-function FamilyRows({ person, split, hideCode }: FamilyRowsProps) {
+function FamilyRows(props: PersonRowProps) {
+  const person = props.person;
   const heirs: Person[] = [];
   person.marriages.forEach(function (marriage: Marriage) {
     heirs.push(marriage.spouse);
@@ -54,43 +62,98 @@ function FamilyRows({ person, split, hideCode }: FamilyRowsProps) {
 
   return (
     <>
-      <PersonRow key={person.id} person={person} hideCode={hideCode} />
+      <PersonRow {...props} key={person.id} person={person} />
       {heirs.map((person: Person) =>
-        split ? (
-          <PersonRow key={person.id} person={person} hideCode={hideCode} />
+        props.split ? (
+          <PersonRow {...props} key={person.id} person={person} />
         ) : (
-          <FamilyRows
-            key={person.id}
-            person={person}
-            split={split}
-            hideCode={hideCode}
-          />
+          <FamilyRows {...props} key={person.id} person={person} />
         )
       )}
     </>
   );
 }
 
-interface PersonRowProps {
-  person: Person;
-  hideCode: boolean;
-}
-
-function PersonRow({ person, hideCode }: PersonRowProps) {
+function PersonRow(props: PersonRowProps) {
+  const person = props.person;
   const name = person.name || person.id;
+
+  const updatePerson = function (e: ChangeEvent<any>, key: string) {
+    if (props.setTreeValue) {
+      props.setTreeValue({ ...person, [key]: e.target.value });
+    }
+  };
+
+  let inputClass = 'd-none';
+  let spanClass = '';
+  if (props.editMode) {
+    inputClass = 'd-print-none';
+    spanClass = 'd-none d-print-block';
+  }
 
   return (
     <tr>
-      <td hidden={hideCode}>{person.code}</td>
-      <td>
-        {name}
-        {person.name && <small className="fw-light"> ({person.id})</small>}
+      <td hidden={props.hideCode}>
+        <span>{person.code}</span>
       </td>
-      <td>{person.birthplace}</td>
-      <td>{person.birthdate}</td>
-      <td>{person.phone}</td>
-      <td>{person.address}</td>
-      <td>{person.ig}</td>
+      <td>
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.name || ''}
+          placeholder={person.id}
+          onChange={e => updatePerson(e, 'name')}
+        />
+        <span className={spanClass}>
+          {name}
+          {person.name && <small className="fw-light"> ({person.id})</small>}
+        </span>
+      </td>
+      <td>
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.birthplace || ''}
+          onChange={e => updatePerson(e, 'birthplace')}
+        />
+        <span className={spanClass}>{person.birthplace}</span>
+      </td>
+      <td>
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.birthdate || ''}
+          onChange={e => updatePerson(e, 'birthdate')}
+        />
+        <span className={spanClass}>{person.birthdate}</span>
+      </td>
+      <td>
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.phone || ''}
+          onChange={e => updatePerson(e, 'phone')}
+        />
+        <span className={spanClass}>{person.phone}</span>
+      </td>
+      <td>
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.address || ''}
+          onChange={e => updatePerson(e, 'address')}
+        />
+        <span className={spanClass}>{person.address}</span>
+      </td>
+      <td>
+        <Input
+          bsSize="sm"
+          className={inputClass}
+          value={person.ig || ''}
+          onChange={e => updatePerson(e, 'ig')}
+        />
+        <span className={spanClass}>{person.ig}</span>
+      </td>
     </tr>
   );
 }
