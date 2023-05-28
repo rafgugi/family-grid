@@ -1,8 +1,9 @@
-import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
-import { useState } from 'react';
+import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
+import { useMemo, useState } from 'react';
 import { Person } from '../family.interface';
 import Family from './Family';
-import { enrichTreeData } from '../family.util';
+import ModalAddChild from './ModalAddChild';
+import { enrichTreeData, treesToRecord } from '../family.util';
 
 interface AppProps {
   trees: Person[];
@@ -14,6 +15,18 @@ function App(props: AppProps) {
   const [editMode, setEditModeValue] = useState(false);
   const [hidePersonCode, setHidePersonCode] = useState(false);
   const [trees, setTreesValue] = useState(props.trees);
+
+  const [modalPerson, setModalPerson] = useState(null as (Person | null));
+  const [modalSpouse, setModalSpouse] = useState(null as (Person | null));
+
+  const [showModalChild, setShowModalChild] = useState(false);
+  const toggleModalChild = () => setShowModalChild(!showModalChild);
+  const openModalChild = (person: Person) => {
+    setModalPerson(person);
+    setShowModalChild(true);
+  };
+
+  const record = useMemo(() => treesToRecord(trees), [trees]);
 
   const setTreeValue = function (person: Person) {
     const personData: Record<string, Person> = { [person.id]: person };
@@ -50,6 +63,21 @@ function App(props: AppProps) {
               onChange={() => setEditModeValue(!editMode)}
             />
             <Label for="editMode-switch" check>Edit Mode</Label>
+          </FormGroup>
+          <FormGroup>
+            <Button onClick={() => openModalChild(trees[0])} >
+              Add child
+            </Button>
+            <ModalAddChild
+              isOpen={showModalChild}
+              toggle={toggleModalChild}
+              record={record}
+              person={modalPerson}
+              setPerson={setModalPerson}
+              spouse={modalSpouse}
+              setSpouse={setModalSpouse}
+              setTreeValue={setTreeValue}
+            />
           </FormGroup>
         </Form>
 

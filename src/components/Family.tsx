@@ -1,4 +1,4 @@
-import { Dispatch, Fragment } from 'react';
+import { Fragment } from 'react';
 import { Person } from '../family.interface';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
@@ -9,7 +9,7 @@ interface FamilyProps {
   split: boolean;
   editMode: boolean;
   hideCode: boolean;
-  setTreeValue: Dispatch<any>;
+  setTreeValue: (p: Person) => void;
 }
 
 export default function Family(props: FamilyProps) {
