@@ -1,6 +1,6 @@
 import { Person, PersonNode } from '../family.interface';
 import { treesToPersonNode } from '../family.util';
-import { Component, RefObject, createRef } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import * as go from 'gojs';
 import GenogramLayout from '../GenogramLayout';
 
@@ -9,48 +9,23 @@ interface FamilyDiagramProps {
   depth?: number;
 }
 
-class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
-  /**
-   * Ref to keep a reference to the component
-   */
-  private divRef: RefObject<HTMLDivElement>;
+function FamilyDiagram(props: FamilyDiagramProps) {
+  const { trees, depth } = props;
+  const divRef = useRef<HTMLDivElement>(null);
 
-  constructor(props: FamilyDiagramProps) {
-    super(props);
-    this.divRef = createRef();
-  }
-
-  /**
-   * Here we only render a div. After component mounted we will append
-   * a diagram svg to this div.
-   */
-  public render() {
-    return <div ref={this.divRef} />;
-  }
-
-  public componentDidMount() {
-    this.mountSvg();
-  }
-
-  public componentDidUpdate() {
-    this.mountSvg();
-  }
-
-  public shouldComponentUpdate(
-    nextProps: Readonly<FamilyDiagramProps>
-  ): boolean {
-    return !Object.is(nextProps, this.props);
-  }
+  const personNodes = useMemo(() => {
+    return treesToPersonNode(trees, depth || 0)
+  }, [trees])
 
   /**
    * Setup the diagram based on the given props, then create a svg
    * from it and append to the div element.
    */
-  private mountSvg() {
-    const { trees, depth } = this.props;
-    const personNodes = treesToPersonNode(trees, depth || 0);
-    const diagram = this.initDiagram();
-    this.setupDiagram(diagram, personNodes);
+  useEffect(() => {
+    console.log('Rendering diagram for ' + trees[0].id);
+
+    const diagram = DiagramUtil.initDiagram();
+    DiagramUtil.setupDiagram(diagram, personNodes);
 
     // We need to host the diagram into a temprary element so it can be rendered
     const tempDiv = document.createElement('div');
@@ -60,18 +35,22 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
     const svg = diagram.makeSvg({ scale: 1 });
     if (svg) {
       svg.setAttribute('class', 'my-3 m-auto img-fluid');
-      this.divRef.current?.replaceChildren(svg);
+      divRef.current?.replaceChildren(svg);
     }
     tempDiv.remove();
-  }
+  }, [personNodes]);
 
+  return <div ref={divRef} />;
+}
+
+class DiagramUtil {
   /**
    * Diagram initialization method, which is passed to the ReactDiagram component.
    * This method is responsible for making the diagram and initializing the model, any templates,
    * and maybe doing other initialization tasks like customizing tools.
    * The model's data should not be set here, as the ReactDiagram component handles that via the other props.
    */
-  private initDiagram(): go.Diagram {
+  static initDiagram(): go.Diagram {
     const $ = go.GraphObject.make;
 
     const myDiagram = $(go.Diagram, {
@@ -242,7 +221,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   }
 
   // create and initialize the Diagram.model given an array of node data representing people
-  private setupDiagram(diagram: go.Diagram, nodeDataArray: PersonNode[]) {
+  static setupDiagram(diagram: go.Diagram, nodeDataArray: PersonNode[]) {
     diagram.model = new go.GraphLinksModel({
       // declare support for link label nodes
       linkLabelKeysProperty: 'labelKeys',
@@ -257,7 +236,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   }
 
   // now process the node data to determine marriages
-  private setupMarriages(diagram: any) {
+  static setupMarriages(diagram: any) {
     const model = diagram.model;
     const nodeDataArray = model.nodeDataArray;
     for (let i = 0; i < nodeDataArray.length; i++) {
@@ -292,7 +271,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
   }
 
   // process parent-child relationships once all marriages are known
-  private setupParents(diagram: any) {
+  static setupParents(diagram: any) {
     const model = diagram.model;
     const nodeDataArray = model.nodeDataArray;
     for (let i = 0; i < nodeDataArray.length; i++) {
@@ -317,7 +296,7 @@ class FamilyDiagram extends Component<FamilyDiagramProps, {}> {
     }
   }
 
-  private findMarriage(
+  static findMarriage(
     diagram: go.Diagram,
     a: string | number,
     b: string | number
