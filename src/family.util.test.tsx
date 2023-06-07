@@ -1,5 +1,5 @@
 import { Person } from './family.interface';
-import { enrichTreeData, explodeTrees, treesToPersonNode } from './family.util';
+import { enrichTreeData, explodeTrees, treesToPersonNode, treesToRecord } from './family.util';
 
 const familyData = {
   trees: [{
@@ -163,4 +163,16 @@ test('explode person with depth 2', () => {
 
   const expectedPeople = ['satyr', 'surtr', 'hound', 'nala', 'mufasa'];
   expect(people.map(person => person.id)).toEqual(expectedPeople);
+});
+
+test('convert trees to record', () => {
+  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const record = treesToRecord(trees);
+
+  const people = ['satyr', 'surtr', 'hound', 'alpha', 'ryora', 'nala', 'mufasa'];
+  people.forEach(key => {
+    expect(record[key].id).toEqual(key);
+  });
+  // random sampling for satyr
+  expect(record['satyr'].marriages[0].spouse).toEqual(record['surtr']);
 });
