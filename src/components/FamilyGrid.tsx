@@ -1,6 +1,7 @@
 import { ChangeEvent, Dispatch } from 'react';
 import { Input, Table } from 'reactstrap';
-import { Person, Marriage } from '../family.interface';
+import { Person } from '../family.interface';
+import { explodeTrees } from '../family.util';
 
 interface FamilyGridProps {
   trees: Person[];
@@ -51,24 +52,17 @@ interface PersonRowProps {
 }
 
 function FamilyRows(props: PersonRowProps) {
-  const person = props.person;
-  const heirs: Person[] = [];
-  person.marriages.forEach(function (marriage: Marriage) {
-    heirs.push(marriage.spouse);
-    marriage.children.forEach(function (person: Person) {
-      heirs.push(person);
-    });
-  });
+  var heirs: Person[];
+  if (props.split) {
+    heirs = explodeTrees([props.person], 2);
+  } else {
+    heirs = explodeTrees([props.person]);
+  }
 
   return (
     <>
-      <PersonRow {...props} key={person.id} person={person} />
       {heirs.map((person: Person) =>
-        props.split ? (
-          <PersonRow {...props} key={person.id} person={person} />
-        ) : (
-          <FamilyRows {...props} key={person.id} person={person} />
-        )
+        (<PersonRow {...props} key={person.id} person={person} />)
       )}
     </>
   );

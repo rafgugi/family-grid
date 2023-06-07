@@ -41,6 +41,24 @@ function enrichPersonData(person: any, people: Record<string, any>): Person {
   return createPerson(person);
 }
 
+// Breakdown the person's family tree into array.
+export function explodeTrees(
+  trees: Person[],
+  depth: number = -1
+): Person[] {
+  const people: Person[] = [];
+  if (depth === 0) return people;
+
+  trees.forEach(function (person) {
+    people.push(person);
+    person.marriages.forEach(function (marriage: Marriage) {
+      people.push(...explodeTrees([marriage.spouse], depth - 1));
+      people.push(...explodeTrees(marriage.children, depth - 1));
+    });
+  });
+  return people;
+}
+
 // create and assign default required value for Person
 function createPerson(data: any): Person {
   return {
@@ -99,16 +117,4 @@ function personToPersonNode(
     });
   }
   return nodes;
-}
-
-// Breakdown the person's family tree into array. Default algo is DFS.
-export function explodePerson(person: Person): Person[] {
-  const people = [person];
-  person.marriages.forEach(function (marriage: Marriage) {
-    people.push(marriage.spouse);
-    marriage.children.forEach(function (person: Person) {
-      people.push(person);
-    });
-  });
-  return people;
 }

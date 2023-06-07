@@ -1,5 +1,5 @@
 import { Person } from './family.interface';
-import { enrichTreeData, treesToPersonNode } from './family.util';
+import { enrichTreeData, explodeTrees, treesToPersonNode } from './family.util';
 
 const familyData = {
   trees: [{
@@ -147,4 +147,20 @@ test('convert trees to PersonNode with depth 2', () => {
     { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
     { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
   ]);
+});
+
+test('explode person', () => {
+  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const people = explodeTrees(trees);
+
+  const expectedPeople = ['satyr', 'surtr', 'hound', 'alpha', 'ryora', 'nala', 'mufasa'];
+  expect(people.map(person => person.id)).toEqual(expectedPeople);
+});
+
+test('explode person with depth 2', () => {
+  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const people = explodeTrees(trees, 2);
+
+  const expectedPeople = ['satyr', 'surtr', 'hound', 'nala', 'mufasa'];
+  expect(people.map(person => person.id)).toEqual(expectedPeople);
 });
