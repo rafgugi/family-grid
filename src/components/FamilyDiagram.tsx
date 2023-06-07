@@ -46,9 +46,10 @@ function FamilyDiagram(props: FamilyDiagramProps) {
 class DiagramUtil {
   /**
    * Diagram initialization method, which is passed to the ReactDiagram component.
-   * This method is responsible for making the diagram and initializing the model, any templates,
-   * and maybe doing other initialization tasks like customizing tools.
-   * The model's data should not be set here, as the ReactDiagram component handles that via the other props.
+   * This method is responsible for making the diagram and initializing the model,
+   * any templates, and maybe doing other initialization tasks like customizing tools.
+   * The model's data should not be set here, as the ReactDiagram component
+   * handles that via the other props.
    */
   static initDiagram(): go.Diagram {
     const $ = go.GraphObject.make;
@@ -56,16 +57,6 @@ class DiagramUtil {
     const myDiagram = $(go.Diagram, {
       'animationManager.isEnabled': false,
       initialAutoScale: go.Diagram.Uniform,
-      'undoManager.isEnabled': true,
-      maxSelectionCount: 1,
-      // when a node is selected, draw a big yellow circle behind it
-      nodeSelectionAdornmentTemplate: $(
-        go.Adornment,
-        'Auto',
-        { layerName: 'Grid' }, // the predefined layer that is behind everything else
-        $(go.Shape, 'Circle', { fill: '#c1cee3', stroke: null }),
-        $(go.Placeholder, { margin: 2 })
-      ),
       layout: $(GenogramLayout, {
         direction: 90,
         layerSpacing: 30,
@@ -109,7 +100,7 @@ class DiagramUtil {
             portId: '',
           }),
           $(go.Panel,
-            { // for each attribute show a Shape at a particular place in the overall square
+            {
               itemTemplate: $(go.Panel,
                 $(go.Shape,
                   { stroke: null, strokeWidth: 0 },
@@ -154,7 +145,7 @@ class DiagramUtil {
             portId: '',
           }),
           $(go.Panel,
-            { // for each attribute show a Shape at a particular place in the overall circle
+            {
               itemTemplate: $(go.Panel,
                 $(go.Shape,
                   { stroke: null, strokeWidth: 0 },
@@ -220,7 +211,10 @@ class DiagramUtil {
     return myDiagram;
   }
 
-  // create and initialize the Diagram.model given an array of node data representing people
+  /**
+   * create and initialize the Diagram.model given an array of node
+   * data representing people
+   */
   static setupDiagram(diagram: go.Diagram, nodeDataArray: PersonNode[]) {
     diagram.model = new go.GraphLinksModel({
       // declare support for link label nodes
@@ -235,9 +229,11 @@ class DiagramUtil {
     this.setupParents(diagram);
   }
 
-  // now process the node data to determine marriages
-  static setupMarriages(diagram: any) {
-    const model = diagram.model;
+  /**
+   * now process the node data to determine marriages
+   */
+  static setupMarriages(diagram: go.Diagram) {
+    const model: go.GraphLinksModel = diagram.model as go.GraphLinksModel;
     const nodeDataArray = model.nodeDataArray;
     for (let i = 0; i < nodeDataArray.length; i++) {
       const data = nodeDataArray[i];
@@ -248,7 +244,7 @@ class DiagramUtil {
           const spouse = spouses[j];
           const person = model.findNodeDataForKey(spouse);
           if (key === spouse || !person) {
-            console.log('cannot create Marriage relationship with self or unknown person ' + spouse);
+            console.log('cannot create Marriage with self or unknown person ' + spouse);
             continue;
           }
           const link = this.findMarriage(diagram, key, spouse);
@@ -270,9 +266,11 @@ class DiagramUtil {
     }
   }
 
-  // process parent-child relationships once all marriages are known
-  static setupParents(diagram: any) {
-    const model = diagram.model;
+  /**
+   * process parent-child relationships once all marriages are known
+   */
+  static setupParents(diagram: go.Diagram) {
+    const model: go.GraphLinksModel = diagram.model as go.GraphLinksModel;
     const nodeDataArray = model.nodeDataArray;
     for (let i = 0; i < nodeDataArray.length; i++) {
       const data = nodeDataArray[i];
@@ -291,17 +289,15 @@ class DiagramUtil {
 
         const mlabkey = mdata.labelKeys[0];
         const cdata = { from: mlabkey, to: key };
-        diagram.model.addLinkData(cdata);
+        model.addLinkData(cdata);
       }
     }
   }
 
-  static findMarriage(
-    diagram: go.Diagram,
-    a: string | number,
-    b: string | number
-  ) {
-    // A and B are node keys
+  /**
+   * find marriage link between node keys a and b
+   */
+  static findMarriage(diagram: go.Diagram, a: string, b: string) {
     const nodeA = diagram.findNodeForKey(a);
     const nodeB = diagram.findNodeForKey(b);
     if (nodeA !== null && nodeB !== null) {
