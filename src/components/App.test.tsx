@@ -7,7 +7,14 @@ go.Palette.useDOM(false);
 const trees = [{
   id: 'satyr',
   code: '',
-  marriages: []
+  marriages: [{
+    spouse: { id: 'surtr', code: '', marriages: [] },
+    children: [{
+      id: 'hound',
+      code: '',
+      marriages: []
+    }]
+  }]
 }]
 
 // Mock FamilyDiagram

@@ -1,7 +1,8 @@
 import { Dispatch, Fragment } from 'react';
-import { Marriage, Person } from '../family.interface';
+import { Person } from '../family.interface';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
+import { explodeTrees } from '../family.util';
 
 interface FamilyProps {
   trees: Person[];
@@ -12,39 +13,29 @@ interface FamilyProps {
 }
 
 export default function Family(props: FamilyProps) {
-  return <>{props.split ? renderFamilies(props) : renderFamily(props)}</>;
+  return props.split ? <SplitFamilies {...props} /> : <BigFamily {...props} />;
 }
 
-function renderFamilies(props: FamilyProps) {
-  const heirs: Person[] = [];
-  props.trees.forEach(function (person: Person) {
-    person.marriages.forEach(function (marriage: Marriage) {
-      if (marriage.spouse.marriages.length > 0) {
-        heirs.push(marriage.spouse);
-      }
-      marriage.children.forEach(function (child: Person) {
-        if (child.marriages.length > 0) {
-          heirs.push(child);
-        }
-      });
-    });
-  });
+function SplitFamilies(props: FamilyProps) {
+  const people = explodeTrees(props.trees).filter(
+    (person) => person.marriages.length !== 0
+  );
 
-  return props.trees.map(tree => (
-    <Fragment key={tree.id}>
-      <hr className="d-print-none" />
-      <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
-      <FamilyDiagram trees={[tree]} depth={2} />
-      <FamilyGrid {...props} trees={[tree]} />
-
-      {heirs.map((person: Person) => (
-        <Family {...props} key={person.id} trees={[person]} />
+  return (
+    <>
+      {people.map((tree) => (
+        <Fragment key={tree.id}>
+          <hr className="d-print-none" />
+          <h3 className="text-center">{tree.name ?? tree.id} Family</h3>
+          <FamilyDiagram trees={[tree]} depth={2} />
+          <FamilyGrid {...props} trees={[tree]} />
+        </Fragment>
       ))}
-    </Fragment>
-  ));
+    </>
+  );
 }
 
-function renderFamily(props: FamilyProps) {
+function BigFamily(props: FamilyProps) {
   return (
     <Fragment>
       <hr className="d-print-none" />
