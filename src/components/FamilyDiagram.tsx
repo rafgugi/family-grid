@@ -13,17 +13,12 @@ function FamilyDiagram(props: FamilyDiagramProps) {
   const { trees, depth } = props;
   const divRef = useRef<HTMLDivElement>(null);
 
-  const personNodes = useMemo(() => {
-    return treesToPersonNode(trees, depth || 0)
-  }, [trees])
-
   /**
    * Setup the diagram based on the given props, then create a svg
    * from it and append to the div element.
    */
-  useEffect(() => {
-    console.log('Rendering diagram for ' + trees[0].id);
-
+  const svg = useMemo(() => {
+    const personNodes = treesToPersonNode(trees, depth || 0)
     const diagram = DiagramUtil.initDiagram();
     DiagramUtil.setupDiagram(diagram, personNodes);
 
@@ -33,12 +28,17 @@ function FamilyDiagram(props: FamilyDiagramProps) {
 
     // Create svg from the diagram, then finally delete the div
     const svg = diagram.makeSvg({ scale: 1 });
+    tempDiv.remove();
+    return svg;
+  }, [trees, depth])
+
+  useEffect(() => {
     if (svg) {
       svg.setAttribute('class', 'my-3 m-auto img-fluid');
       divRef.current?.replaceChildren(svg);
+      return () => svg.remove();
     }
-    tempDiv.remove();
-  }, [personNodes]);
+  }, [svg]);
 
   return <div ref={divRef} />;
 }
