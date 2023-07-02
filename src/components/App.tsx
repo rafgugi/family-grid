@@ -76,29 +76,11 @@ function App(props: AppProps) {
             <Button onClick={() => openModalChild(trees[0])} >
               Add child
             </Button>
-            <ModalAddChild
-              isOpen={showModalChild}
-              toggle={toggleModalChild}
-              record={record}
-              person={modalPerson}
-              setPerson={setModalPerson}
-              spouse={modalSpouse}
-              setSpouse={setModalSpouse}
-              setTreeValue={setTreeValue}
-            />
           </FormGroup>
           <FormGroup>
             <Button onClick={() => openModalAddSpouse(trees[0])} >
               Add spouse
             </Button>
-            <ModalAddSpouse
-              isOpen={showModalAddSpouse}
-              toggle={toggleModalAddSpouse}
-              record={record}
-              person={modalPerson}
-              setPerson={setModalPerson}
-              setTreeValue={setTreeValue}
-            />
           </FormGroup>
         </Form>
 
@@ -110,6 +92,24 @@ function App(props: AppProps) {
           setTreeValue={setTreeValue}
         />
       </Container>
+      <ModalAddChild
+        isOpen={showModalChild}
+        toggle={toggleModalChild}
+        record={record}
+        person={modalPerson}
+        setPerson={setModalPerson}
+        spouse={modalSpouse}
+        setSpouse={setModalSpouse}
+        setTreeValue={setTreeValue}
+      />
+      <ModalAddSpouse
+        isOpen={showModalAddSpouse}
+        toggle={toggleModalAddSpouse}
+        record={record}
+        person={modalPerson}
+        setPerson={setModalPerson}
+        setTreeValue={setTreeValue}
+      />
     </div>
   );
 }
