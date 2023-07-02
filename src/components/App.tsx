@@ -73,12 +73,12 @@ function App(props: AppProps) {
             <Label for="editMode-switch" check>Edit Mode</Label>
           </FormGroup>
           <FormGroup>
-            <Button onClick={() => openModalChild(trees[0])} >
+            <Button size="sm" onClick={() => openModalChild(trees[0])} >
               Add child
             </Button>
           </FormGroup>
           <FormGroup>
-            <Button onClick={() => openModalAddSpouse(trees[0])} >
+            <Button size="sm" onClick={() => openModalAddSpouse(trees[0])} >
               Add spouse
             </Button>
           </FormGroup>

@@ -1,4 +1,4 @@
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Button, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Dispatch, useEffect, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
 
@@ -20,11 +20,7 @@ function ModalAddChild(props: ModalAddChildProps) {
   const setSpouse = props.setSpouse;
   const record = props.record;
   const [child, setChild] = useState('');
-
-  // this is for debgging performance only
-  useEffect(() => {
-    console.log("useEffect of ModalAddChild");
-  });
+  const [childError, setChildError] = useState('');
 
   const marriedPeople = Object.values(record).filter(
     (person) => person.marriages.length > 0
@@ -47,16 +43,19 @@ function ModalAddChild(props: ModalAddChildProps) {
   };
 
   const handleChildChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChild(event.target.value);
+    const value = event.target.value;
+    setChild(value);
+
+    setChildError('');
+    if (Object.keys(record).includes(value)) {
+      setChildError(value + ' is already taken');
+    }
   };
 
-  const handleSubmit = () => {
-    if (!person || !spouse || !child) return;
+  const validForm = () => person && spouse && child && !childError;
 
-    if (Object.keys(record).includes(child)) {
-      console.log(child + ' is already exist');
-      return;
-    }
+  const handleSubmit = () => {
+    if (!person || !spouse || !validForm()) return;
 
     const marriage = person.marriages.find((m: Marriage) =>
       m.spouse.id === spouse.id
@@ -126,15 +125,21 @@ function ModalAddChild(props: ModalAddChildProps) {
             </Label>
             <Input
               id="input-child"
-              placeholder=""
               type="text"
+              placeholder="Insert child unique nickname"
               value={child}
               onChange={handleChildChange}
+              invalid={childError !== ''}
             />
+            {childError !== '' && (
+              <FormFeedback>
+                {childError}
+              </FormFeedback>
+            )}
           </FormGroup>
         )}
         <Button
-          disabled={!(person && spouse && child !== '')}
+          disabled={!validForm()}
           onClick={handleSubmit}
         >
           Submit

@@ -1,4 +1,4 @@
-import { Button, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Button, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { Dispatch, useEffect, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
 
@@ -16,6 +16,7 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
   const setPerson = props.setPerson;
   const record = props.record;
   const [spouse, setSpouse] = useState('');
+  const [spouseError, setSpouseError] = useState('');
 
   // this is for debgging performance only
   useEffect(() => {
@@ -32,17 +33,20 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
     setSpouse('');
   };
 
-  const handleChildChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSpouseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     setSpouse(event.target.value);
+
+    setSpouseError('');
+    if (Object.keys(record).includes(value)) {
+      setSpouseError(value + ' is already taken');
+    }
   };
 
-  const handleSubmit = () => {
-    if (!person || !spouse) return;
+  const validForm = () => person && spouse && !spouseError;
 
-    if (Object.keys(record).includes(spouse)) {
-      console.log(spouse + ' is already exist');
-      return;
-    }
+  const handleSubmit = () => {
+    if (!person || !validForm()) return;
 
     const spousePerson: Person = {
       id: spouse,
@@ -91,15 +95,21 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
             </Label>
             <Input
               id="input-spouse"
-              placeholder=""
               type="text"
+              placeholder="Insert spouse unique nickname"
               value={spouse}
-              onChange={handleChildChange}
+              onChange={handleSpouseChange}
+              invalid={spouseError !== ''}
             />
+            {spouseError !== '' && (
+              <FormFeedback>
+                {spouseError}
+              </FormFeedback>
+            )}
           </FormGroup>
         )}
         <Button
-          disabled={!(person && spouse !== '')}
+          disabled={!validForm()}
           onClick={handleSubmit}
         >
           Submit
