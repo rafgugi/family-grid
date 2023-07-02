@@ -1,4 +1,4 @@
-import { Dispatch, Fragment } from 'react';
+import { Fragment } from 'react';
 import { Person } from '../family.interface';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
@@ -9,7 +9,7 @@ interface FamilyProps {
   split: boolean;
   editMode: boolean;
   hideCode: boolean;
-  setTreeValue: Dispatch<any>;
+  setTreeValue: (p: Person) => void;
 }
 
 export default function Family(props: FamilyProps) {
@@ -18,12 +18,12 @@ export default function Family(props: FamilyProps) {
 
 function SplitFamilies(props: FamilyProps) {
   const people = explodeTrees(props.trees).filter(
-    (person) => person.marriages.length !== 0
+    person => person.marriages.length !== 0
   );
 
   return (
     <>
-      {people.map((tree) => (
+      {people.map(tree => (
         <Fragment key={tree.id}>
           <hr className="d-print-none" />
           <h3 className="text-center">{tree.name ?? tree.id} Family</h3>

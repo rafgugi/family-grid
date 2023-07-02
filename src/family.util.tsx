@@ -42,10 +42,7 @@ function enrichPersonData(person: any, people: Record<string, any>): Person {
 }
 
 // Breakdown the person's family tree into array.
-export function explodeTrees(
-  trees: Person[],
-  depth: number = -1
-): Person[] {
+export function explodeTrees(trees: Person[], depth: number = -1): Person[] {
   const people: Person[] = [];
   if (depth === 0) return people;
 
@@ -57,6 +54,19 @@ export function explodeTrees(
     });
   });
   return people;
+}
+
+// Convert person's family tree into Record<id, Person>
+export function treesToRecord(trees: Person[]): Record<string, Person> {
+  const record: Record<string, Person> = {};
+  trees.forEach(function (person) {
+    record[person.id] = person;
+    person.marriages.forEach(function (marriage) {
+      Object.assign(record, treesToRecord([marriage.spouse]));
+      Object.assign(record, treesToRecord(marriage.children));
+    });
+  });
+  return record;
 }
 
 // create and assign default required value for Person

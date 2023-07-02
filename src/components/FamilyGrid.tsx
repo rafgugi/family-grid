@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch } from 'react';
+import { ChangeEvent } from 'react';
 import { Input, Table } from 'reactstrap';
 import { Person } from '../family.interface';
 import { explodeTrees } from '../family.util';
@@ -8,7 +8,7 @@ interface FamilyGridProps {
   split: boolean;
   editMode: boolean;
   hideCode: boolean;
-  setTreeValue: Dispatch<any>;
+  setTreeValue: (p: Person) => void;
 }
 
 export default function FamilyGrid(props: FamilyGridProps) {
@@ -48,7 +48,7 @@ interface PersonRowProps {
   split?: boolean;
   editMode: boolean;
   hideCode: boolean;
-  setTreeValue?: Dispatch<any>;
+  setTreeValue: (p: Person) => void;
 }
 
 function FamilyRows(props: PersonRowProps) {
@@ -61,9 +61,9 @@ function FamilyRows(props: PersonRowProps) {
 
   return (
     <>
-      {heirs.map((person: Person) =>
-        (<PersonRow {...props} key={person.id} person={person} />)
-      )}
+      {heirs.map((person: Person) => (
+        <PersonRow {...props} key={person.id} person={person} />
+      ))}
     </>
   );
 }
