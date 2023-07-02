@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Person } from '../family.interface';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
+import ModalAddSpouse from './ModalAddSpouse';
 import { enrichTreeData, treesToRecord } from '../family.util';
 
 interface AppProps {
@@ -24,6 +25,13 @@ function App(props: AppProps) {
   const openModalChild = (person: Person) => {
     setModalPerson(person);
     setShowModalChild(true);
+  };
+
+  const [showModalAddSpouse, setShowModalAddSpouse] = useState(false);
+  const toggleModalAddSpouse = () => setShowModalAddSpouse(!showModalAddSpouse);
+  const openModalAddSpouse = (person: Person) => {
+    setModalPerson(person);
+    setShowModalAddSpouse(true);
   };
 
   const record = useMemo(() => treesToRecord(trees), [trees]);
@@ -76,6 +84,19 @@ function App(props: AppProps) {
               setPerson={setModalPerson}
               spouse={modalSpouse}
               setSpouse={setModalSpouse}
+              setTreeValue={setTreeValue}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Button onClick={() => openModalAddSpouse(trees[0])} >
+              Add spouse
+            </Button>
+            <ModalAddSpouse
+              isOpen={showModalAddSpouse}
+              toggle={toggleModalAddSpouse}
+              record={record}
+              person={modalPerson}
+              setPerson={setModalPerson}
               setTreeValue={setTreeValue}
             />
           </FormGroup>
