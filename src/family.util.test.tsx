@@ -1,5 +1,10 @@
 import { Person } from './family.interface';
-import { enrichTreeData, explodeTrees, treesToPersonNode, treesToRecord } from './family.util';
+import {
+  enrichTreeData,
+  explodeTrees,
+  treesToPersonNode,
+  treesToRecord,
+} from './family.util';
 
 const familyData = {
   trees: [{
@@ -22,34 +27,34 @@ const familyData = {
     satyr: {
       name: 'Muhammad Satyr',
       birthdate: '1982-02-13',
-      sex: 'M'
+      sex: 'M',
     },
     surtr: {
       name: 'Amalia Surtrain',
       birthdate: '1987-11-21',
       deathdate: '2021-01-13',
-      sex: 'F'
+      sex: 'F',
     },
     hound: {
       name: 'Muhammad Hound',
       birthdate: '2007-06-09',
-      sex: 'M'
+      sex: 'M',
     },
     alpha: {
       name: 'Siti Alpha',
       birthdate: '2008-06-19',
-      sex: 'F'
+      sex: 'F',
     },
     ryora: {
       name: 'Muhammad Ryora',
       birthdate: '2030-03-12',
-      sex: 'M'
+      sex: 'M',
     },
     nala: {
-      sex: 'F'
-    }
-  }
-}
+      sex: 'F',
+    },
+  },
+};
 
 test('update nested tree data', () => {
   const trees = enrichTreeData(familyData.trees, familyData.people);

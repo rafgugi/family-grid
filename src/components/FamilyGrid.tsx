@@ -61,9 +61,9 @@ function FamilyRows(props: PersonRowProps) {
 
   return (
     <>
-      {heirs.map((person: Person) =>
-        (<PersonRow {...props} key={person.id} person={person} />)
-      )}
+      {heirs.map((person: Person) => (
+        <PersonRow {...props} key={person.id} person={person} />
+      ))}
     </>
   );
 }

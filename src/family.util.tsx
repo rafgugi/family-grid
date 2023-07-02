@@ -42,10 +42,7 @@ function enrichPersonData(person: any, people: Record<string, any>): Person {
 }
 
 // Breakdown the person's family tree into array.
-export function explodeTrees(
-  trees: Person[],
-  depth: number = -1
-): Person[] {
+export function explodeTrees(trees: Person[], depth: number = -1): Person[] {
   const people: Person[] = [];
   if (depth === 0) return people;
 

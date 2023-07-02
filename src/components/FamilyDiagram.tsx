@@ -18,7 +18,7 @@ function FamilyDiagram(props: FamilyDiagramProps) {
    * from it and append to the div element.
    */
   const svg = useMemo(() => {
-    const personNodes = treesToPersonNode(trees, depth || 0)
+    const personNodes = treesToPersonNode(trees, depth || 0);
     const diagram = DiagramUtil.initDiagram();
     DiagramUtil.setupDiagram(diagram, personNodes);
 
@@ -30,7 +30,7 @@ function FamilyDiagram(props: FamilyDiagramProps) {
     const svg = diagram.makeSvg({ scale: 1 });
     tempDiv.remove();
     return svg;
-  }, [trees, depth])
+  }, [trees, depth]);
 
   useEffect(() => {
     if (svg) {

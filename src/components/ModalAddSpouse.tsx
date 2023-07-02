@@ -1,5 +1,14 @@
-import { Button, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { Dispatch, useEffect, useState } from 'react';
+import {
+  Button,
+  FormFeedback,
+  FormGroup,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
+} from 'reactstrap';
+import { Dispatch, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
 
 interface ModalAddSpouseProps {
@@ -18,13 +27,8 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
 
-  // this is for debgging performance only
-  useEffect(() => {
-    console.log("useEffect of ModalAddSpouse");
-  });
-
   const marriedPeople = Object.values(record).filter(
-    (person) => person.marriages.length > 0
+    person => person.marriages.length > 0
   );
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,11 +69,7 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
   };
 
   return (
-    <Modal
-      isOpen={props.isOpen}
-      toggle={props.toggle}
-      unmountOnClose={true}
-    >
+    <Modal isOpen={props.isOpen} toggle={props.toggle} unmountOnClose>
       <ModalHeader toggle={props.toggle}>Add a spouse</ModalHeader>
       <ModalBody>
         <FormGroup>
@@ -81,7 +81,7 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
             onChange={handlePersonChange}
           >
             <option value="">Select a person</option>
-            {marriedPeople.map((person) => (
+            {marriedPeople.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}
               </option>
@@ -90,9 +90,7 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
         </FormGroup>
         {person && (
           <FormGroup>
-            <Label for="input-spouse">
-              Spouse
-            </Label>
+            <Label for="input-spouse">Spouse</Label>
             <Input
               id="input-spouse"
               type="text"
@@ -101,17 +99,10 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
               onChange={handleSpouseChange}
               invalid={spouseError !== ''}
             />
-            {spouseError !== '' && (
-              <FormFeedback>
-                {spouseError}
-              </FormFeedback>
-            )}
+            {spouseError !== '' && <FormFeedback>{spouseError}</FormFeedback>}
           </FormGroup>
         )}
-        <Button
-          disabled={!validForm()}
-          onClick={handleSubmit}
-        >
+        <Button disabled={!validForm()} onClick={handleSubmit}>
           Submit
         </Button>
       </ModalBody>

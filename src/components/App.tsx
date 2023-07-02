@@ -17,8 +17,8 @@ function App(props: AppProps) {
   const [hidePersonCode, setHidePersonCode] = useState(false);
   const [trees, setTreesValue] = useState(props.trees);
 
-  const [modalPerson, setModalPerson] = useState(null as (Person | null));
-  const [modalSpouse, setModalSpouse] = useState(null as (Person | null));
+  const [modalPerson, setModalPerson] = useState(null as Person | null);
+  const [modalSpouse, setModalSpouse] = useState(null as Person | null);
 
   const [showModalChild, setShowModalChild] = useState(false);
   const toggleModalChild = () => setShowModalChild(!showModalChild);
@@ -52,7 +52,9 @@ function App(props: AppProps) {
               id="split-switch"
               onChange={() => setSplitValue(!split)}
             />
-            <Label for="split-switch" check>Split Family</Label>
+            <Label for="split-switch" check>
+              Split Family
+            </Label>
           </FormGroup>
           <FormGroup switch>
             <Input
@@ -61,7 +63,9 @@ function App(props: AppProps) {
               id="hidePersonCode-switch"
               onChange={() => setHidePersonCode(!hidePersonCode)}
             />
-            <Label for="hidePersonCode-switch" check>Hide Code</Label>
+            <Label for="hidePersonCode-switch" check>
+              Hide Code
+            </Label>
           </FormGroup>
           <FormGroup switch>
             <Input
@@ -70,15 +74,17 @@ function App(props: AppProps) {
               id="editMode-switch"
               onChange={() => setEditModeValue(!editMode)}
             />
-            <Label for="editMode-switch" check>Edit Mode</Label>
+            <Label for="editMode-switch" check>
+              Edit Mode
+            </Label>
           </FormGroup>
           <FormGroup>
-            <Button size="sm" onClick={() => openModalChild(trees[0])} >
+            <Button size="sm" onClick={() => openModalChild(trees[0])}>
               Add child
             </Button>
           </FormGroup>
           <FormGroup>
-            <Button size="sm" onClick={() => openModalAddSpouse(trees[0])} >
+            <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
               Add spouse
             </Button>
           </FormGroup>

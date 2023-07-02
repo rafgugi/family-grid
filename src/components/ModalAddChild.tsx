@@ -1,5 +1,14 @@
-import { Button, FormFeedback, FormGroup, Input, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
-import { Dispatch, useEffect, useState } from 'react';
+import {
+  Button,
+  FormFeedback,
+  FormGroup,
+  Input,
+  Label,
+  Modal,
+  ModalBody,
+  ModalHeader,
+} from 'reactstrap';
+import { Dispatch, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
 
 interface ModalAddChildProps {
@@ -23,7 +32,7 @@ function ModalAddChild(props: ModalAddChildProps) {
   const [childError, setChildError] = useState('');
 
   const marriedPeople = Object.values(record).filter(
-    (person) => person.marriages.length > 0
+    person => person.marriages.length > 0
   );
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,8 +66,8 @@ function ModalAddChild(props: ModalAddChildProps) {
   const handleSubmit = () => {
     if (!person || !spouse || !validForm()) return;
 
-    const marriage = person.marriages.find((m: Marriage) =>
-      m.spouse.id === spouse.id
+    const marriage = person.marriages.find(
+      (m: Marriage) => m.spouse.id === spouse.id
     );
     if (!marriage) return;
 
@@ -77,11 +86,7 @@ function ModalAddChild(props: ModalAddChildProps) {
   };
 
   return (
-    <Modal
-      isOpen={props.isOpen}
-      toggle={props.toggle}
-      unmountOnClose={true}
-    >
+    <Modal isOpen={props.isOpen} toggle={props.toggle} unmountOnClose>
       <ModalHeader toggle={props.toggle}>Add a child</ModalHeader>
       <ModalBody>
         <FormGroup>
@@ -93,7 +98,7 @@ function ModalAddChild(props: ModalAddChildProps) {
             onChange={handlePersonChange}
           >
             <option value="">Select a person</option>
-            {marriedPeople.map((person) => (
+            {marriedPeople.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}
               </option>
@@ -110,7 +115,7 @@ function ModalAddChild(props: ModalAddChildProps) {
               onChange={handleSpouseChange}
             >
               <option value="">Select a spouse</option>
-              {person.marriages.map((marriage) => (
+              {person.marriages.map(marriage => (
                 <option key={marriage.spouse.id} value={marriage.spouse.id}>
                   {marriage.spouse.id}
                 </option>
@@ -120,9 +125,7 @@ function ModalAddChild(props: ModalAddChildProps) {
         )}
         {person && spouse && (
           <FormGroup>
-            <Label for="input-child">
-              Child
-            </Label>
+            <Label for="input-child">Child</Label>
             <Input
               id="input-child"
               type="text"
@@ -131,17 +134,10 @@ function ModalAddChild(props: ModalAddChildProps) {
               onChange={handleChildChange}
               invalid={childError !== ''}
             />
-            {childError !== '' && (
-              <FormFeedback>
-                {childError}
-              </FormFeedback>
-            )}
+            {childError !== '' && <FormFeedback>{childError}</FormFeedback>}
           </FormGroup>
         )}
-        <Button
-          disabled={!validForm()}
-          onClick={handleSubmit}
-        >
+        <Button disabled={!validForm()} onClick={handleSubmit}>
           Submit
         </Button>
       </ModalBody>
