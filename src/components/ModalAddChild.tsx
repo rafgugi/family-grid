@@ -6,6 +6,7 @@ import {
   Label,
   Modal,
   ModalBody,
+  ModalFooter,
   ModalHeader,
 } from 'reactstrap';
 import { Dispatch, useState } from 'react';
@@ -141,10 +142,12 @@ function ModalAddChild({
             {childError !== '' && <FormFeedback>{childError}</FormFeedback>}
           </FormGroup>
         )}
+      </ModalBody>
+      <ModalFooter>
         <Button disabled={!validForm()} onClick={handleSubmit}>
           Submit
         </Button>
-      </ModalBody>
+      </ModalFooter>
     </Modal>
   );
 }
