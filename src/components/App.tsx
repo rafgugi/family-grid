@@ -4,6 +4,7 @@ import { Person } from '../family.interface';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
+import ModalDeletePerson from './ModalDeletePerson';
 import { enrichTreeData, treesToRecord } from '../family.util';
 
 interface AppProps {
@@ -32,6 +33,13 @@ function App(props: AppProps) {
   const openModalAddSpouse = (person: Person) => {
     setModalPerson(person);
     setShowModalAddSpouse(true);
+  };
+
+  const [showModalDeletePerson, setShowModalDeletePerson] = useState(false);
+  const toggleModalDeletePerson = () => setShowModalDeletePerson(!showModalDeletePerson);
+  const openModalDeletePerson = () => {
+    setModalPerson(null);
+    setShowModalDeletePerson(true);
   };
 
   const record = useMemo(() => treesToRecord(trees), [trees]);
@@ -88,6 +96,11 @@ function App(props: AppProps) {
               Add spouse
             </Button>
           </FormGroup>
+          <FormGroup>
+            <Button size="sm" color="danger" onClick={() => openModalDeletePerson(trees[0])}>
+              Delete person
+            </Button>
+          </FormGroup>
         </Form>
 
         <Family
@@ -115,6 +128,14 @@ function App(props: AppProps) {
         person={modalPerson}
         setPerson={setModalPerson}
         setTreeValue={setTreeValue}
+      />
+      <ModalDeletePerson
+        isOpen={showModalDeletePerson}
+        toggle={toggleModalDeletePerson}
+        record={record}
+        person={modalPerson}
+        setPerson={setModalPerson}
+        setTreesValue={setTreesValue}
       />
     </div>
   );
