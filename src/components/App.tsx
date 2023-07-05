@@ -4,7 +4,8 @@ import { Person } from '../family.interface';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
-import { enrichTreeData, treesToRecord } from '../family.util';
+import ModalDeletePerson from './ModalDeletePerson';
+import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
 
 interface AppProps {
   trees: Person[];
@@ -34,11 +35,22 @@ function App(props: AppProps) {
     setShowModalAddSpouse(true);
   };
 
+  const [showModalDeletePerson, setShowModalDeletePerson] = useState(false);
+  const toggleModalDeletePerson = () => setShowModalDeletePerson(!showModalDeletePerson);
+  const openModalDeletePerson = () => {
+    setModalPerson(null);
+    setShowModalDeletePerson(true);
+  };
+
   const record = useMemo(() => treesToRecord(trees), [trees]);
 
   const setTreeValue = function (person: Person) {
     const personData: Record<string, Person> = { [person.id]: person };
     setTreesValue(enrichTreeData(trees, personData));
+  };
+
+  const deleteTreePerson = (person: Person) => {
+    setTreesValue(deletePerson(trees, person.id));
   };
 
   return (
@@ -82,10 +94,13 @@ function App(props: AppProps) {
             <Button size="sm" onClick={() => openModalChild(trees[0])}>
               Add child
             </Button>
-          </FormGroup>
-          <FormGroup>
+            {' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
               Add spouse
+            </Button>
+            {' '}
+            <Button size="sm" onClick={() => openModalDeletePerson()} color="danger">
+              Delete person
             </Button>
           </FormGroup>
         </Form>
@@ -115,6 +130,14 @@ function App(props: AppProps) {
         person={modalPerson}
         setPerson={setModalPerson}
         setTreeValue={setTreeValue}
+      />
+      <ModalDeletePerson
+        isOpen={showModalDeletePerson}
+        toggle={toggleModalDeletePerson}
+        record={record}
+        person={modalPerson}
+        setPerson={setModalPerson}
+        deleteTreePerson={deleteTreePerson}
       />
     </div>
   );

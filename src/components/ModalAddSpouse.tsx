@@ -6,6 +6,7 @@ import {
   Label,
   Modal,
   ModalBody,
+  ModalFooter,
   ModalHeader,
 } from 'reactstrap';
 import { Dispatch, useState } from 'react';
@@ -31,9 +32,7 @@ function ModalAddSpouse({
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
 
-  const marriedPeople = Object.values(record).filter(
-    person => person.marriages.length > 0
-  );
+  const people = Object.values(record);
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const person = record[event.target.value];
@@ -85,7 +84,7 @@ function ModalAddSpouse({
             onChange={handlePersonChange}
           >
             <option value="">Select a person</option>
-            {marriedPeople.map(person => (
+            {people.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}
               </option>
@@ -106,10 +105,12 @@ function ModalAddSpouse({
             {spouseError !== '' && <FormFeedback>{spouseError}</FormFeedback>}
           </FormGroup>
         )}
+      </ModalBody>
+      <ModalFooter>
         <Button disabled={!validForm()} onClick={handleSubmit}>
           Submit
         </Button>
-      </ModalBody>
+      </ModalFooter>
     </Modal>
   );
 }

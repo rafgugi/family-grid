@@ -1,5 +1,6 @@
 import { Person } from './family.interface';
 import {
+  deletePerson,
   enrichTreeData,
   explodeTrees,
   treesToPersonNode,
@@ -180,4 +181,74 @@ test('convert trees to record', () => {
   });
   // random sampling for satyr
   expect(record['satyr'].marriages[0].spouse).toEqual(record['surtr']);
+});
+
+test('delete person as root', () => {
+  const trees = enrichTreeData(familyData.trees, []);
+
+  expect(deletePerson(trees, 'satyr')).toEqual([]);
+});
+
+test('delete person as children', () => {
+  const trees = enrichTreeData(familyData.trees, []);
+
+  expect(deletePerson(trees, 'hound')).toEqual([{
+    id: 'satyr',
+    code: '1',
+    marriages: [{
+      spouse: { id: 'surtr', code: '1M1', marriages: [] },
+      children: []
+    }, {
+      spouse: { id: 'nala', code: '1M2', marriages: [] },
+      children: [{ id: 'mufasa', code: '1.201', marriages: [] }]
+    }]
+  }]);
+
+  expect(deletePerson(trees, 'ryora')).toEqual([{
+    id: 'satyr',
+    code: '1',
+    marriages: [{
+      spouse: { id: 'surtr', code: '1M1', marriages: [] },
+      children: [{
+        id: 'hound',
+        code: '1.101',
+        marriages: [{
+          spouse: { id: 'alpha', code: '1.101M', marriages: [] },
+          children: []
+        }]
+      }]
+    }, {
+      spouse: { id: 'nala', code: '1M2', marriages: [] },
+      children: [{ id: 'mufasa', code: '1.201', marriages: [] }]
+    }]
+  }]);
+});
+
+test('delete person as spouse', () => {
+  const trees = enrichTreeData(familyData.trees, []);
+
+  expect(deletePerson(trees, 'surtr')).toEqual([{
+    id: 'satyr',
+    code: '1',
+    marriages: [{
+      spouse: { id: 'nala', code: '1M2', marriages: [] },
+      children: [{ id: 'mufasa', code: '1.201', marriages: [] }]
+    }]
+  }]);
+
+  expect(deletePerson(trees, 'nala')).toEqual([{
+    id: 'satyr',
+    code: '1',
+    marriages: [{
+      spouse: { id: 'surtr', code: '1M1', marriages: [] },
+      children: [{
+        id: 'hound',
+        code: '1.101',
+        marriages: [{
+          spouse: { id: 'alpha', code: '1.101M', marriages: [] },
+          children: [{ id: 'ryora', code: '1.101.01', marriages: [] }]
+        }]
+      }]
+    }]
+  }]);
 });
