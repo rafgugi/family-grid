@@ -75,12 +75,12 @@ export function deletePerson(trees: Person[], id: string): Person[] {
   trees.forEach(person => {
     if (person.id === id) return;
 
-    const updatedPerson: Person = {...person, marriages: []};
+    const updatedPerson: Person = { ...person, marriages: [] };
     person.marriages.forEach(marriage => {
       if (marriage.spouse.id === id) return;
 
       const children = deletePerson(marriage.children, id);
-      const updatedMarriage: Marriage = {...marriage, children: children};
+      const updatedMarriage: Marriage = { ...marriage, children: children };
       updatedPerson.marriages.push(updatedMarriage);
     });
     updatedTree.push(updatedPerson);

@@ -54,11 +54,17 @@ class GenogramLayout extends go.LayeredDigraphLayout {
           if (horiz) {
             vertex.height = spouseAheight + this.spouseSpacing + spouseBheight;
             vertex.width = Math.max(spouseAwidth, spouseBwidth);
-            vertex.focus = new go.Point(vertex.width / 2, spouseAheight + this.spouseSpacing / 2);
+            vertex.focus = new go.Point(
+              vertex.width / 2,
+              spouseAheight + this.spouseSpacing / 2
+            );
           } else {
             vertex.width = spouseAwidth + this.spouseSpacing + spouseBwidth;
             vertex.height = Math.max(spouseAheight, spouseBheight);
-            vertex.focus = new go.Point(spouseAwidth + this.spouseSpacing / 2, vertex.height / 2);
+            vertex.focus = new go.Point(
+              spouseAwidth + this.spouseSpacing / 2,
+              vertex.height / 2
+            );
           }
         }
       } else {
@@ -87,9 +93,11 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (link.category === '' && link.data) {
         const parent = net.findVertex(link.fromNode); // should be a label node
         const child = net.findVertex(link.toNode);
-        if (child !== null) { // an unmarried child
+        if (child !== null) {
+          // an unmarried child
           net.linkVertexes(parent, child, link);
-        } else { // a married child
+        } else {
+          // a married child
           link.toNode?.linksConnected.each(l => {
             // if it has no label node, it's a parent-child link
             if (l.category !== 'Marriage' || !l.data) return;
@@ -139,7 +147,8 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     if (coll.has(node)) return;
     coll.add(node);
     node.linksConnected.each((l: any) => {
-      if (l.category === 'Marriage') { // if it's a marriage link, continue with both spouses
+      if (l.category === 'Marriage') {
+        // if it's a marriage link, continue with both spouses
         this.extendCohort(coll, l.fromNode);
         this.extendCohort(coll, l.toNode);
       }
@@ -234,23 +243,43 @@ class GenogramLayout extends go.LayeredDigraphLayout {
         }
         spouseA?.moveTo(v.x, v.y);
         if (horiz) {
-          spouseB?.moveTo(v.x, v.y + Number(spouseA?.actualBounds.height) + this.spouseSpacing);
+          spouseB?.moveTo(
+            v.x,
+            v.y + Number(spouseA?.actualBounds.height) + this.spouseSpacing
+          );
         } else {
-          spouseB?.moveTo(v.x + Number(spouseA?.actualBounds.width) + this.spouseSpacing, v.y);
+          spouseB?.moveTo(
+            v.x + Number(spouseA?.actualBounds.width) + this.spouseSpacing,
+            v.y
+          );
         }
       } else if (spouseA?.opacity === 0) {
         const pos = horiz
-          ? new go.Point(v.x, v.centerY - Number(spouseB?.actualBounds.height) / 2)
-          : new go.Point(v.centerX - Number(spouseB?.actualBounds.width) / 2, v.y);
+          ? new go.Point(
+              v.x,
+              v.centerY - Number(spouseB?.actualBounds.height) / 2
+            )
+          : new go.Point(
+              v.centerX - Number(spouseB?.actualBounds.width) / 2,
+              v.y
+            );
         spouseB?.move(pos);
-        if (horiz) pos.y++; else pos.x++;
+        if (horiz) pos.y++;
+        else pos.x++;
         spouseA?.move(pos);
       } else if (spouseB?.opacity === 0) {
         const pos = horiz
-          ? new go.Point(v.x, v.centerY - Number(spouseA?.actualBounds.height) / 2)
-          : new go.Point(v.centerX - Number(spouseA?.actualBounds.width) / 2, v.y);
+          ? new go.Point(
+              v.x,
+              v.centerY - Number(spouseA?.actualBounds.height) / 2
+            )
+          : new go.Point(
+              v.centerX - Number(spouseA?.actualBounds.width) / 2,
+              v.y
+            );
         spouseA?.move(pos);
-        if (horiz) pos.y++; else pos.x++;
+        if (horiz) pos.y++;
+        else pos.x++;
         spouseB?.move(pos);
       }
       lablink?.ensureBounds();

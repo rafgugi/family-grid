@@ -36,7 +36,8 @@ function App(props: AppProps) {
   };
 
   const [showModalDeletePerson, setShowModalDeletePerson] = useState(false);
-  const toggleModalDeletePerson = () => setShowModalDeletePerson(!showModalDeletePerson);
+  const toggleModalDeletePerson = () =>
+    setShowModalDeletePerson(!showModalDeletePerson);
   const openModalDeletePerson = () => {
     setModalPerson(null);
     setShowModalDeletePerson(true);
@@ -93,13 +94,15 @@ function App(props: AppProps) {
           <FormGroup>
             <Button size="sm" onClick={() => openModalChild(trees[0])}>
               Add child
-            </Button>
-            {' '}
+            </Button>{' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
               Add spouse
-            </Button>
-            {' '}
-            <Button size="sm" onClick={() => openModalDeletePerson()} color="danger">
+            </Button>{' '}
+            <Button
+              size="sm"
+              onClick={() => openModalDeletePerson()}
+              color="danger"
+            >
               Delete person
             </Button>
           </FormGroup>
