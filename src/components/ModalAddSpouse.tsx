@@ -20,10 +20,14 @@ interface ModalAddSpouseProps {
   setTreeValue: (p: Person) => void;
 }
 
-function ModalAddSpouse(props: ModalAddSpouseProps) {
-  const person = props.person;
-  const setPerson = props.setPerson;
-  const record = props.record;
+function ModalAddSpouse({
+  person,
+  setPerson,
+  isOpen,
+  toggle,
+  record,
+  setTreeValue,
+}: ModalAddSpouseProps) {
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
 
@@ -62,15 +66,15 @@ function ModalAddSpouse(props: ModalAddSpouseProps) {
       children: [],
     });
 
-    props.setTreeValue(person);
+    setTreeValue(person);
     setPerson(null);
     setSpouse('');
-    props.toggle();
+    toggle();
   };
 
   return (
-    <Modal isOpen={props.isOpen} toggle={props.toggle} unmountOnClose>
-      <ModalHeader toggle={props.toggle}>Add a spouse</ModalHeader>
+    <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
+      <ModalHeader toggle={toggle}>Add a spouse</ModalHeader>
       <ModalBody>
         <FormGroup>
           <Label for="select-person">Person</Label>
