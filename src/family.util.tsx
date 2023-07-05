@@ -69,6 +69,26 @@ export function treesToRecord(trees: Person[]): Record<string, Person> {
   return record;
 }
 
+// Delete person completely by id from the trees
+export function deletePerson(trees: Person[], id: string): Person[] {
+  const updatedTree: Person[] = [];
+  trees.forEach(person => {
+    if (person.id === id) return;
+
+    const updatedPerson: Person = {...person, marriages: []};
+    person.marriages.forEach(marriage => {
+      if (marriage.spouse.id === id) return;
+
+      const children = deletePerson(marriage.children, id);
+      const updatedMarriage: Marriage = {...marriage, children: children};
+      updatedPerson.marriages.push(updatedMarriage);
+    });
+    updatedTree.push(updatedPerson);
+  });
+
+  return updatedTree;
+}
+
 // create and assign default required value for Person
 function createPerson(data: any): Person {
   return {

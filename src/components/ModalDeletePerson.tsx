@@ -17,7 +17,7 @@ interface ModalDeletePersonProps {
   isOpen: boolean;
   toggle: () => void;
   record: Record<string, Person>;
-  setTreesValue: (trees: Person[]) => void;
+  deleteTreePerson: (person: Person) => void;
 }
 
 function ModalDeletePerson({
@@ -26,6 +26,7 @@ function ModalDeletePerson({
   isOpen,
   toggle,
   record,
+  deleteTreePerson,
 }: ModalDeletePersonProps) {
   const people = Object.values(record);
 
@@ -36,8 +37,8 @@ function ModalDeletePerson({
 
   const handleSubmit = () => {
     if (!person) return;
-    // TODO: remove the person node
 
+    deleteTreePerson(person);
     setPerson(null);
     toggle();
   };

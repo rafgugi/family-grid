@@ -5,7 +5,7 @@ import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
 import ModalDeletePerson from './ModalDeletePerson';
-import { enrichTreeData, treesToRecord } from '../family.util';
+import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
 
 interface AppProps {
   trees: Person[];
@@ -49,6 +49,10 @@ function App(props: AppProps) {
     setTreesValue(enrichTreeData(trees, personData));
   };
 
+  const deleteTreePerson = (person: Person) => {
+    setTreesValue(deletePerson(trees, person.id));
+  };
+
   return (
     <div className="App">
       <Container fluid="sm">
@@ -90,14 +94,12 @@ function App(props: AppProps) {
             <Button size="sm" onClick={() => openModalChild(trees[0])}>
               Add child
             </Button>
-          </FormGroup>
-          <FormGroup>
+            {' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
               Add spouse
             </Button>
-          </FormGroup>
-          <FormGroup>
-            <Button size="sm" color="danger" onClick={() => openModalDeletePerson(trees[0])}>
+            {' '}
+            <Button size="sm" onClick={() => openModalDeletePerson()} color="danger">
               Delete person
             </Button>
           </FormGroup>
@@ -135,7 +137,7 @@ function App(props: AppProps) {
         record={record}
         person={modalPerson}
         setPerson={setModalPerson}
-        setTreesValue={setTreesValue}
+        deleteTreePerson={deleteTreePerson}
       />
     </div>
   );
