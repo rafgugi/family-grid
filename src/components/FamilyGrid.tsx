@@ -1,22 +1,21 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useContext } from 'react';
 import { Input, Table } from 'reactstrap';
 import { Person } from '../family.interface';
 import { explodeTrees } from '../family.util';
+import AppContext from './AppContext';
 
 interface FamilyGridProps {
   trees: Person[];
-  split: boolean;
-  editMode: boolean;
-  hideCode: boolean;
-  setTreeValue: (p: Person) => void;
 }
 
-export default function FamilyGrid(props: FamilyGridProps) {
+export default function FamilyGrid({ trees }: FamilyGridProps) {
+  const { hidePersonCode } = useContext(AppContext);
+
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
         <tr>
-          <th style={{ width: '7em' }} hidden={props.hideCode}>
+          <th style={{ width: '7em' }} hidden={hidePersonCode}>
             Code
           </th>
           <th style={{ width: '15.5em' }}>Name</th>
@@ -28,15 +27,8 @@ export default function FamilyGrid(props: FamilyGridProps) {
         </tr>
       </thead>
       <tbody>
-        {props.trees.map(person => (
-          <FamilyRows
-            key={person.id}
-            person={person}
-            split={props.split}
-            editMode={props.editMode}
-            hideCode={props.hideCode}
-            setTreeValue={props.setTreeValue}
-          />
+        {trees.map(person => (
+          <FamilyRows key={person.id} person={person} />
         ))}
       </tbody>
     </Table>
@@ -45,18 +37,15 @@ export default function FamilyGrid(props: FamilyGridProps) {
 
 interface PersonRowProps {
   person: Person;
-  split?: boolean;
-  editMode: boolean;
-  hideCode: boolean;
-  setTreeValue: (p: Person) => void;
 }
 
-function FamilyRows(props: PersonRowProps) {
+function FamilyRows({ person, ...props }: PersonRowProps) {
+  const { split } = useContext(AppContext);
   var heirs: Person[];
-  if (props.split) {
-    heirs = explodeTrees([props.person], 2);
+  if (split) {
+    heirs = explodeTrees([person], 2);
   } else {
-    heirs = explodeTrees([props.person]);
+    heirs = explodeTrees([person]);
   }
 
   return (
@@ -68,26 +57,24 @@ function FamilyRows(props: PersonRowProps) {
   );
 }
 
-function PersonRow(props: PersonRowProps) {
-  const person = props.person;
+function PersonRow({ person }: PersonRowProps) {
+  const { editMode, hidePersonCode, setTreeValue } = useContext(AppContext);
   const name = person.name || person.id;
 
   const updatePerson = function (e: ChangeEvent<any>, key: string) {
-    if (props.setTreeValue) {
-      props.setTreeValue({ ...person, [key]: e.target.value });
-    }
+    setTreeValue({ ...person, [key]: e.target.value });
   };
 
   let inputClass = 'd-none';
   let spanClass = '';
-  if (props.editMode) {
+  if (editMode) {
     inputClass = 'd-print-none';
     spanClass = 'd-none d-print-block';
   }
 
   return (
     <tr>
-      <td hidden={props.hideCode}>
+      <td hidden={hidePersonCode}>
         <span>{person.code}</span>
       </td>
       <td>

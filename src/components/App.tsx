@@ -1,6 +1,7 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMemo, useState } from 'react';
 import { Person } from '../family.interface';
+import AppContext from './AppContext';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
@@ -55,7 +56,9 @@ function App(props: AppProps) {
   };
 
   return (
-    <div className="App">
+    <AppContext.Provider
+      value={{ split, editMode, hidePersonCode, setTreeValue }}
+    >
       <Container className="d-print-none" fluid="sm">
         <Form>
           <FormGroup switch>
@@ -110,13 +113,7 @@ function App(props: AppProps) {
       </Container>
 
       <Container className="pb-3" fluid="sm">
-        <Family
-          trees={trees}
-          split={split}
-          editMode={editMode}
-          hideCode={hidePersonCode}
-          setTreeValue={setTreeValue}
-        />
+        <Family trees={trees} />
       </Container>
 
       <ModalAddChild
@@ -145,7 +142,7 @@ function App(props: AppProps) {
         setPerson={setModalPerson}
         deleteTreePerson={deleteTreePerson}
       />
-    </div>
+    </AppContext.Provider>
   );
 }
 

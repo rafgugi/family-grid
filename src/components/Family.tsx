@@ -1,23 +1,21 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { Person } from '../family.interface';
+import AppContext from './AppContext';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
 import { explodeTrees } from '../family.util';
 
 interface FamilyProps {
   trees: Person[];
-  split: boolean;
-  editMode: boolean;
-  hideCode: boolean;
-  setTreeValue: (p: Person) => void;
 }
 
 export default function Family(props: FamilyProps) {
-  return props.split ? <SplitFamilies {...props} /> : <BigFamily {...props} />;
+  const { split } = useContext(AppContext);
+  return split ? <SplitFamilies {...props} /> : <BigFamily {...props} />;
 }
 
-function SplitFamilies(props: FamilyProps) {
-  const people = explodeTrees(props.trees).filter(
+function SplitFamilies({ trees, ...props }: FamilyProps) {
+  const people = explodeTrees(trees).filter(
     person => person.marriages.length !== 0
   );
 
@@ -35,13 +33,13 @@ function SplitFamilies(props: FamilyProps) {
   );
 }
 
-function BigFamily(props: FamilyProps) {
+function BigFamily({ trees, ...props }: FamilyProps) {
   return (
     <Fragment>
       <hr className="d-print-none" />
       <h3 className="text-center">Family Grid</h3>
-      <FamilyDiagram trees={props.trees} />
-      <FamilyGrid {...props} />
+      <FamilyDiagram trees={trees} />
+      <FamilyGrid {...props} trees={trees} />
     </Fragment>
   );
 }
