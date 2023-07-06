@@ -44,7 +44,7 @@ function App(props: AppProps) {
     setShowModalDeletePerson(true);
   };
 
-  const record = useMemo(() => treesToRecord(trees), [trees]);
+  const treeMap = useMemo(() => treesToRecord(trees), [trees]);
 
   const setTreeValue = function (person: Person) {
     const personData: Record<string, Person> = { [person.id]: person };
@@ -57,7 +57,14 @@ function App(props: AppProps) {
 
   return (
     <AppContext.Provider
-      value={{ split, editMode, hidePersonCode, setTreeValue }}
+      value={{
+        split,
+        editMode,
+        hidePersonCode,
+        setTreeValue,
+        deleteTreePerson,
+        treeMap,
+      }}
     >
       <Container className="d-print-none" fluid="sm">
         <Form>
@@ -119,28 +126,22 @@ function App(props: AppProps) {
       <ModalAddChild
         isOpen={showModalChild}
         toggle={toggleModalChild}
-        record={record}
         person={modalPerson}
         setPerson={setModalPerson}
         spouse={modalSpouse}
         setSpouse={setModalSpouse}
-        setTreeValue={setTreeValue}
       />
       <ModalAddSpouse
         isOpen={showModalAddSpouse}
         toggle={toggleModalAddSpouse}
-        record={record}
         person={modalPerson}
         setPerson={setModalPerson}
-        setTreeValue={setTreeValue}
       />
       <ModalDeletePerson
         isOpen={showModalDeletePerson}
         toggle={toggleModalDeletePerson}
-        record={record}
         person={modalPerson}
         setPerson={setModalPerson}
-        deleteTreePerson={deleteTreePerson}
       />
     </AppContext.Provider>
   );

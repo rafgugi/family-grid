@@ -6,6 +6,8 @@ interface AppContextValue {
   editMode: boolean;
   hidePersonCode: boolean;
   setTreeValue: (p: Person) => void;
+  deleteTreePerson: (p: Person) => void;
+  treeMap: Record<string, Person>;
 }
 
 const AppContext = createContext<AppContextValue>({
@@ -13,6 +15,8 @@ const AppContext = createContext<AppContextValue>({
   editMode: false,
   hidePersonCode: false,
   setTreeValue: () => {},
+  deleteTreePerson: () => {},
+  treeMap: {},
 });
 
 export default AppContext;

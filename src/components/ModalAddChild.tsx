@@ -9,8 +9,9 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useContext, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
+import AppContext from './AppContext';
 
 interface ModalAddChildProps {
   person: Person | null;
@@ -19,8 +20,6 @@ interface ModalAddChildProps {
   setSpouse: Dispatch<any>;
   isOpen: boolean;
   toggle: () => void;
-  record: Record<string, Person>;
-  setTreeValue: (p: Person) => void;
 }
 
 function ModalAddChild({
@@ -30,18 +29,17 @@ function ModalAddChild({
   setSpouse,
   isOpen,
   toggle,
-  record,
-  setTreeValue,
 }: ModalAddChildProps) {
+  const { treeMap, setTreeValue } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
 
-  const marriedPeople = Object.values(record).filter(
+  const marriedPeople = Object.values(treeMap).filter(
     person => person.marriages.length > 0
   );
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const person = record[event.target.value];
+    const person = treeMap[event.target.value];
     setPerson(person || null);
     setSpouse(null);
     if (person.marriages.length === 1) {
@@ -51,7 +49,7 @@ function ModalAddChild({
   };
 
   const handleSpouseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const spouse = record[event.target.value];
+    const spouse = treeMap[event.target.value];
     setSpouse(spouse || null);
     setChild('');
   };
@@ -61,7 +59,7 @@ function ModalAddChild({
     setChild(value);
 
     setChildError('');
-    if (Object.keys(record).includes(value)) {
+    if (Object.keys(treeMap).includes(value)) {
       setChildError(value + ' is already taken');
     }
   };
