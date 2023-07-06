@@ -56,8 +56,8 @@ function App(props: AppProps) {
 
   return (
     <div className="App">
-      <Container fluid="sm">
-        <Form className="d-print-none">
+      <Container className="d-print-none" fluid="sm">
+        <Form>
           <FormGroup switch>
             <Input
               type="switch"
@@ -107,7 +107,9 @@ function App(props: AppProps) {
             </Button>
           </FormGroup>
         </Form>
+      </Container>
 
+      <Container className="pb-3" fluid="sm">
         <Family
           trees={trees}
           split={split}
@@ -116,6 +118,7 @@ function App(props: AppProps) {
           setTreeValue={setTreeValue}
         />
       </Container>
+
       <ModalAddChild
         isOpen={showModalChild}
         toggle={toggleModalChild}
