@@ -8,16 +8,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { Dispatch } from 'react';
+import { Dispatch, useContext } from 'react';
 import { Person } from '../family.interface';
+import AppContext from './AppContext';
 
 interface ModalDeletePersonProps {
   person: Person | null;
   setPerson: Dispatch<any>;
   isOpen: boolean;
   toggle: () => void;
-  record: Record<string, Person>;
-  deleteTreePerson: (person: Person) => void;
 }
 
 function ModalDeletePerson({
@@ -25,13 +24,12 @@ function ModalDeletePerson({
   setPerson,
   isOpen,
   toggle,
-  record,
-  deleteTreePerson,
 }: ModalDeletePersonProps) {
-  const people = Object.values(record);
+  const { treeMap, deleteTreePerson } = useContext(AppContext);
+  const people = Object.values(treeMap);
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const person = record[event.target.value];
+    const person = treeMap[event.target.value];
     setPerson(person || null);
   };
 

@@ -9,16 +9,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useContext, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
+import AppContext from './AppContext';
 
 interface ModalAddSpouseProps {
   person: Person | null;
   setPerson: Dispatch<any>;
   isOpen: boolean;
   toggle: () => void;
-  record: Record<string, Person>;
-  setTreeValue: (p: Person) => void;
 }
 
 function ModalAddSpouse({
@@ -26,16 +25,15 @@ function ModalAddSpouse({
   setPerson,
   isOpen,
   toggle,
-  record,
-  setTreeValue,
 }: ModalAddSpouseProps) {
+  const { treeMap, setTreeValue } = useContext(AppContext);
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
 
-  const people = Object.values(record);
+  const people = Object.values(treeMap);
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const person = record[event.target.value];
+    const person = treeMap[event.target.value];
     setPerson(person || null);
     setSpouse('');
   };
@@ -45,7 +43,7 @@ function ModalAddSpouse({
     setSpouse(event.target.value);
 
     setSpouseError('');
-    if (Object.keys(record).includes(value)) {
+    if (Object.keys(treeMap).includes(value)) {
       setSpouseError(value + ' is already taken');
     }
   };

@@ -1,6 +1,7 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMemo, useState } from 'react';
 import { Person } from '../family.interface';
+import AppContext from './AppContext';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
@@ -43,7 +44,7 @@ function App(props: AppProps) {
     setShowModalDeletePerson(true);
   };
 
-  const record = useMemo(() => treesToRecord(trees), [trees]);
+  const treeMap = useMemo(() => treesToRecord(trees), [trees]);
 
   const setTreeValue = function (person: Person) {
     const personData: Record<string, Person> = { [person.id]: person };
@@ -55,7 +56,16 @@ function App(props: AppProps) {
   };
 
   return (
-    <div className="App">
+    <AppContext.Provider
+      value={{
+        split,
+        editMode,
+        hidePersonCode,
+        setTreeValue,
+        deleteTreePerson,
+        treeMap,
+      }}
+    >
       <Container className="d-print-none" fluid="sm">
         <Form>
           <FormGroup switch>
@@ -110,42 +120,30 @@ function App(props: AppProps) {
       </Container>
 
       <Container className="pb-3" fluid="sm">
-        <Family
-          trees={trees}
-          split={split}
-          editMode={editMode}
-          hideCode={hidePersonCode}
-          setTreeValue={setTreeValue}
-        />
+        <Family trees={trees} />
       </Container>
 
       <ModalAddChild
         isOpen={showModalChild}
         toggle={toggleModalChild}
-        record={record}
         person={modalPerson}
         setPerson={setModalPerson}
         spouse={modalSpouse}
         setSpouse={setModalSpouse}
-        setTreeValue={setTreeValue}
       />
       <ModalAddSpouse
         isOpen={showModalAddSpouse}
         toggle={toggleModalAddSpouse}
-        record={record}
         person={modalPerson}
         setPerson={setModalPerson}
-        setTreeValue={setTreeValue}
       />
       <ModalDeletePerson
         isOpen={showModalDeletePerson}
         toggle={toggleModalDeletePerson}
-        record={record}
         person={modalPerson}
         setPerson={setModalPerson}
-        deleteTreePerson={deleteTreePerson}
       />
-    </div>
+    </AppContext.Provider>
   );
 }
 
