@@ -57,6 +57,31 @@ const familyData = {
   },
 };
 
+const doubleFamilyData = {
+  trees: [{
+    id: 'satyr',
+    marriages: [{
+      spouse: { id: 'surtr' },
+      children: [{
+        id: 'hound',
+        marriages: [{
+          spouse: { id: 'alpha' },
+          children: [{ id: 'ryora' }]
+        }]
+      }]
+    }, {
+      spouse: { id: 'nala' },
+      children: [{ id: 'mufasa' }]
+    }]
+  }, {
+    id: 'angela',
+    marriages: [{
+      spouse: { id: 'saber' },
+      children: [{ id: 'alpha' }]
+    }]
+  }]
+};
+
 describe('enrichTreeData', () => {
   const trees = enrichTreeData(familyData.trees, familyData.people);
 
@@ -157,6 +182,24 @@ describe('treesToPersonNode', () => {
       { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
       { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
     ]);
+  });
+
+  describe('with double trees', () => {
+    test('without depth', () => {
+      const trees = enrichTreeData(doubleFamilyData.trees, familyData.people);
+      const nodes = treesToPersonNode(trees);
+      expect(nodes).toEqual([
+        { key: 'satyr', name: 'satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
+        { key: 'surtr', name: 'surtr', s: 'F', attributes: ['S'], spouses: [] },
+        { key: 'hound', name: 'hound', s: 'M', attributes: [], spouses: ['alpha'], father: 'satyr', mother: 'surtr' },
+        { key: 'alpha', name: 'alpha', s: 'F', attributes: [], spouses: [], father: 'saber', mother: 'angela' },
+        { key: 'ryora', name: 'ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
+        { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
+        { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
+        { key: 'angela', name: 'angela', s: 'M', attributes: [], spouses: ['saber',] },
+        { key: 'saber', name: 'saber', s: 'M', attributes: [], spouses: [] },
+      ]);
+    });
   });
 });
 
