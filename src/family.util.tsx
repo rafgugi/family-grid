@@ -5,11 +5,27 @@ export function enrichTreeData(
   trees: any[],
   people: Record<string, any>
 ): Person[] {
-  return trees.map(function (person: Person, i: number) {
+  const enrichedTrees = trees.map(function (person: Person, i: number) {
     person = { ...person };
     person.code ||= String(i + 1);
     return enrichPersonData(person, people);
   });
+
+  // fill the remaining people that not in trees
+  const peopleKeys = new Set(Object.keys(people));
+  const treesKeys = new Set(Object.keys(treesToRecord(enrichedTrees)));
+  peopleKeys.forEach((id: string) => {
+    if (!treesKeys.has(id)) {
+      enrichedTrees.push({
+        id,
+        code: '',
+        marriages: [],
+        ...people[id],
+      } as Person);
+    }
+  });
+
+  return enrichedTrees;
 }
 
 // Enrich the person from the people. Try to make person unchanged.

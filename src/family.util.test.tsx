@@ -156,6 +156,24 @@ describe('enrichTreeData', () => {
     expect(person.id).toEqual('mufasa');
     expect(person.code).toEqual('1.201');
   });
+
+  test('empty data returns empty array', () => {
+    expect(enrichTreeData([], {})).toEqual([]);
+  });
+
+  test('remaining people should become trees', () => {
+    const satyr = {
+      name: 'Muhammad Satyr',
+      birthdate: '1982-02-13',
+      sex: 'M',
+    };
+    expect(enrichTreeData([], { satyr })).toEqual([{
+      id: 'satyr',
+      code: '',
+      marriages: [],
+      ...satyr,
+    }]);
+  });
 });
 
 describe('treesToPersonNode', () => {
@@ -219,7 +237,6 @@ describe('explodeTrees', () => {
     expect(people.map(person => person.id)).toEqual(expectedPeople);
   });
 });
-
 
 describe('treesToRecord', () => {
   const trees = enrichTreeData(familyData.trees, familyData.people);
