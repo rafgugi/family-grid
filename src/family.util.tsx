@@ -16,12 +16,15 @@ export function enrichTreeData(
   const treesKeys = new Set(Object.keys(treesToRecord(enrichedTrees)));
   peopleKeys.forEach((id: string) => {
     if (!treesKeys.has(id)) {
+      const person = people[id];
+      person.code = !!person.code
+        ? person.code
+        : '.' + (enrichedTrees.length + 1);
       enrichedTrees.push({
         id,
-        code: '',
         marriages: [],
-        ...people[id],
-      } as Person);
+        ...person,
+      });
     }
   });
 

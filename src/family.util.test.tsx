@@ -161,18 +161,41 @@ describe('enrichTreeData', () => {
     expect(enrichTreeData([], {})).toEqual([]);
   });
 
-  test('remaining people should become trees', () => {
+  describe('remaining people should become trees', () => {
     const satyr = {
       name: 'Muhammad Satyr',
       birthdate: '1982-02-13',
       sex: 'M',
     };
-    expect(enrichTreeData([], { satyr })).toEqual([{
-      id: 'satyr',
-      code: '',
-      marriages: [],
-      ...satyr,
-    }]);
+
+    test('with undefined code', () => {
+      expect(enrichTreeData([], { satyr: satyr })).toEqual([{
+        ...satyr,
+        id: 'satyr',
+        code: '.1',
+        marriages: [],
+      }]);
+    });
+
+    test('with person own code', () => {
+      const newSatyr = { ...satyr, code: 'code' };
+      expect(enrichTreeData([], { satyr: newSatyr })).toEqual([{
+        ...newSatyr,
+        id: 'satyr',
+        code: 'code',
+        marriages: [],
+      }]);
+    });
+
+    test('with person empty code', () => {
+      const newSatyr = { ...satyr, code: '' };
+      expect(enrichTreeData([], { satyr: newSatyr })).toEqual([{
+        ...newSatyr,
+        id: 'satyr',
+        code: '.1',
+        marriages: [],
+      }]);
+    });
   });
 });
 
