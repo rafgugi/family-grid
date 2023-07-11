@@ -75,8 +75,9 @@ const doubleFamilyData = {
     }]
   }, {
     id: 'angela',
+    sex: 'F',
     marriages: [{
-      spouse: { id: 'saber' },
+      spouse: { id: 'saber', sex: 'M' },
       children: [{ id: 'alpha' }]
     }]
   }]
@@ -196,7 +197,7 @@ describe('treesToPersonNode', () => {
         { key: 'ryora', name: 'ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
         { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
         { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
-        { key: 'angela', name: 'angela', s: 'M', attributes: [], spouses: ['saber',] },
+        { key: 'angela', name: 'angela', s: 'F', attributes: [], spouses: ['saber'] },
         { key: 'saber', name: 'saber', s: 'M', attributes: [], spouses: [] },
       ]);
     });

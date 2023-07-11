@@ -102,33 +102,38 @@ export function treesToPersonNode(
   trees: Person[],
   depth: number = 0
 ): PersonNode[] {
-  const nodes: PersonNode[] = [];
-  trees.forEach(person =>
-    nodes.push(...personToPersonNode(person, [], 1, depth))
-  );
+  const nodes: Record<string, PersonNode> = {};
+  trees.forEach(person => personToPersonNode(nodes, person, [], 1, depth));
 
-  return nodes;
+  return Object.values(nodes);
 }
 
 function personToPersonNode(
+  nodes: Record<string, PersonNode>,
   person: Person,
   parents: Person[],
   level: number = 1,
   depth: number = 0
-): PersonNode[] {
-  const nodes: PersonNode[] = [];
-  const node: PersonNode = {
-    key: person.id,
-    name: person.id,
-    s: person.sex ?? 'M',
-    attributes: [],
-    spouses: [],
-  };
-  nodes.push(node);
+) {
+  if (!nodes[person.id]) {
+    nodes[person.id] = {
+      key: person.id,
+      name: person.id,
+      s: person.sex ?? 'M',
+      attributes: [],
+      spouses: [],
+    };
+  }
+  const node: PersonNode = nodes[person.id];
 
   if (parents.length === 2) {
-    node.father = parents[0].id;
-    node.mother = parents[1].id;
+    if (parents[0].sex === 'F') {
+      node.mother = parents[0].id;
+      node.father = parents[1].id;
+    } else {
+      node.father = parents[0].id;
+      node.mother = parents[1].id;
+    }
   }
 
   if (person.deathdate) {
@@ -140,9 +145,9 @@ function personToPersonNode(
       const spouse = marriage.spouse;
       const parents = [person, spouse];
       node.spouses.push(spouse.id);
-      nodes.push(...personToPersonNode(spouse, [], level, depth));
+      personToPersonNode(nodes, spouse, [], level, depth);
       marriage.children.forEach(function (child) {
-        nodes.push(...personToPersonNode(child, parents, level + 1, depth));
+        personToPersonNode(nodes, child, parents, level + 1, depth);
       });
     });
   }
