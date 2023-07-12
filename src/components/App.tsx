@@ -7,6 +7,7 @@ import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
 import ModalDeletePerson from './ModalDeletePerson';
 import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
+import ModalAddTree from './ModalAddTree';
 
 interface AppProps {
   trees: Person[];
@@ -22,11 +23,17 @@ function App(props: AppProps) {
   const [modalPerson, setModalPerson] = useState(null as Person | null);
   const [modalSpouse, setModalSpouse] = useState(null as Person | null);
 
-  const [showModalChild, setShowModalChild] = useState(false);
-  const toggleModalChild = () => setShowModalChild(!showModalChild);
-  const openModalChild = (person: Person) => {
+  const [showModalAddTree, setShowModalAddTree] = useState(false);
+  const toggleModalAddTree = () => setShowModalAddTree(!showModalAddTree);
+  const openModalAddTree = () => {
+    setShowModalAddTree(true);
+  };
+
+  const [showModalAddChild, setShowModalAddChild] = useState(false);
+  const toggleModalAddChild = () => setShowModalAddChild(!showModalAddChild);
+  const openModalAddChild = (person: Person) => {
     setModalPerson(person);
-    setShowModalChild(true);
+    setShowModalAddChild(true);
   };
 
   const [showModalAddSpouse, setShowModalAddSpouse] = useState(false);
@@ -46,7 +53,7 @@ function App(props: AppProps) {
 
   const treeMap = useMemo(() => treesToRecord(trees), [trees]);
 
-  const setTreeValue = function (person: Person) {
+  const setTreeValue = (person: Person) => {
     const personData: Record<string, Person> = { [person.id]: person };
     setTreesValue(enrichTreeData(trees, personData));
   };
@@ -102,7 +109,10 @@ function App(props: AppProps) {
             </Label>
           </FormGroup>
           <FormGroup>
-            <Button size="sm" onClick={() => openModalChild(trees[0])}>
+            <Button size="sm" onClick={() => openModalAddTree()}>
+              Add tree
+            </Button>{' '}
+            <Button size="sm" onClick={() => openModalAddChild(trees[0])}>
               Add child
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
@@ -123,9 +133,10 @@ function App(props: AppProps) {
         <Family trees={trees} />
       </Container>
 
+      <ModalAddTree isOpen={showModalAddTree} toggle={toggleModalAddTree} />
       <ModalAddChild
-        isOpen={showModalChild}
-        toggle={toggleModalChild}
+        isOpen={showModalAddChild}
+        toggle={toggleModalAddChild}
         person={modalPerson}
         setPerson={setModalPerson}
         spouse={modalSpouse}

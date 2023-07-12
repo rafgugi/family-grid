@@ -57,6 +57,32 @@ const familyData = {
   },
 };
 
+const doubleFamilyData = {
+  trees: [{
+    id: 'satyr',
+    marriages: [{
+      spouse: { id: 'surtr' },
+      children: [{
+        id: 'hound',
+        marriages: [{
+          spouse: { id: 'alpha' },
+          children: [{ id: 'ryora' }]
+        }]
+      }]
+    }, {
+      spouse: { id: 'nala' },
+      children: [{ id: 'mufasa' }]
+    }]
+  }, {
+    id: 'angela',
+    sex: 'F',
+    marriages: [{
+      spouse: { id: 'saber', sex: 'M' },
+      children: [{ id: 'alpha' }]
+    }]
+  }]
+};
+
 describe('enrichTreeData', () => {
   const trees = enrichTreeData(familyData.trees, familyData.people);
 
@@ -130,6 +156,47 @@ describe('enrichTreeData', () => {
     expect(person.id).toEqual('mufasa');
     expect(person.code).toEqual('1.201');
   });
+
+  test('empty data returns empty array', () => {
+    expect(enrichTreeData([], {})).toEqual([]);
+  });
+
+  describe('remaining people should become trees', () => {
+    const satyr = {
+      name: 'Muhammad Satyr',
+      birthdate: '1982-02-13',
+      sex: 'M',
+    };
+
+    test('with undefined code', () => {
+      expect(enrichTreeData([], { satyr: satyr })).toEqual([{
+        ...satyr,
+        id: 'satyr',
+        code: '.1',
+        marriages: [],
+      }]);
+    });
+
+    test('with person own code', () => {
+      const newSatyr = { ...satyr, code: 'code' };
+      expect(enrichTreeData([], { satyr: newSatyr })).toEqual([{
+        ...newSatyr,
+        id: 'satyr',
+        code: 'code',
+        marriages: [],
+      }]);
+    });
+
+    test('with person empty code', () => {
+      const newSatyr = { ...satyr, code: '' };
+      expect(enrichTreeData([], { satyr: newSatyr })).toEqual([{
+        ...newSatyr,
+        id: 'satyr',
+        code: '.1',
+        marriages: [],
+      }]);
+    });
+  });
 });
 
 describe('treesToPersonNode', () => {
@@ -158,6 +225,24 @@ describe('treesToPersonNode', () => {
       { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
     ]);
   });
+
+  describe('with double trees', () => {
+    test('without depth', () => {
+      const trees = enrichTreeData(doubleFamilyData.trees, familyData.people);
+      const nodes = treesToPersonNode(trees);
+      expect(nodes).toEqual([
+        { key: 'satyr', name: 'satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
+        { key: 'surtr', name: 'surtr', s: 'F', attributes: ['S'], spouses: [] },
+        { key: 'hound', name: 'hound', s: 'M', attributes: [], spouses: ['alpha'], father: 'satyr', mother: 'surtr' },
+        { key: 'alpha', name: 'alpha', s: 'F', attributes: [], spouses: [], father: 'saber', mother: 'angela' },
+        { key: 'ryora', name: 'ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
+        { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
+        { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
+        { key: 'angela', name: 'angela', s: 'F', attributes: [], spouses: ['saber'] },
+        { key: 'saber', name: 'saber', s: 'M', attributes: [], spouses: [] },
+      ]);
+    });
+  });
 });
 
 describe('explodeTrees', () => {
@@ -175,7 +260,6 @@ describe('explodeTrees', () => {
     expect(people.map(person => person.id)).toEqual(expectedPeople);
   });
 });
-
 
 describe('treesToRecord', () => {
   const trees = enrichTreeData(familyData.trees, familyData.people);
