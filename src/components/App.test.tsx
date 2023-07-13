@@ -22,14 +22,20 @@ jest.mock('./FamilyDiagram', () => () => {
   return <svg />;
 });
 
-test('renders app contents with split', () => {
-  render(<App trees={trees} split />);
-  const element = screen.getByText(/satyr Family/i);
-  expect(element).toBeInTheDocument();
-});
+describe('App', () => {
+  beforeEach(() => {
+    localStorage.clear(); // Clear local storage before each test
+  });
 
-test('renders app contents without split', () => {
-  render(<App trees={trees} split={false} />);
-  const element = screen.getByText(/satyr/i);
-  expect(element).toBeInTheDocument();
+  test('renders app contents with split', () => {
+    render(<App trees={trees} split />);
+    const element = screen.getByText(/satyr Family/i);
+    expect(element).toBeInTheDocument();
+  });
+
+  test('renders app contents without split', () => {
+    render(<App trees={trees} split={false} />);
+    const element = screen.getByText(/satyr/i);
+    expect(element).toBeInTheDocument();
+  });
 });

@@ -6,8 +6,9 @@ import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
 import ModalDeletePerson from './ModalDeletePerson';
-import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
 import ModalAddTree from './ModalAddTree';
+import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
+import { useCache } from '../useCache';
 
 interface AppProps {
   trees: Person[];
@@ -15,10 +16,11 @@ interface AppProps {
 }
 
 function App(props: AppProps) {
-  const [split, setSplitValue] = useState(!!props.split);
+  const [trees, setTreesValue] = useCache('trees', props.trees);
+
+  const [split, setSplitValue] = useCache('split', !!props.split);
+  const [hidePersonCode, setHideCode] = useCache('hideCode', false);
   const [editMode, setEditModeValue] = useState(false);
-  const [hidePersonCode, setHidePersonCode] = useState(false);
-  const [trees, setTreesValue] = useState(props.trees);
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);
   const [modalSpouse, setModalSpouse] = useState(null as Person | null);
@@ -91,7 +93,7 @@ function App(props: AppProps) {
               type="switch"
               checked={hidePersonCode}
               id="hidePersonCode-switch"
-              onChange={() => setHidePersonCode(!hidePersonCode)}
+              onChange={() => setHideCode(!hidePersonCode)}
             />
             <Label for="hidePersonCode-switch" check>
               Hide Code
