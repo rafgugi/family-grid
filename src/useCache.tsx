@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
-export function useCache(
+export function useCache<Type>(
   key: string,
-  initialValue: any
-): [any, (value: any) => void] {
+  initialValue: Type
+): [Type, (value: Type) => void] {
   key = `family-grid:${key}`;
   const [value, setValue] = useState(() => {
     const storedValue = localStorage.getItem(key);
