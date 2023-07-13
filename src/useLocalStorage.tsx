@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// storeValue is localStorage.setItem but async
-const storeValue = async (key: string, value: any) => {
-  await new Promise(resolve => setTimeout(resolve, 0));
-  localStorage.setItem(key, JSON.stringify(value));
-  console.log(`data stored in "${key}" successfully`);
-};
-
 export function useLocalStorage(
   key: string,
   initialValue: any
@@ -18,7 +11,7 @@ export function useLocalStorage(
   });
 
   useEffect(() => {
-    storeValue(key, value);
+    localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
 
   return [value, setValue];
