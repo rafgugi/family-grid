@@ -1,26 +1,14 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
 import ModalDeletePerson from './ModalDeletePerson';
-import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
 import ModalAddTree from './ModalAddTree';
-
-const treesStorageKey = 'trees';
-
-const loadTree = (): Person[] | null => {
-  const rawTree = localStorage.getItem(treesStorageKey);
-  return rawTree ? JSON.parse(rawTree) : null;
-};
-
-const saveTree = async (trees: Person[]) => {
-  await new Promise((resolve) => setTimeout(resolve, 0));
-  localStorage.setItem(treesStorageKey, JSON.stringify(trees));
-  console.log('Trees data stored successfully');
-};
+import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
+import { useLocalStorage } from '../useLocalStorage';
 
 interface AppProps {
   trees: Person[];
@@ -28,10 +16,7 @@ interface AppProps {
 }
 
 function App(props: AppProps) {
-  const [trees, setTreesValue] = useState(loadTree() || props.trees);
-  useEffect(() => {
-    saveTree(trees);
-  }, [trees])
+  const [trees, setTreesValue] = useLocalStorage('trees', props.trees);
 
   const [split, setSplitValue] = useState(!!props.split);
   const [editMode, setEditModeValue] = useState(false);
