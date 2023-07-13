@@ -18,9 +18,9 @@ interface AppProps {
 function App(props: AppProps) {
   const [trees, setTreesValue] = useLocalStorage('trees', props.trees);
 
-  const [split, setSplitValue] = useState(!!props.split);
+  const [split, setSplitValue] = useLocalStorage('split', !!props.split);
+  const [hidePersonCode, setHideCode] = useLocalStorage('hideCode', false);
   const [editMode, setEditModeValue] = useState(false);
-  const [hidePersonCode, setHidePersonCode] = useState(false);
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);
   const [modalSpouse, setModalSpouse] = useState(null as Person | null);
@@ -93,7 +93,7 @@ function App(props: AppProps) {
               type="switch"
               checked={hidePersonCode}
               id="hidePersonCode-switch"
-              onChange={() => setHidePersonCode(!hidePersonCode)}
+              onChange={() => setHideCode(!hidePersonCode)}
             />
             <Label for="hidePersonCode-switch" check>
               Hide Code
