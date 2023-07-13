@@ -8,7 +8,7 @@ import ModalAddSpouse from './ModalAddSpouse';
 import ModalDeletePerson from './ModalDeletePerson';
 import ModalAddTree from './ModalAddTree';
 import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
-import { useLocalStorage } from '../useLocalStorage';
+import { useCache } from '../useCache';
 
 interface AppProps {
   trees: Person[];
@@ -16,10 +16,10 @@ interface AppProps {
 }
 
 function App(props: AppProps) {
-  const [trees, setTreesValue] = useLocalStorage('trees', props.trees);
+  const [trees, setTreesValue] = useCache('trees', props.trees);
 
-  const [split, setSplitValue] = useLocalStorage('split', !!props.split);
-  const [hidePersonCode, setHideCode] = useLocalStorage('hideCode', false);
+  const [split, setSplitValue] = useCache('split', !!props.split);
+  const [hidePersonCode, setHideCode] = useCache('hideCode', false);
   const [editMode, setEditModeValue] = useState(false);
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);

@@ -1,13 +1,13 @@
 import { renderHook, act } from '@testing-library/react';
-import { useLocalStorage } from './useLocalStorage';
+import { useCache } from './useCache';
 
-describe('useLocalStorage', () => {
+describe('useCache', () => {
   beforeEach(() => {
     localStorage.clear(); // Clear local storage before each test
   });
 
   it('should return initialValue and update value in localStorage', () => {
-    const { result } = renderHook(() => useLocalStorage('testKey', 'initialValue'));
+    const { result } = renderHook(() => useCache('testKey', 'initialValue'));
 
     // Initial state and value in local storage
     expect(result.current[0]).toBe('initialValue');

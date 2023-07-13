@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useLocalStorage(
+export function useCache(
   key: string,
   initialValue: any
 ): [any, (value: any) => void] {
