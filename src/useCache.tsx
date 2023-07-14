@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useDeferredValue } from 'react';
 
 export function useCache<Type>(
   key: string,
@@ -9,10 +9,11 @@ export function useCache<Type>(
     const storedValue = localStorage.getItem(key);
     return storedValue !== null ? JSON.parse(storedValue) : initialValue;
   });
+  const deferredValue = useDeferredValue(value);
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
+    localStorage.setItem(key, JSON.stringify(deferredValue));
+  }, [key, deferredValue]);
 
   return [value, setValue];
 }

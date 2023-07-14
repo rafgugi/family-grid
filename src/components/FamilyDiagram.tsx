@@ -1,6 +1,6 @@
 import { Person, PersonNode } from '../family.interface';
 import { treesToPersonNode } from '../family.util';
-import { useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useMemo, useDeferredValue } from 'react';
 import * as go from 'gojs';
 import GenogramLayout from '../GenogramLayout';
 
@@ -10,7 +10,8 @@ interface FamilyDiagramProps {
 }
 
 function FamilyDiagram(props: FamilyDiagramProps) {
-  const { trees, depth } = props;
+  const trees = useDeferredValue(props.trees);
+  const depth = useDeferredValue(props.depth);
   const divRef = useRef<HTMLDivElement>(null);
 
   /**
