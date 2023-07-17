@@ -1,7 +1,8 @@
 import { Person, PersonNode } from '../family.interface';
 import { treesToPersonNode } from '../family.util';
-import { useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect, useDeferredValue, useState } from 'react';
 import * as go from 'gojs';
+import { isEqual, cloneDeep } from 'lodash';
 import GenogramLayout from '../GenogramLayout';
 
 interface FamilyDiagramProps {
@@ -9,16 +10,23 @@ interface FamilyDiagramProps {
   depth?: number;
 }
 
-function FamilyDiagram(props: FamilyDiagramProps) {
-  const { trees, depth } = props;
+function FamilyDiagram({ trees, depth }: FamilyDiagramProps) {
+  const deferredTrees = useDeferredValue(trees);
+  const [personNodes, setPersonNodes] = useState([] as PersonNode[]);
   const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const nodes = treesToPersonNode(deferredTrees, depth || 0);
+    if (!isEqual(nodes, personNodes)) {
+      setPersonNodes(nodes);
+    }
+  }, [deferredTrees, depth, personNodes]);
 
   /**
    * Setup the diagram based on the given props, then create a svg
    * from it and append to the div element.
    */
-  const svg = useMemo(() => {
-    const personNodes = treesToPersonNode(trees, depth || 0);
+  useEffect(() => {
     const diagram = DiagramUtil.initDiagram();
     DiagramUtil.setupDiagram(diagram, personNodes);
 
@@ -29,16 +37,12 @@ function FamilyDiagram(props: FamilyDiagramProps) {
     // Create svg from the diagram, then finally delete the div
     const svg = diagram.makeSvg({ scale: 1 });
     tempDiv.remove();
-    return svg;
-  }, [trees, depth]);
-
-  useEffect(() => {
     if (svg) {
       svg.setAttribute('class', 'my-3 m-auto img-fluid');
       divRef.current?.replaceChildren(svg);
       return () => svg.remove();
     }
-  }, [svg]);
+  }, [personNodes]);
 
   return <div ref={divRef} />;
 }
@@ -223,7 +227,7 @@ class DiagramUtil {
       nodeCategoryProperty: 's',
       // if a node data object is copied, copy its data.attributes Array
       copiesArrays: true,
-      nodeDataArray: nodeDataArray,
+      nodeDataArray: cloneDeep(nodeDataArray),
     });
     this.setupMarriages(diagram);
     this.setupParents(diagram);
