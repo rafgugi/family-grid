@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import { Person } from './family.interface';
 import { enrichTreeData } from './family.util';
@@ -12,11 +12,9 @@ if (typeof rawFamilyData === 'object') {
   familyData = enrichTreeData(rawFamilyData.trees, rawFamilyData.people);
 }
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <App trees={familyData} />
-  </React.StrictMode>
+  </StrictMode>
 );
