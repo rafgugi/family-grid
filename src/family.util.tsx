@@ -33,7 +33,20 @@ export function enrichTreeData(
 
 // Enrich the person from the people. Try to make person unchanged.
 function enrichPersonData(person: any, people: Record<string, any>): Person {
-  person = { ...person };
+  person = {
+    id: person.id,
+    code: person.code,
+    name: person.name,
+    sex: person.sex,
+    birthplace: person.birthplace,
+    birthdate: person.birthdate,
+    deathdate: person.deathdate,
+    phone: person.phone,
+    email: person.email,
+    ig: person.ig,
+    address: person.address,
+    marriages: person.marriages,
+  };
   const detail = people[person.id];
   if (detail) {
     Object.assign(person, detail);
@@ -42,7 +55,10 @@ function enrichPersonData(person: any, people: Record<string, any>): Person {
   const marriages = person.marriages || [];
   person.marriages = marriages.map(function (marriage: Marriage, i: number) {
     const married = marriages.length > 1 ? String(i + 1) : ''; // married count
-    marriage = { ...marriage };
+    marriage = {
+      spouse: marriage.spouse,
+      children: marriage.children,
+    };
     marriage.spouse = {
       ...enrichPersonData(marriage.spouse, people),
       code: marriage.spouse.code || person.code + 'M' + married,
