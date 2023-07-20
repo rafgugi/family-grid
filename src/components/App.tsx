@@ -65,7 +65,7 @@ function App(props: AppProps) {
 
   const treeMap = useMemo(() => treesToRecord(trees), [trees]);
 
-  const setTreeValue = (person: Person) => {
+  const upsertPerson = (person: Person) => {
     const personData: Record<string, Person> = { [person.id]: person };
     setTreesValue(enrichTreeData(trees, personData));
   };
@@ -80,10 +80,10 @@ function App(props: AppProps) {
         split,
         editMode,
         hidePersonCode,
-        setTreeValue,
-        setTreesValue,
-        deleteTreePerson,
         treeMap,
+        setTreesValue,
+        upsertPerson,
+        deletePerson: deleteTreePerson,
       }}
     >
       <Container className="d-print-none" fluid="sm">

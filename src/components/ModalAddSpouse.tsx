@@ -26,7 +26,7 @@ function ModalAddSpouse({
   isOpen,
   toggle,
 }: ModalAddSpouseProps) {
-  const { treeMap, setTreeValue } = useContext(AppContext);
+  const { treeMap, upsertPerson } = useContext(AppContext);
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
 
@@ -63,7 +63,7 @@ function ModalAddSpouse({
       children: [],
     });
 
-    setTreeValue(person);
+    upsertPerson(person);
     setPerson(null);
     setSpouse('');
     toggle();

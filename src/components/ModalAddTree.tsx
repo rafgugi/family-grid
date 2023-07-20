@@ -19,7 +19,7 @@ interface ModalAddTreeProps {
 }
 
 function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
-  const { treeMap, setTreeValue } = useContext(AppContext);
+  const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
 
@@ -44,7 +44,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
       marriages: [] as Marriage[],
     };
 
-    setTreeValue(tree);
+    upsertPerson(tree);
     setChild('');
     toggle();
   };

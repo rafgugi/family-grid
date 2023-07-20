@@ -25,7 +25,7 @@ function ModalDeletePerson({
   isOpen,
   toggle,
 }: ModalDeletePersonProps) {
-  const { treeMap, deleteTreePerson } = useContext(AppContext);
+  const { treeMap, deletePerson } = useContext(AppContext);
   const people = Object.values(treeMap);
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +36,7 @@ function ModalDeletePerson({
   const handleSubmit = () => {
     if (!person) return;
 
-    deleteTreePerson(person);
+    deletePerson(person);
     setPerson(null);
     toggle();
   };

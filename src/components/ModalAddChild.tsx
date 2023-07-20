@@ -30,7 +30,7 @@ function ModalAddChild({
   isOpen,
   toggle,
 }: ModalAddChildProps) {
-  const { treeMap, setTreeValue } = useContext(AppContext);
+  const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
 
@@ -81,7 +81,7 @@ function ModalAddChild({
     };
     marriage.children.push(childPerson);
 
-    setTreeValue(person);
+    upsertPerson(person);
     setPerson(null);
     setSpouse(null);
     setChild('');

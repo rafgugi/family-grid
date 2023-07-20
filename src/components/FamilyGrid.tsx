@@ -58,11 +58,11 @@ function FamilyRows({ person, ...props }: PersonRowProps) {
 }
 
 function PersonRow({ person }: PersonRowProps) {
-  const { editMode, hidePersonCode, setTreeValue } = useContext(AppContext);
+  const { editMode, hidePersonCode, upsertPerson } = useContext(AppContext);
   const name = person.name || person.id;
 
   const updatePerson = function (e: ChangeEvent<any>, key: string) {
-    setTreeValue({ ...person, [key]: e.target.value });
+    upsertPerson({ ...person, [key]: e.target.value });
   };
 
   let inputClass = 'd-none';
