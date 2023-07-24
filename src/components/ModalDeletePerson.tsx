@@ -8,13 +8,13 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { Dispatch, useContext } from 'react';
+import { useContext } from 'react';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
 
 interface ModalDeletePersonProps {
   person: Person | null;
-  setPerson: Dispatch<any>;
+  setPerson: (p: Person | null) => void;
   isOpen: boolean;
   toggle: () => void;
 }

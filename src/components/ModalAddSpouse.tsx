@@ -9,13 +9,13 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { Dispatch, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
 
 interface ModalAddSpouseProps {
   person: Person | null;
-  setPerson: Dispatch<any>;
+  setPerson: (p: Person | null) => void;
   isOpen: boolean;
   toggle: () => void;
 }
