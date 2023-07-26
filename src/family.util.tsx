@@ -2,14 +2,20 @@ import { Person, Marriage, PersonNode } from './family.interface';
 
 // Enrich the trees from the people. Try to make trees unchanged.
 export function enrichTreeData(
-  trees: any[],
+  trees: any[] | any,
   people: Record<string, any>
 ): Person[] {
-  const enrichedTrees = trees.map(function (person: Person, i: number) {
-    person = { ...person };
-    person.code ||= String(i + 1);
-    return enrichPersonData(person, people);
-  });
+  if (!Array.isArray(trees)) return [];
+  
+  const enrichedTrees = trees
+    .map((person: any, i: number) => {
+      if (!person || typeof person !== 'object') return null;
+
+      person = { ...person };
+      person.code ||= String(i + 1);
+      return enrichPerson(person, people);
+    })
+    .flatMap(f => (!!f ? [f] : []));
 
   // fill the remaining people that not in trees
   const peopleKeys = new Set(Object.keys(people));
@@ -32,8 +38,13 @@ export function enrichTreeData(
 }
 
 // Enrich the person from the people. Try to make person unchanged.
-function enrichPersonData(person: any, people: Record<string, any>): Person {
-  person = {
+const enrichPerson = (
+  person: any,
+  people: Record<string, any>
+): Person | null => {
+  if (!person || typeof person.id !== 'string') return null;
+
+  const p = createPerson({
     id: person.id,
     code: person.code,
     name: person.name,
@@ -46,35 +57,36 @@ function enrichPersonData(person: any, people: Record<string, any>): Person {
     ig: person.ig,
     address: person.address,
     marriages: person.marriages,
-  };
-  const detail = people[person.id];
+  });
+  const detail = people[p.id];
   if (detail) {
-    Object.assign(person, detail);
+    Object.assign(p, detail);
   }
 
-  const marriages = person.marriages || [];
-  person.marriages = marriages.map(function (marriage: Marriage, i: number) {
-    const married = marriages.length > 1 ? String(i + 1) : ''; // married count
-    marriage = {
-      spouse: marriage.spouse,
-      children: marriage.children,
-    };
-    marriage.spouse = {
-      ...enrichPersonData(marriage.spouse, people),
-      code: marriage.spouse.code || person.code + 'M' + married,
-    };
+  p.marriages = p.marriages.map((marriage: Marriage, i: number) => {
+    const married = p.marriages.length > 1 ? String(i + 1) : '';
+    const spouse =
+      enrichPerson(marriage.spouse, people) ||
+      createPerson({ id: p.id + '__m' });
 
-    const children = marriage.children || [];
-    marriage.children = children.map(function (child: Person, i: number) {
-      child = { ...child };
-      child.code ||=
-        person.code + '.' + married + String(i + 1).padStart(2, '0');
-      return enrichPersonData(child, people);
-    });
-    return marriage;
+    const children = (marriage.children || [])
+      .map((child: Person, i: number) => {
+        child = { ...child };
+        child.code ||= p.code + '.' + married + String(i + 1).padStart(2, '0');
+        return enrichPerson(child, people);
+      })
+      .flatMap(f => (!!f ? [f] : []));
+
+    return {
+      spouse: {
+        ...spouse,
+        code: spouse.code || p.code + 'M' + married,
+      },
+      children,
+    } as Marriage;
   });
-  return createPerson(person);
-}
+  return p;
+};
 
 // Breakdown the person's family tree into array.
 export function explodeTrees(trees: Person[], depth: number = -1): Person[] {
@@ -128,7 +140,8 @@ export function deletePerson(trees: Person[], id: string): Person[] {
 function createPerson(data: any): Person {
   return {
     ...data,
-    marriages: data.marriages || [],
+    marriages:
+      data.marriages?.filter((f: any) => !!Object.keys(f).length) || [],
   };
 }
 
