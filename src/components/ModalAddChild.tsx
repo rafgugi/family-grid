@@ -64,10 +64,10 @@ function ModalAddChild({
     }
   };
 
-  const validForm = () => person && spouse && child && !childError;
+  const validForm = person && spouse && child && !childError;
 
   const handleSubmit = () => {
-    if (!person || !spouse || !validForm()) return;
+    if (!person || !spouse || !validForm) return;
 
     const marriage = person.marriages.find(
       (m: Marriage) => m.spouse.id === spouse.id
@@ -142,7 +142,7 @@ function ModalAddChild({
         )}
       </ModalBody>
       <ModalFooter>
-        <Button disabled={!validForm()} onClick={handleSubmit}>
+        <Button disabled={!validForm} onClick={handleSubmit}>
           Submit
         </Button>
       </ModalFooter>

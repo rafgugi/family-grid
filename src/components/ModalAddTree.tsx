@@ -33,10 +33,10 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
     }
   };
 
-  const validForm = () => child && !childError;
+  const validForm = child && !childError;
 
   const handleSubmit = () => {
-    if (!validForm()) return;
+    if (!validForm) return;
 
     const tree: Person = {
       id: child,
@@ -67,7 +67,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
         </FormGroup>
       </ModalBody>
       <ModalFooter>
-        <Button disabled={!validForm()} onClick={handleSubmit}>
+        <Button disabled={!validForm} onClick={handleSubmit}>
           Submit
         </Button>
       </ModalFooter>
