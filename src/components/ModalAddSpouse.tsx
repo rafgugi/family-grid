@@ -48,10 +48,10 @@ function ModalAddSpouse({
     }
   };
 
-  const validForm = () => person && spouse && !spouseError;
+  const validForm = person && spouse && !spouseError;
 
   const handleSubmit = () => {
-    if (!person || !validForm()) return;
+    if (!person || !validForm) return;
 
     const spousePerson: Person = {
       id: spouse,
@@ -105,7 +105,7 @@ function ModalAddSpouse({
         )}
       </ModalBody>
       <ModalFooter>
-        <Button disabled={!validForm()} onClick={handleSubmit}>
+        <Button disabled={!validForm} onClick={handleSubmit}>
           Submit
         </Button>
       </ModalFooter>
