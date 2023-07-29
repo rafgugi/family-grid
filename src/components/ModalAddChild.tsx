@@ -9,15 +9,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { Dispatch, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
 
 interface ModalAddChildProps {
   person: Person | null;
-  setPerson: Dispatch<any>;
+  setPerson: (p: Person | null) => void;
   spouse: Person | null;
-  setSpouse: Dispatch<any>;
+  setSpouse: (p: Person | null) => void;
   isOpen: boolean;
   toggle: () => void;
 }
@@ -30,7 +30,7 @@ function ModalAddChild({
   isOpen,
   toggle,
 }: ModalAddChildProps) {
-  const { treeMap, setTreeValue } = useContext(AppContext);
+  const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
 
@@ -64,10 +64,10 @@ function ModalAddChild({
     }
   };
 
-  const validForm = () => person && spouse && child && !childError;
+  const validForm = person && spouse && child && !childError;
 
   const handleSubmit = () => {
-    if (!person || !spouse || !validForm()) return;
+    if (!person || !spouse || !validForm) return;
 
     const marriage = person.marriages.find(
       (m: Marriage) => m.spouse.id === spouse.id
@@ -81,7 +81,7 @@ function ModalAddChild({
     };
     marriage.children.push(childPerson);
 
-    setTreeValue(person);
+    upsertPerson(person);
     setPerson(null);
     setSpouse(null);
     setChild('');
@@ -142,7 +142,7 @@ function ModalAddChild({
         )}
       </ModalBody>
       <ModalFooter>
-        <Button disabled={!validForm()} onClick={handleSubmit}>
+        <Button disabled={!validForm} onClick={handleSubmit}>
           Submit
         </Button>
       </ModalFooter>

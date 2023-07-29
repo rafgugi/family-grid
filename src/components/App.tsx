@@ -1,12 +1,14 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMemo, useState } from 'react';
+import { stringify } from 'yaml';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
 import Family from './Family';
 import ModalAddChild from './ModalAddChild';
 import ModalAddSpouse from './ModalAddSpouse';
-import ModalDeletePerson from './ModalDeletePerson';
 import ModalAddTree from './ModalAddTree';
+import ModalDeletePerson from './ModalDeletePerson';
+import ModalEditYaml from './ModalEditYaml';
 import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
 import { useCache } from '../useCache';
 
@@ -24,6 +26,7 @@ function App(props: AppProps) {
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);
   const [modalSpouse, setModalSpouse] = useState(null as Person | null);
+  const [treeYaml, setTreeYaml] = useState('');
 
   const [showModalAddTree, setShowModalAddTree] = useState(false);
   const toggleModalAddTree = () => setShowModalAddTree(!showModalAddTree);
@@ -45,6 +48,13 @@ function App(props: AppProps) {
     setShowModalAddSpouse(true);
   };
 
+  const [showModalEditYaml, setShowModalEditYaml] = useState(false);
+  const toggleModalEditYaml = () => setShowModalEditYaml(!showModalEditYaml);
+  const openModalEditYaml = () => {
+    setTreeYaml(stringify(trees));
+    setShowModalEditYaml(true);
+  };
+
   const [showModalDeletePerson, setShowModalDeletePerson] = useState(false);
   const toggleModalDeletePerson = () =>
     setShowModalDeletePerson(!showModalDeletePerson);
@@ -55,7 +65,7 @@ function App(props: AppProps) {
 
   const treeMap = useMemo(() => treesToRecord(trees), [trees]);
 
-  const setTreeValue = (person: Person) => {
+  const upsertPerson = (person: Person) => {
     const personData: Record<string, Person> = { [person.id]: person };
     setTreesValue(enrichTreeData(trees, personData));
   };
@@ -70,9 +80,10 @@ function App(props: AppProps) {
         split,
         editMode,
         hidePersonCode,
-        setTreeValue,
-        deleteTreePerson,
         treeMap,
+        setTreesValue,
+        upsertPerson,
+        deletePerson: deleteTreePerson,
       }}
     >
       <Container className="d-print-none" fluid="sm">
@@ -122,6 +133,13 @@ function App(props: AppProps) {
             </Button>{' '}
             <Button
               size="sm"
+              onClick={() => openModalEditYaml()}
+              color="warning"
+            >
+              Edit tree
+            </Button>{' '}
+            <Button
+              size="sm"
               onClick={() => openModalDeletePerson()}
               color="danger"
             >
@@ -149,6 +167,12 @@ function App(props: AppProps) {
         toggle={toggleModalAddSpouse}
         person={modalPerson}
         setPerson={setModalPerson}
+      />
+      <ModalEditYaml
+        isOpen={showModalEditYaml}
+        toggle={toggleModalEditYaml}
+        treeYaml={treeYaml}
+        setTreeYaml={setTreeYaml}
       />
       <ModalDeletePerson
         isOpen={showModalDeletePerson}

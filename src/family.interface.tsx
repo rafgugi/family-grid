@@ -2,15 +2,15 @@ export interface Person {
   id: string;
   code: string;
   name?: string;
+  sex?: string;
   birthplace?: string;
   birthdate?: string;
   deathdate?: string;
-  address?: string;
-  sex?: string;
-  marriages: Marriage[];
   phone?: string;
   email?: string;
   ig?: string;
+  address?: string;
+  marriages: Marriage[];
 }
 
 export interface Marriage {
