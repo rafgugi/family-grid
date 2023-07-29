@@ -161,6 +161,38 @@ describe('enrichTreeData', () => {
     expect(enrichTreeData([], {})).toEqual([]);
   });
 
+  describe('contains invalid person', () => {
+    const familyData = [
+      {},
+      {
+        id: 'satyr',
+        marriages: [{}]
+      },
+      {
+        id: 'hound',
+        marriages: [{
+          children: [{ id: 'ryora' }, { name: 'meta' }]
+        }]
+      },
+    ];
+    const trees = enrichTreeData(familyData, []);
+
+    test('should validate invalid person', () => {
+      expect(trees).toEqual([{
+        id: 'satyr',
+        code: '2',
+        marriages: [],
+      }, {
+        id: 'hound',
+        code: '3',
+        marriages: [{
+          spouse: { id: 'hound__m', code: '3M', marriages: [] },
+          children: [{ id: 'ryora', code: '3.01', marriages: [] }],
+        }],
+      }]);
+    });
+  });
+
   describe('remaining people should become trees', () => {
     const satyr = {
       name: 'Muhammad Satyr',
@@ -197,6 +229,16 @@ describe('enrichTreeData', () => {
       }]);
     });
   });
+
+  describe('unexpected param should return empty tree', () => {
+    test('param is string', () => {
+      expect(enrichTreeData(['1'], [])).toEqual([]);
+    });
+
+    test('param is null', () => {
+      expect(enrichTreeData(null, [])).toEqual([]);
+    });
+  })
 });
 
 describe('treesToPersonNode', () => {
