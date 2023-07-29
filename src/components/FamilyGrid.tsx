@@ -9,7 +9,7 @@ interface FamilyGridProps {
 }
 
 export default function FamilyGrid({ trees }: FamilyGridProps) {
-  const { hidePersonCode } = useContext(AppContext);
+  const { editMode, hidePersonCode } = useContext(AppContext);
 
   return (
     <Table size="sm" bordered hover responsive>
@@ -19,6 +19,7 @@ export default function FamilyGrid({ trees }: FamilyGridProps) {
             Code
           </th>
           <th style={{ width: '15.5em' }}>Name</th>
+          {editMode && <th style={{ width: '5em' }}>Sex</th>}
           <th style={{ width: '7em' }}>Birthplace</th>
           <th style={{ width: '7em' }}>Birthdate</th>
           <th style={{ width: '8.5em' }}>Phone</th>
@@ -90,6 +91,22 @@ function PersonRow({ person }: PersonRowProps) {
           {person.name && <small className="fw-light"> ({person.id})</small>}
         </span>
       </td>
+      {editMode && (
+        <td>
+          <Input
+            type="select"
+            bsSize="sm"
+            className={inputClass}
+            value={person.sex || ''}
+            onChange={e => updatePerson(e, 'sex')}
+          >
+            <option value=""></option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </Input>
+          <span className={spanClass}>{person.sex}</span>
+        </td>
+      )}
       <td>
         <Input
           bsSize="sm"
