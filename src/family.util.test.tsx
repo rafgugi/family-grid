@@ -4,6 +4,7 @@ import {
   explodeTrees,
   treesToPersonNode,
   treesToRecord,
+  unrichTreeData,
 } from './family.util';
 
 const familyData = [{
@@ -245,6 +246,55 @@ describe('enrichTreeData', () => {
 
     test('param is null', () => {
       expect(enrichTreeData(null, [])).toEqual([]);
+    });
+  });
+});
+
+describe('unrichTreeData', () => {
+  describe('single tree', () => {
+    const { trees, people } = unrichTreeData(enrichedTree);
+
+    test('each person has correct properties', () => {
+      expect(trees).toEqual(familyData);
+      expect(people).toEqual({
+        satyr: {
+          code: '1',
+          name: 'Muhammad Satyr',
+          sex: 'M',
+          birthdate: '1982-02-13',
+        },
+        surtr: {
+          code: '1M1',
+          name: 'Amalia Surtrain',
+          sex: 'F',
+          birthdate: '1987-11-21',
+          deathdate: '2021-01-13',
+        },
+        hound: {
+          code: '1.101',
+          name: 'Muhammad Hound',
+          sex: 'M',
+          birthdate: '2007-06-09',
+        },
+        alpha: {
+          code: '1.101M',
+          name: 'Siti Alpha',
+          sex: 'F',
+          birthdate: '2008-06-19',
+        },
+        ryora: {
+          code: '1.101.01',
+          name: 'Muhammad Ryora',
+          sex: 'M',
+          birthdate: '2030-03-12',
+        },
+        nala: { code: '1M2', sex: 'F' },
+        mufasa: { code: '1.201' },
+      });
+    });
+
+    test('should be reverted to rich tree data', () => {
+      expect(enrichTreeData(trees, people)).toEqual(enrichedTree);
     });
   });
 });

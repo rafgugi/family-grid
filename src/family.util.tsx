@@ -98,6 +98,35 @@ export function enrichTreeData(
   return enrichedTrees;
 }
 
+// Undo enrichTreeData, separate the enriched tree into simple trees and
+// people details. Simple trees only contains id, marriage, and children
+// while people contains any other people details including keys.
+export function unrichTreeData(enrichedTrees: Person[]): {
+  trees: any[];
+  people: Record<string, any>;
+} {
+  const people: Record<string, any> = {};
+
+  const revertPersonData = (person: Person): any => {
+    if (!person || !person.id) return null;
+
+    const { id, marriages, ...details } = person;
+    people[id] = { ...details };
+
+    const mm = marriages.map((marriage: Marriage) => {
+      return {
+        spouse: revertPersonData(marriage.spouse),
+        children: marriage.children.map(revertPersonData),
+      };
+    });
+    // return { id, marriages: mm };
+    return { id, marriages: mm.length ? mm : undefined };
+  };
+
+  const trees = enrichedTrees.map(revertPersonData);
+  return { trees, people };
+}
+
 // Breakdown the person's family tree into array.
 export function explodeTrees(trees: Person[], depth: number = -1): Person[] {
   const people: Person[] = [];
