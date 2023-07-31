@@ -9,15 +9,13 @@ interface FamilyGridProps {
 }
 
 export default function FamilyGrid({ trees }: FamilyGridProps) {
-  const { editMode, hidePersonCode } = useContext(AppContext);
+  const { editMode, showPersonCode } = useContext(AppContext);
 
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
         <tr>
-          <th style={{ width: '7em' }} hidden={hidePersonCode}>
-            Code
-          </th>
+          {showPersonCode && (<th style={{ width: '7em' }}>Code</th>)}
           <th style={{ width: '15.5em' }}>Name</th>
           {editMode && <th style={{ width: '5em' }}>Sex</th>}
           <th style={{ width: '7em' }}>Birthplace</th>
@@ -59,7 +57,7 @@ function FamilyRows({ person, ...props }: PersonRowProps) {
 }
 
 function PersonRow({ person }: PersonRowProps) {
-  const { editMode, hidePersonCode, upsertPerson } = useContext(AppContext);
+  const { editMode, showPersonCode, upsertPerson } = useContext(AppContext);
   const name = person.name || person.id;
 
   const updatePerson = function (e: ChangeEvent<any>, key: string) {
@@ -79,9 +77,7 @@ function PersonRow({ person }: PersonRowProps) {
 
   return (
     <tr>
-      <td hidden={hidePersonCode}>
-        <span>{person.code}</span>
-      </td>
+      {showPersonCode && (<td><span>{person.code}</span></td>)}
       <td>
         <Input
           bsSize="sm"
