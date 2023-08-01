@@ -9,17 +9,21 @@ interface FamilyGridProps {
 }
 
 export default function FamilyGrid({ trees }: FamilyGridProps) {
-  const { editMode, showPersonCode } = useContext(AppContext);
+  const { editMode, showPersonCode, showSex, showDeathdate } =
+    useContext(AppContext);
 
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
         <tr>
-          {showPersonCode && (<th style={{ width: '7em' }}>Code</th>)}
+          {showPersonCode && <th style={{ width: '7em' }}>Code</th>}
           <th style={{ width: '15.5em' }}>Name</th>
-          {editMode && <th style={{ width: '5em' }}>Sex</th>}
-          <th style={{ width: '7em' }}>Birthplace</th>
-          <th style={{ width: '7em' }}>Birthdate</th>
+          {(editMode || showSex) && <th style={{ width: '5em' }}>Sex</th>}
+          <th style={{ width: '7em' }}>Birth place</th>
+          <th style={{ width: '7em' }}>Birth date</th>
+          {(editMode || showDeathdate) && (
+            <th style={{ width: '7em' }}>Death date</th>
+          )}
           <th style={{ width: '8.5em' }}>Phone</th>
           <th style={{ width: '18.5em' }}>Address</th>
           <th style={{ width: '8.5em' }}>IG</th>
@@ -57,7 +61,8 @@ function FamilyRows({ person, ...props }: PersonRowProps) {
 }
 
 function PersonRow({ person }: PersonRowProps) {
-  const { editMode, showPersonCode, upsertPerson } = useContext(AppContext);
+  const { editMode, showPersonCode, showSex, showDeathdate, upsertPerson } =
+    useContext(AppContext);
   const name = person.name || person.id;
 
   const updatePerson = function (e: ChangeEvent<any>, key: string) {
@@ -77,7 +82,11 @@ function PersonRow({ person }: PersonRowProps) {
 
   return (
     <tr>
-      {showPersonCode && (<td><span>{person.code}</span></td>)}
+      {showPersonCode && (
+        <td>
+          <span>{person.code}</span>
+        </td>
+      )}
       <td>
         <Input
           bsSize="sm"
@@ -91,7 +100,7 @@ function PersonRow({ person }: PersonRowProps) {
           {person.name && <small className="fw-light"> ({person.id})</small>}
         </span>
       </td>
-      {editMode && (
+      {(editMode || showSex) && (
         <td>
           <Input
             type="select"
@@ -104,7 +113,9 @@ function PersonRow({ person }: PersonRowProps) {
             <option value="M">{sexMap.M}</option>
             <option value="F">{sexMap.F}</option>
           </Input>
-          <span className={spanClass}>{person.sex ? sexMap[person.sex] || '' : ''}</span>
+          <span className={spanClass}>
+            {person.sex ? sexMap[person.sex] || '' : ''}
+          </span>
         </td>
       )}
       <td>
@@ -125,6 +136,17 @@ function PersonRow({ person }: PersonRowProps) {
         />
         <span className={spanClass}>{person.birthdate}</span>
       </td>
+      {(editMode || showDeathdate) && (
+        <td>
+          <Input
+            bsSize="sm"
+            className={inputClass}
+            value={person.deathdate || ''}
+            onChange={e => updatePerson(e, 'deathdate')}
+          />
+          <span className={spanClass}>{person.deathdate}</span>
+        </td>
+      )}
       <td>
         <Input
           bsSize="sm"

@@ -22,6 +22,8 @@ function App(props: AppProps) {
 
   const [split, setSplitValue] = useCache('split', !!props.split);
   const [showPersonCode, setShowCode] = useCache('showPersonCode', true);
+  const [showSex, setShowSex] = useCache('showSex', false);
+  const [showDeathdate, setShowDeathdate] = useCache('showDeathdate', false);
   const [editMode, setEditModeValue] = useState(false);
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);
@@ -80,6 +82,8 @@ function App(props: AppProps) {
         split,
         editMode,
         showPersonCode,
+        showSex,
+        showDeathdate,
         treeMap,
         setTreesValue,
         upsertPerson,
@@ -108,6 +112,30 @@ function App(props: AppProps) {
             />
             <Label for="showPersonCode-switch" check>
               Show person code
+            </Label>
+          </FormGroup>
+          <FormGroup switch>
+            <Input
+              type="switch"
+              checked={editMode || showSex}
+              id="showSex-switch"
+              disabled={editMode}
+              onChange={() => setShowSex(!showSex)}
+            />
+            <Label for="showSex-switch" check>
+              Show person sex
+            </Label>
+          </FormGroup>
+          <FormGroup switch>
+            <Input
+              type="switch"
+              checked={editMode || showDeathdate}
+              id="showDeathdate-switch"
+              disabled={editMode}
+              onChange={() => setShowDeathdate(!showDeathdate)}
+            />
+            <Label for="showDeathdate-switch" check>
+              Show person death date
             </Label>
           </FormGroup>
           <FormGroup switch>
