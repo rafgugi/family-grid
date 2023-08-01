@@ -72,6 +72,10 @@ function PersonRow({ person }: PersonRowProps) {
     inputClass = 'd-print-none';
     spanClass = 'd-none d-print-block';
   }
+  const sexMap: Record<string, string> = {
+    F: 'Female',
+    M: 'Male',
+  };
 
   return (
     <tr>
@@ -101,10 +105,10 @@ function PersonRow({ person }: PersonRowProps) {
             onChange={e => updatePerson(e, 'sex')}
           >
             <option value=""></option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
+            <option value="M">{sexMap.M}</option>
+            <option value="F">{sexMap.F}</option>
           </Input>
-          <span className={spanClass}>{person.sex}</span>
+          <span className={spanClass}>{person.sex ? sexMap[person.sex] || '' : ''}</span>
         </td>
       )}
       <td>
