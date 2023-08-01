@@ -30,7 +30,7 @@ interface ModalDeletePersonProps {
 const MIN_ROW = 3;
 const MAX_ROW = 20;
 
-function ModalDeletePerson({
+function ModalEditYaml({
   treeYaml,
   setTreeYaml,
   isOpen,
@@ -106,4 +106,4 @@ function ModalDeletePerson({
   );
 }
 
-export default ModalDeletePerson;
+export default ModalEditYaml;
