@@ -9,7 +9,12 @@ import ModalAddSpouse from './ModalAddSpouse';
 import ModalAddTree from './ModalAddTree';
 import ModalDeletePerson from './ModalDeletePerson';
 import ModalEditYaml from './ModalEditYaml';
-import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
+import {
+  deletePerson,
+  enrichTreeData,
+  treesToRecord,
+  unrichTreeData,
+} from '../family.util';
 import { useCache } from '../useCache';
 
 interface AppProps {
@@ -51,7 +56,7 @@ function App(props: AppProps) {
   const [showModalEditYaml, setShowModalEditYaml] = useState(false);
   const toggleModalEditYaml = () => setShowModalEditYaml(!showModalEditYaml);
   const openModalEditYaml = () => {
-    setTreeYaml(stringify(trees));
+    setTreeYaml(stringify(unrichTreeData(trees)));
     setShowModalEditYaml(true);
   };
 

@@ -43,17 +43,19 @@ function ModalEditYaml({
 
   const validForm = treeYaml && !yamlError;
 
+  const treesFromYaml = (yaml: string) => {
+    const rawFamilyData = parse(yaml);
+    return enrichTreeData(rawFamilyData?.trees, rawFamilyData?.people);
+  };
   useEffect(() => {
     try {
       // test parsing the yaml
-      enrichTreeData(parse(deferredTreeYaml), []);
-      if (yamlError !== '') {
-        setYamlError('');
-      }
+      treesFromYaml(deferredTreeYaml);
+      setYamlError('');
     } catch (e: any) {
       setYamlError(e.message);
     }
-  }, [deferredTreeYaml, yamlError]);
+  }, [deferredTreeYaml]);
 
   const rows = useMemo(() => {
     const lines = treeYaml.split('\n').length;
@@ -70,7 +72,7 @@ function ModalEditYaml({
   const handleSubmit = () => {
     if (loading || !validForm) return;
 
-    const trees = parse(treeYaml);
+    const trees = treesFromYaml(treeYaml);
     setTreesValue(trees);
     toggle();
   };
