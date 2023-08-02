@@ -59,9 +59,7 @@ function ModalEditYaml({
 
   const rows = useMemo(() => {
     const lines = treeYaml.split('\n').length;
-    if (lines < MIN_ROW) return MIN_ROW;
-    if (lines > MAX_ROW) return MAX_ROW;
-    return lines;
+    return Math.min(Math.max(lines, MIN_ROW), MAX_ROW);
   }, [treeYaml]);
 
   const handleTreeYamlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
