@@ -7,6 +7,8 @@ import {
 } from 'react';
 import {
   Button,
+  Card,
+  CardBody,
   FormFeedback,
   FormGroup,
   Input,
@@ -16,9 +18,11 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
+import { Person } from '../family.interface';
 import { enrichTreeData } from '../family.util';
 import { parse } from 'yaml';
 import AppContext from './AppContext';
+import FamilyDiagram from './FamilyDiagram';
 
 interface ModalDeletePersonProps {
   treeYaml: string;
@@ -38,6 +42,8 @@ function ModalEditYaml({
 }: ModalDeletePersonProps) {
   const { setTreesValue } = useContext(AppContext);
   const [yamlError, setYamlError] = useState('');
+  const [trees, setTrees] = useState([] as Person[]);
+  const deferredTree = useDeferredValue(trees);
   const deferredTreeYaml = useDeferredValue(treeYaml);
   const loading = deferredTreeYaml !== treeYaml;
 
@@ -47,10 +53,12 @@ function ModalEditYaml({
     const rawFamilyData = parse(yaml);
     return enrichTreeData(rawFamilyData?.trees, rawFamilyData?.people);
   };
+
   useEffect(() => {
     try {
       // test parsing the yaml
-      treesFromYaml(deferredTreeYaml);
+      const trees = treesFromYaml(deferredTreeYaml);
+      setTrees(trees);
       setYamlError('');
     } catch (e: any) {
       setYamlError(e.message);
@@ -80,7 +88,15 @@ function ModalEditYaml({
       <ModalHeader toggle={toggle}>Edit tree</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="edit-tree">Tree</Label>
+          <Label for="tree-preview">Tree preview</Label>
+          <Card for="tree-preview" outline color={validForm ? '' : 'danger'}>
+            <CardBody style={{ opacity: validForm ? 1 : 0.3 }}>
+              <FamilyDiagram trees={deferredTree} />
+            </CardBody>
+          </Card>
+        </FormGroup>
+        <FormGroup>
+          <Label for="edit-tree">Edit tree</Label>
           <Input
             type="textarea"
             id="edit-tree"
