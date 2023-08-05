@@ -1,6 +1,6 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMemo, useState } from 'react';
-import { stringify } from 'yaml';
+import { parse, stringify } from 'yaml';
 import { saveAs } from 'file-saver';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
@@ -77,6 +77,28 @@ function App(props: AppProps) {
       saveAs(blob, 'family_data.yaml');
     } catch (error) {
       console.error('Error saving YAML file:', error);
+    }
+  };
+
+  const handleLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const treeYaml = reader.result as string;
+          // assert valid treeYaml
+          const rawFamilyData = parse(treeYaml);
+          const trees = enrichTreeData(rawFamilyData?.trees, rawFamilyData?.people);
+
+          const unrichedTrees = unrichTreeData(trees);
+          setTreeYaml(stringify(unrichedTrees as {}));
+          setShowModalEditYaml(true);
+        } catch (error) {
+          console.error('Error loading YAML file:', error);
+        }
+      };
+      reader.readAsText(file);
     }
   };
 
@@ -164,8 +186,17 @@ function App(props: AppProps) {
             </Button>
           </FormGroup>
           <FormGroup>
+            <Button size="sm" tag="label">
+              Import
+              <Input
+                type="file"
+                className="d-none"
+                accept=".yaml, .yml"
+                onChange={handleLoad}
+              />
+            </Button>{' '}
             <Button size="sm" onClick={handleSave}>
-              Save
+              Export
             </Button>
           </FormGroup>
         </Form>
