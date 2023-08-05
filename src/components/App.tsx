@@ -1,6 +1,7 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMemo, useState } from 'react';
 import { stringify } from 'yaml';
+import { saveAs } from 'file-saver';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
 import Family from './Family';
@@ -66,6 +67,17 @@ function App(props: AppProps) {
   const openModalDeletePerson = () => {
     setModalPerson(null);
     setShowModalDeletePerson(true);
+  };
+
+  const handleSave = () => {
+    try {
+      const unrichedTrees = unrichTreeData(trees);
+      const treeYaml = stringify(unrichedTrees as {});
+      const blob = new Blob([treeYaml], { type: 'text/yaml;charset=utf-8' });
+      saveAs(blob, 'family_data.yaml');
+    } catch (error) {
+      console.error('Error saving YAML file:', error);
+    }
   };
 
   const treeMap = useMemo(() => treesToRecord(trees), [trees]);
@@ -149,6 +161,11 @@ function App(props: AppProps) {
               color="danger"
             >
               Delete person
+            </Button>
+          </FormGroup>
+          <FormGroup>
+            <Button size="sm" onClick={handleSave}>
+              Save
             </Button>
           </FormGroup>
         </Form>
