@@ -4,7 +4,9 @@ import { Person } from '../family.interface';
 interface AppContextValue {
   split: boolean;
   editMode: boolean;
-  hidePersonCode: boolean;
+  showPersonCode: boolean;
+  showSex: boolean;
+  showDeathdate: boolean;
   setTreesValue: (ps: Person[]) => void;
   upsertPerson: (p: Person) => void;
   deletePerson: (p: Person) => void;
@@ -14,7 +16,9 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue>({
   split: false,
   editMode: false,
-  hidePersonCode: false,
+  showPersonCode: false,
+  showSex: false,
+  showDeathdate: false,
   setTreesValue: () => {},
   upsertPerson: () => {},
   deletePerson: () => {},

@@ -21,7 +21,9 @@ function App(props: AppProps) {
   const [trees, setTreesValue] = useCache('trees', props.trees);
 
   const [split, setSplitValue] = useCache('split', !!props.split);
-  const [hidePersonCode, setHideCode] = useCache('hideCode', false);
+  const [showPersonCode, setShowCode] = useCache('showPersonCode', true);
+  const [showSex, setShowSex] = useCache('showSex', false);
+  const [showDeathdate, setShowDeathdate] = useCache('showDeathdate', false);
   const [editMode, setEditModeValue] = useState(false);
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);
@@ -79,7 +81,9 @@ function App(props: AppProps) {
       value={{
         split,
         editMode,
-        hidePersonCode,
+        showPersonCode,
+        showSex,
+        showDeathdate,
         treeMap,
         setTreesValue,
         upsertPerson,
@@ -96,18 +100,42 @@ function App(props: AppProps) {
               onChange={() => setSplitValue(!split)}
             />
             <Label for="split-switch" check>
-              Split Family
+              Split family
             </Label>
           </FormGroup>
           <FormGroup switch>
             <Input
               type="switch"
-              checked={hidePersonCode}
-              id="hidePersonCode-switch"
-              onChange={() => setHideCode(!hidePersonCode)}
+              checked={showPersonCode}
+              id="showPersonCode-switch"
+              onChange={() => setShowCode(!showPersonCode)}
             />
-            <Label for="hidePersonCode-switch" check>
-              Hide Code
+            <Label for="showPersonCode-switch" check>
+              Show person code
+            </Label>
+          </FormGroup>
+          <FormGroup switch>
+            <Input
+              type="switch"
+              checked={editMode || showSex}
+              id="showSex-switch"
+              disabled={editMode}
+              onChange={() => setShowSex(!showSex)}
+            />
+            <Label for="showSex-switch" check>
+              Show person sex
+            </Label>
+          </FormGroup>
+          <FormGroup switch>
+            <Input
+              type="switch"
+              checked={editMode || showDeathdate}
+              id="showDeathdate-switch"
+              disabled={editMode}
+              onChange={() => setShowDeathdate(!showDeathdate)}
+            />
+            <Label for="showDeathdate-switch" check>
+              Show person death date
             </Label>
           </FormGroup>
           <FormGroup switch>
@@ -118,7 +146,7 @@ function App(props: AppProps) {
               onChange={() => setEditModeValue(!editMode)}
             />
             <Label for="editMode-switch" check>
-              Edit Mode
+              Edit mode
             </Label>
           </FormGroup>
           <FormGroup>
