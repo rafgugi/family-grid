@@ -17,6 +17,7 @@ import {
   unrichTreeData,
 } from '../family.util';
 import { useCache } from '../useCache';
+import Footer from './Footer';
 
 interface AppProps {
   trees: Person[];
@@ -208,6 +209,8 @@ function App(props: AppProps) {
       <Container className="pb-3" fluid="sm">
         <Family trees={trees} />
       </Container>
+
+      <Footer />
 
       <ModalAddTree isOpen={showModalAddTree} toggle={toggleModalAddTree} />
       <ModalAddChild
