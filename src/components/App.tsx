@@ -166,32 +166,32 @@ function App(props: AppProps) {
           </FormGroup>
           <FormGroup>
             <Button size="sm" onClick={() => openModalAddTree()}>
-              Add tree
+              <i className="bi-person-plus-fill" /> Add tree
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddChild(trees[0])}>
-              Add child
+              <i className="bi-person-plus-fill" /> Add child
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
-              Add spouse
-            </Button>{' '}
-            <Button
-              size="sm"
-              onClick={() => openModalEditYaml()}
-              color="warning"
-            >
-              Edit tree
+              <i className="bi-person-plus-fill" /> Add spouse
             </Button>{' '}
             <Button
               size="sm"
               onClick={() => openModalDeletePerson()}
               color="danger"
             >
-              Delete person
+              <i className="bi-person-dash-fill" /> Delete person
             </Button>
           </FormGroup>
           <FormGroup>
+            <Button
+              size="sm"
+              onClick={() => openModalEditYaml()}
+              color="warning"
+            >
+              <i className="bi-filetype-yml" /> Edit tree
+            </Button>{' '}
             <Button size="sm" tag="label">
-              Import
+              <i className="bi-upload" /> Import
               <Input
                 type="file"
                 className="d-none"
@@ -200,7 +200,7 @@ function App(props: AppProps) {
               />
             </Button>{' '}
             <Button size="sm" onClick={handleSave}>
-              Export
+              <i className="bi-download" /> Export
             </Button>
           </FormGroup>
         </Form>
