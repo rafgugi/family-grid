@@ -153,7 +153,7 @@ function App(props: AppProps) {
               Hide Code
             </Label>
           </FormGroup>
-          <FormGroup switch>
+          <FormGroup switch className="mb-3">
             <Input
               type="switch"
               checked={editMode}
