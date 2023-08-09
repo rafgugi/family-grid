@@ -31,22 +31,13 @@ members, and explore your family's history in a user-friendly interface.
 
 ## Installation
 
-Create your family data from the example
-
-```sh
-cp src/data.example.yml src/data.yml
-vim src/data.yml
-```
-
 Run the app in the development mode.
 
 ```sh
 npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits in the `src/data.yml`. You will also see any lint errors in the console.
+Open [http://localhost:3000](http://localhost:3000) to open app in the browser.
 
 ## Available Scripts
 
