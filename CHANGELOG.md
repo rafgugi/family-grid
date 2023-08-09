@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.0.0] 2023-08-09
+
 - Enable Open and Save for Family Data File (#17)
 - Add Diagram Preview for Editing YAML (#17)
 - Enable Edit of Tree YAML Using Modal (#15)
