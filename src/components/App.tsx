@@ -1,6 +1,7 @@
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useMemo, useState } from 'react';
-import { stringify } from 'yaml';
+import { parse, stringify } from 'yaml';
+import { saveAs } from 'file-saver';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
 import Family from './Family';
@@ -9,7 +10,12 @@ import ModalAddSpouse from './ModalAddSpouse';
 import ModalAddTree from './ModalAddTree';
 import ModalDeletePerson from './ModalDeletePerson';
 import ModalEditYaml from './ModalEditYaml';
-import { deletePerson, enrichTreeData, treesToRecord } from '../family.util';
+import {
+  deletePerson,
+  enrichTreeData,
+  treesToRecord,
+  unrichTreeData,
+} from '../family.util';
 import { useCache } from '../useCache';
 
 interface AppProps {
@@ -51,7 +57,7 @@ function App(props: AppProps) {
   const [showModalEditYaml, setShowModalEditYaml] = useState(false);
   const toggleModalEditYaml = () => setShowModalEditYaml(!showModalEditYaml);
   const openModalEditYaml = () => {
-    setTreeYaml(stringify(trees));
+    setTreeYaml(stringify(unrichTreeData(trees)));
     setShowModalEditYaml(true);
   };
 
@@ -61,6 +67,42 @@ function App(props: AppProps) {
   const openModalDeletePerson = () => {
     setModalPerson(null);
     setShowModalDeletePerson(true);
+  };
+
+  const handleSave = () => {
+    try {
+      const unrichedTrees = unrichTreeData(trees);
+      const treeYaml = stringify(unrichedTrees as {});
+      const blob = new Blob([treeYaml], { type: 'text/yaml;charset=utf-8' });
+      saveAs(blob, 'family_data.yaml');
+    } catch (error) {
+      console.error('Error saving YAML file:', error);
+    }
+  };
+
+  const handleLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const treeYaml = reader.result as string;
+          // assert valid treeYaml
+          const rawFamilyData = parse(treeYaml);
+          const trees = enrichTreeData(
+            rawFamilyData?.trees,
+            rawFamilyData?.people
+          );
+
+          const unrichedTrees = unrichTreeData(trees);
+          setTreeYaml(stringify(unrichedTrees as {}));
+          setShowModalEditYaml(true);
+        } catch (error) {
+          console.error('Error loading YAML file:', error);
+        }
+      };
+      reader.readAsText(file);
+    }
   };
 
   const treeMap = useMemo(() => treesToRecord(trees), [trees]);
@@ -144,6 +186,20 @@ function App(props: AppProps) {
               color="danger"
             >
               Delete person
+            </Button>
+          </FormGroup>
+          <FormGroup>
+            <Button size="sm" tag="label">
+              Import
+              <Input
+                type="file"
+                className="d-none"
+                accept=".yaml, .yml"
+                onChange={handleLoad}
+              />
+            </Button>{' '}
+            <Button size="sm" onClick={handleSave}>
+              Export
             </Button>
           </FormGroup>
         </Form>

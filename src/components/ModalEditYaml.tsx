@@ -7,6 +7,8 @@ import {
 } from 'react';
 import {
   Button,
+  Card,
+  CardBody,
   FormFeedback,
   FormGroup,
   Input,
@@ -16,9 +18,11 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
+import { Person } from '../family.interface';
 import { enrichTreeData } from '../family.util';
 import { parse } from 'yaml';
 import AppContext from './AppContext';
+import FamilyDiagram from './FamilyDiagram';
 
 interface ModalDeletePersonProps {
   treeYaml: string;
@@ -30,7 +34,7 @@ interface ModalDeletePersonProps {
 const MIN_ROW = 3;
 const MAX_ROW = 20;
 
-function ModalDeletePerson({
+function ModalEditYaml({
   treeYaml,
   setTreeYaml,
   isOpen,
@@ -38,28 +42,32 @@ function ModalDeletePerson({
 }: ModalDeletePersonProps) {
   const { setTreesValue } = useContext(AppContext);
   const [yamlError, setYamlError] = useState('');
+  const [trees, setTrees] = useState([] as Person[]);
+  const deferredTree = useDeferredValue(trees);
   const deferredTreeYaml = useDeferredValue(treeYaml);
   const loading = deferredTreeYaml !== treeYaml;
 
   const validForm = treeYaml && !yamlError;
 
+  const treesFromYaml = (yaml: string) => {
+    const rawFamilyData = parse(yaml);
+    return enrichTreeData(rawFamilyData?.trees, rawFamilyData?.people);
+  };
+
   useEffect(() => {
     try {
       // test parsing the yaml
-      enrichTreeData(parse(deferredTreeYaml), []);
-      if (yamlError !== '') {
-        setYamlError('');
-      }
+      const trees = treesFromYaml(deferredTreeYaml);
+      setTrees(trees);
+      setYamlError('');
     } catch (e: any) {
       setYamlError(e.message);
     }
-  }, [deferredTreeYaml, yamlError]);
+  }, [deferredTreeYaml]);
 
   const rows = useMemo(() => {
     const lines = treeYaml.split('\n').length;
-    if (lines < MIN_ROW) return MIN_ROW;
-    if (lines > MAX_ROW) return MAX_ROW;
-    return lines;
+    return Math.min(Math.max(lines, MIN_ROW), MAX_ROW);
   }, [treeYaml]);
 
   const handleTreeYamlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +78,7 @@ function ModalDeletePerson({
   const handleSubmit = () => {
     if (loading || !validForm) return;
 
-    const trees = parse(treeYaml);
+    const trees = treesFromYaml(treeYaml);
     setTreesValue(trees);
     toggle();
   };
@@ -80,7 +88,15 @@ function ModalDeletePerson({
       <ModalHeader toggle={toggle}>Edit tree</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="edit-tree">Tree</Label>
+          <Label for="tree-preview">Tree preview</Label>
+          <Card for="tree-preview" outline color={validForm ? '' : 'danger'}>
+            <CardBody style={{ opacity: validForm ? 1 : 0.3 }}>
+              <FamilyDiagram trees={deferredTree} />
+            </CardBody>
+          </Card>
+        </FormGroup>
+        <FormGroup>
+          <Label for="edit-tree">Edit tree</Label>
           <Input
             type="textarea"
             id="edit-tree"
@@ -106,4 +122,4 @@ function ModalDeletePerson({
   );
 }
 
-export default ModalDeletePerson;
+export default ModalEditYaml;

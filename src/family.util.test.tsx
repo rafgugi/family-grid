@@ -1,61 +1,28 @@
-import { Person } from './family.interface';
 import {
   deletePerson,
   enrichTreeData,
   explodeTrees,
   treesToPersonNode,
   treesToRecord,
+  unrichTreeData,
 } from './family.util';
 
-const familyData = {
-  trees: [{
-    id: 'satyr',
-    marriages: [{
-      spouse: { id: 'surtr' },
-      children: [{
-        id: 'hound',
-        marriages: [{
-          spouse: { id: 'alpha' },
-          children: [{ id: 'ryora' }]
-        }]
-      }]
-    }, {
-      spouse: { id: 'nala' },
-      children: [{ id: 'mufasa' }]
-    }]
+const familyData = [{
+  id: 'satyr',
+  marriages: [{
+    spouse: { id: 'surtr' },
+    children: [{
+      id: 'hound',
+      marriages: [{
+        spouse: { id: 'alpha' },
+        children: [{ id: 'ryora' }],
+      }],
+    }],
+  }, {
+    spouse: { id: 'nala' },
+    children: [{ id: 'mufasa' }],
   }],
-  people: {
-    satyr: {
-      name: 'Muhammad Satyr',
-      birthdate: '1982-02-13',
-      sex: 'M',
-    },
-    surtr: {
-      name: 'Amalia Surtrain',
-      birthdate: '1987-11-21',
-      deathdate: '2021-01-13',
-      sex: 'F',
-    },
-    hound: {
-      name: 'Muhammad Hound',
-      birthdate: '2007-06-09',
-      sex: 'M',
-    },
-    alpha: {
-      name: 'Siti Alpha',
-      birthdate: '2008-06-19',
-      sex: 'F',
-    },
-    ryora: {
-      name: 'Muhammad Ryora',
-      birthdate: '2030-03-12',
-      sex: 'M',
-    },
-    nala: {
-      sex: 'F',
-    },
-  },
-};
+}];
 
 const doubleFamilyData = {
   trees: [{
@@ -66,25 +33,117 @@ const doubleFamilyData = {
         id: 'hound',
         marriages: [{
           spouse: { id: 'alpha' },
-          children: [{ id: 'ryora' }]
-        }]
-      }]
+          children: [{ id: 'ryora' }],
+        }],
+      }],
     }, {
       spouse: { id: 'nala' },
-      children: [{ id: 'mufasa' }]
-    }]
+      children: [{ id: 'mufasa' }],
+    }],
   }, {
     id: 'angela',
     sex: 'F',
     marriages: [{
       spouse: { id: 'saber', sex: 'M' },
-      children: [{ id: 'alpha' }]
-    }]
-  }]
+      children: [{ id: 'alpha' }],
+    }],
+  }],
 };
 
+const enrichingPeople = {
+  satyr: {
+    name: 'Muhammad Satyr',
+    birthdate: '1982-02-13',
+    sex: 'M',
+  },
+  surtr: {
+    name: 'Amalia Surtrain',
+    birthdate: '1987-11-21',
+    deathdate: '2021-01-13',
+    sex: 'F',
+  },
+  hound: {
+    name: 'Muhammad Hound',
+    birthdate: '2007-06-09',
+    sex: 'M',
+  },
+  alpha: {
+    name: 'Siti Alpha',
+    birthdate: '2008-06-19',
+    sex: 'F',
+  },
+  ryora: {
+    name: 'Muhammad Ryora',
+    birthdate: '2030-03-12',
+    sex: 'M',
+  },
+  nala: {
+    sex: 'F',
+  },
+};
+
+const enrichedTree = [{
+  id: 'satyr',
+  code: '1',
+  name: 'Muhammad Satyr',
+  sex: 'M',
+  birthdate: '1982-02-13',
+  marriages: [{
+    spouse: {
+      id: 'surtr',
+      code: '1M1',
+      name: 'Amalia Surtrain',
+      sex: 'F',
+      birthdate: '1987-11-21',
+      deathdate: '2021-01-13',
+      marriages: [],
+    },
+    children: [{
+      id: 'hound',
+      code: '1.101',
+      name: 'Muhammad Hound',
+      sex: 'M',
+      birthdate: '2007-06-09',
+      marriages: [{
+        spouse: {
+          id: 'alpha',
+          code: '1.101M',
+          name: 'Siti Alpha',
+          sex: 'F',
+          birthdate: '2008-06-19',
+          marriages: [],
+        },
+        children: [{
+          id: 'ryora',
+          code: '1.101.01',
+          name: 'Muhammad Ryora',
+          sex: 'M',
+          birthdate: '2030-03-12',
+          marriages: [],
+        }],
+      }],
+    }],
+  }, {
+    spouse: {
+      id: 'nala',
+      code: '1M2',
+      sex: 'F',
+      marriages: [],
+    },
+    children: [{
+      id: 'mufasa',
+      code: '1.201',
+      marriages: [],
+    }],
+  }],
+}];
+
 describe('enrichTreeData', () => {
-  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const trees = enrichTreeData(familyData, enrichingPeople);
+
+  it('each person has correct properties', () => {
+    expect(trees).toEqual(enrichedTree);
+  });
 
   it('doesnt change the family data trees', () => {
     const oldTree = [{
@@ -95,66 +154,16 @@ describe('enrichTreeData', () => {
           id: 'hound',
           marriages: [{
             spouse: { id: 'alpha' },
-            children: [{ id: 'ryora' }]
-          }]
-        }]
+            children: [{ id: 'ryora' }],
+          }],
+        }],
       }, {
         spouse: { id: 'nala' },
-        children: [{ id: 'mufasa' }]
-      }]
+        children: [{ id: 'mufasa' }],
+      }],
     }];
 
-    expect(familyData.trees).toEqual(oldTree);
-  });
-
-  it('each person has correct properties', () => {
-    const tree = trees[0] as Person;
-    const people = familyData.people;
-    let person: Person = tree;
-
-    expect(person.id).toEqual('satyr');
-    expect(person.code).toEqual('1');
-    expect(person.name).toEqual(people.satyr.name);
-    expect(person.birthdate).toEqual(people.satyr.birthdate);
-    expect(person.sex).toEqual(people.satyr.sex);
-
-    person = tree.marriages[0].spouse;
-    expect(person.id).toEqual('surtr');
-    expect(person.code).toEqual('1M1');
-    expect(person.name).toEqual(people.surtr.name);
-    expect(person.birthdate).toEqual(people.surtr.birthdate);
-    expect(person.deathdate).toEqual(people.surtr.deathdate);
-    expect(person.sex).toEqual(people.surtr.sex);
-
-    person = tree.marriages[0].children[0];
-    expect(person.id).toEqual('hound');
-    expect(person.code).toEqual('1.101');
-    expect(person.name).toEqual(people.hound.name);
-    expect(person.birthdate).toEqual(people.hound.birthdate);
-    expect(person.sex).toEqual(people.hound.sex);
-
-    person = tree.marriages[0].children[0].marriages[0].spouse;
-    expect(person.id).toEqual('alpha');
-    expect(person.code).toEqual('1.101M');
-    expect(person.name).toEqual(people.alpha.name);
-    expect(person.birthdate).toEqual(people.alpha.birthdate);
-    expect(person.sex).toEqual(people.alpha.sex);
-
-    person = tree.marriages[0].children[0].marriages[0].children[0];
-    expect(person.id).toEqual('ryora');
-    expect(person.code).toEqual('1.101.01');
-    expect(person.name).toEqual(people.ryora.name);
-    expect(person.birthdate).toEqual(people.ryora.birthdate);
-    expect(person.sex).toEqual(people.ryora.sex);
-
-    person = tree.marriages[1].spouse;
-    expect(person.id).toEqual('nala');
-    expect(person.code).toEqual('1M2');
-    expect(person.sex).toEqual(people.nala.sex);
-
-    person = tree.marriages[1].children[0];
-    expect(person.id).toEqual('mufasa');
-    expect(person.code).toEqual('1.201');
+    expect(familyData).toEqual(oldTree);
   });
 
   test('empty data returns empty array', () => {
@@ -166,13 +175,13 @@ describe('enrichTreeData', () => {
       {},
       {
         id: 'satyr',
-        marriages: [{}]
+        marriages: [{}],
       },
       {
         id: 'hound',
         marriages: [{
-          children: [{ id: 'ryora' }, { name: 'meta' }]
-        }]
+          children: [{ id: 'ryora' }, { name: 'meta' }],
+        }],
       },
     ];
     const trees = enrichTreeData(familyData, []);
@@ -238,11 +247,60 @@ describe('enrichTreeData', () => {
     test('param is null', () => {
       expect(enrichTreeData(null, [])).toEqual([]);
     });
-  })
+  });
+});
+
+describe('unrichTreeData', () => {
+  describe('single tree', () => {
+    const { trees, people } = unrichTreeData(enrichedTree);
+
+    test('each person has correct properties', () => {
+      expect(trees).toEqual(familyData);
+      expect(people).toEqual({
+        satyr: {
+          code: '1',
+          name: 'Muhammad Satyr',
+          sex: 'M',
+          birthdate: '1982-02-13',
+        },
+        surtr: {
+          code: '1M1',
+          name: 'Amalia Surtrain',
+          sex: 'F',
+          birthdate: '1987-11-21',
+          deathdate: '2021-01-13',
+        },
+        hound: {
+          code: '1.101',
+          name: 'Muhammad Hound',
+          sex: 'M',
+          birthdate: '2007-06-09',
+        },
+        alpha: {
+          code: '1.101M',
+          name: 'Siti Alpha',
+          sex: 'F',
+          birthdate: '2008-06-19',
+        },
+        ryora: {
+          code: '1.101.01',
+          name: 'Muhammad Ryora',
+          sex: 'M',
+          birthdate: '2030-03-12',
+        },
+        nala: { code: '1M2', sex: 'F' },
+        mufasa: { code: '1.201' },
+      });
+    });
+
+    test('should be reverted to rich tree data', () => {
+      expect(enrichTreeData(trees, people)).toEqual(enrichedTree);
+    });
+  });
 });
 
 describe('treesToPersonNode', () => {
-  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const trees = enrichTreeData(familyData, enrichingPeople);
 
   test('without depth', () => {
     const nodes = treesToPersonNode(trees);
@@ -270,7 +328,7 @@ describe('treesToPersonNode', () => {
 
   describe('with double trees', () => {
     test('without depth', () => {
-      const trees = enrichTreeData(doubleFamilyData.trees, familyData.people);
+      const trees = enrichTreeData(doubleFamilyData.trees, enrichingPeople);
       const nodes = treesToPersonNode(trees);
       expect(nodes).toEqual([
         { key: 'satyr', name: 'satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
@@ -288,7 +346,7 @@ describe('treesToPersonNode', () => {
 });
 
 describe('explodeTrees', () => {
-  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const trees = enrichTreeData(familyData, enrichingPeople);
 
   test('without depth', () => {
     const people = explodeTrees(trees);
@@ -304,7 +362,7 @@ describe('explodeTrees', () => {
 });
 
 describe('treesToRecord', () => {
-  const trees = enrichTreeData(familyData.trees, familyData.people);
+  const trees = enrichTreeData(familyData, enrichingPeople);
   const record = treesToRecord(trees);
 
   it('has all of the people', () => {
@@ -321,7 +379,7 @@ describe('treesToRecord', () => {
 });
 
 describe('deletePerson', () => {
-  const trees = enrichTreeData(familyData.trees, []);
+  const trees = enrichTreeData(familyData, []);
 
   test('person is root', () => {
     expect(deletePerson(trees, 'satyr')).toEqual([]);
@@ -333,11 +391,11 @@ describe('deletePerson', () => {
       code: '1',
       marriages: [{
         spouse: { id: 'surtr', code: '1M1', marriages: [] },
-        children: []
+        children: [],
       }, {
         spouse: { id: 'nala', code: '1M2', marriages: [] },
-        children: [{ id: 'mufasa', code: '1.201', marriages: [] }]
-      }]
+        children: [{ id: 'mufasa', code: '1.201', marriages: [] }],
+      }],
     }]);
 
     expect(deletePerson(trees, 'ryora')).toEqual([{
@@ -350,13 +408,13 @@ describe('deletePerson', () => {
           code: '1.101',
           marriages: [{
             spouse: { id: 'alpha', code: '1.101M', marriages: [] },
-            children: []
-          }]
-        }]
+            children: [],
+          }],
+        }],
       }, {
         spouse: { id: 'nala', code: '1M2', marriages: [] },
-        children: [{ id: 'mufasa', code: '1.201', marriages: [] }]
-      }]
+        children: [{ id: 'mufasa', code: '1.201', marriages: [] }],
+      }],
     }]);
   });
 
@@ -366,8 +424,8 @@ describe('deletePerson', () => {
       code: '1',
       marriages: [{
         spouse: { id: 'nala', code: '1M2', marriages: [] },
-        children: [{ id: 'mufasa', code: '1.201', marriages: [] }]
-      }]
+        children: [{ id: 'mufasa', code: '1.201', marriages: [] }],
+      }],
     }]);
 
     expect(deletePerson(trees, 'nala')).toEqual([{
@@ -380,10 +438,10 @@ describe('deletePerson', () => {
           code: '1.101',
           marriages: [{
             spouse: { id: 'alpha', code: '1.101M', marriages: [] },
-            children: [{ id: 'ryora', code: '1.101.01', marriages: [] }]
-          }]
-        }]
-      }]
+            children: [{ id: 'ryora', code: '1.101.01', marriages: [] }],
+          }],
+        }],
+      }],
     }]);
   });
 });
