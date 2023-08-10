@@ -88,8 +88,8 @@ function ModalEditYaml({
       <ModalHeader toggle={toggle}>Edit tree</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="tree-preview">Tree preview</Label>
-          <Card for="tree-preview" outline color={validForm ? '' : 'danger'}>
+          <span className="mb-2 d-inline-block">Tree preview</span>
+          <Card outline color={validForm ? '' : 'danger'}>
             <CardBody style={{ opacity: validForm ? 1 : 0.3 }}>
               <FamilyDiagram trees={deferredTree} />
             </CardBody>
@@ -115,7 +115,7 @@ function ModalEditYaml({
       </ModalBody>
       <ModalFooter>
         <Button color="warning" disabled={!validForm} onClick={handleSubmit}>
-          Update!
+          Apply
         </Button>
       </ModalFooter>
     </Modal>

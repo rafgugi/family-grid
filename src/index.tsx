@@ -5,7 +5,8 @@ import { Person } from './family.interface';
 import { enrichTreeData } from './family.util';
 import rawFamilyData from './data.yml';
 
-import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.min.css';
 
 let familyData = [] as Person[];
 if (typeof rawFamilyData === 'object') {

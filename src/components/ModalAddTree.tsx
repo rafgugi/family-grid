@@ -54,7 +54,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
       <ModalHeader toggle={toggle}>Add a tree</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="input-child">Child</Label>
+          <Label for="input-tree">Child</Label>
           <Input
             id="input-tree"
             type="text"
