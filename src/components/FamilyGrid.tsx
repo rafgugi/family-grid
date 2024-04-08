@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext } from 'react';
 import { Input, Table } from 'reactstrap';
 import { Person } from '../family.interface';
-import { explodeTrees } from '../family.util';
+import { explodeTrees, idAsNickName } from '../family.util';
 import AppContext from './AppContext';
 
 interface FamilyGridProps {
@@ -59,7 +59,8 @@ function FamilyRows({ person, ...props }: PersonRowProps) {
 
 function PersonRow({ person }: PersonRowProps) {
   const { editMode, hidePersonCode, upsertPerson } = useContext(AppContext);
-  const name = person.name || person.id;
+  const nickName = idAsNickName(person.id);
+  const name = person.name || nickName;
 
   const updatePerson = function (e: ChangeEvent<any>, key: string) {
     upsertPerson({ ...person, [key]: e.target.value });
@@ -87,7 +88,7 @@ function PersonRow({ person }: PersonRowProps) {
         />
         <span className={spanClass}>
           {name}
-          {person.name && <small className="fw-light"> ({person.id})</small>}
+          {person.name && <small className="fw-light"> ({nickName})</small>}
         </span>
       </td>
       <td>
