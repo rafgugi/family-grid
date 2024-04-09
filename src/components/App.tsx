@@ -29,6 +29,7 @@ function App(props: AppProps) {
 
   const [split, setSplitValue] = useCache('split', !!props.split);
   const [hidePersonCode, setHideCode] = useCache('hideCode', false);
+  const [hidePersonIg, setHideIg] = useCache('hideCode', false);
   const [editMode, setEditModeValue] = useState(false);
 
   const [modalPerson, setModalPerson] = useState(null as Person | null);
@@ -123,6 +124,7 @@ function App(props: AppProps) {
         split,
         editMode,
         hidePersonCode,
+        hidePersonIg,
         treeMap,
         setTreesValue,
         upsertPerson,
@@ -145,12 +147,23 @@ function App(props: AppProps) {
           <FormGroup switch>
             <Input
               type="switch"
-              checked={hidePersonCode}
+              checked={!hidePersonCode}
               id="hidePersonCode-switch"
               onChange={() => setHideCode(!hidePersonCode)}
             />
             <Label for="hidePersonCode-switch" check>
-              Hide Code
+              Show Code
+            </Label>
+          </FormGroup>
+          <FormGroup switch>
+            <Input
+              type="switch"
+              checked={!hidePersonIg}
+              id="hidePersonIg-switch"
+              onChange={() => setHideIg(!hidePersonIg)}
+            />
+            <Label for="hidePersonIg-switch" check>
+              Show Instagram
             </Label>
           </FormGroup>
           <FormGroup switch className="mb-3">
