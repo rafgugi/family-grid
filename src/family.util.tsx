@@ -234,5 +234,9 @@ export function treesToPersonNode(
 
 // remove number and capitalize first letter
 export function idAsNickName(id: string): string {
-  return id.replace(/\d/g, '').replace(/^\w/, c => c.toUpperCase());
+  return id
+    .trim()
+    .replace(/\d/g, '')
+    .replace(/[-_. ]+/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
 }

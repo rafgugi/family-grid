@@ -450,7 +450,8 @@ describe('deletePerson', () => {
 describe('idAsNickName', () => {
   test('convert correctly', () => {
     expect(idAsNickName('satyr')).toEqual('Satyr');
-    expect(idAsNickName('satyr123')).toEqual('Satyr');
+    expect(idAsNickName(' satyr123 ')).toEqual('Satyr');
     expect(idAsNickName('sat123yr')).toEqual('Satyr');
+    expect(idAsNickName('m..satyr')).toEqual('M Satyr');
   });
 });
