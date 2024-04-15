@@ -46,12 +46,12 @@ function App(props: AppProps) {
   const [treeYaml, setTreeYaml] = useState('');
 
   const { t, i18n } = useTranslation();
-  const languages = [...i18n.languages].sort();
   const [language, setLanguage] = useCache('language', 'en');
+  i18n.on('languageChanged', (lang: string) => setLanguage(lang));
   useEffect(() => {
-    // TODO: this kept being called maybe because of changed i18n
     i18n.changeLanguage(language);
-  }, [language, i18n]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const languages = i18n.languages ? [...i18n.languages].sort() : [];
 
   const [showModalAddTree, setShowModalAddTree] = useState(false);
   const toggleModalAddTree = () => setShowModalAddTree(!showModalAddTree);
@@ -157,8 +157,8 @@ function App(props: AppProps) {
                   outline
                   size="sm"
                   key={lang}
-                  onClick={() => setLanguage(lang)}
-                  active={lang === language}
+                  onClick={() => i18n.changeLanguage(lang)}
+                  active={lang === i18n.language}
                 >
                   {lang}
                 </Button>
