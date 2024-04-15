@@ -87,11 +87,11 @@ function ModalEditYaml({
 
   return (
     <Modal size="xl" isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>{t('config.edit_tree')}</ModalHeader>
+      <ModalHeader toggle={toggle}>{t('config.editTree')}</ModalHeader>
       <ModalBody>
         <FormGroup>
           <span className="mb-2 d-inline-block">
-            {t('config.label.tree_preview')}
+            {t('config.label.treePreview')}
           </span>
           <Card outline color={validForm ? '' : 'danger'}>
             <CardBody style={{ opacity: validForm ? 1 : 0.3 }}>
@@ -100,7 +100,7 @@ function ModalEditYaml({
           </Card>
         </FormGroup>
         <FormGroup>
-          <Label for="edit-tree">{t('config.label.edit_tree')}</Label>
+          <Label for="edit-tree">{t('config.label.editTree')}</Label>
           <Input
             type="textarea"
             id="edit-tree"

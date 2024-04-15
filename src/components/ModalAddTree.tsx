@@ -31,7 +31,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
 
     setChildError('');
     if (Object.keys(treeMap).includes(value)) {
-      setChildError(t('error.already_taken', { value: value }));
+      setChildError(t('error.alreadyTaken', { value: value }));
     }
   };
 
@@ -53,7 +53,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>{t('config.label.add_tree')}</ModalHeader>
+      <ModalHeader toggle={toggle}>{t('config.label.addTree')}</ModalHeader>
       <ModalBody>
         <FormGroup>
           <Label for="input-tree">{t('config.label.person')}</Label>

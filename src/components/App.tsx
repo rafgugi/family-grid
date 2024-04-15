@@ -144,7 +144,7 @@ function App(props: AppProps) {
               onChange={() => setSplitValue(!split)}
             />
             <Label for="split-switch" check>
-              {t('config.split_family')}
+              {t('config.splitFamily')}
             </Label>
           </FormGroup>
           <FormGroup switch>
@@ -155,7 +155,7 @@ function App(props: AppProps) {
               onChange={() => setHideCode(!hidePersonCode)}
             />
             <Label for="hidePersonCode-switch" check>
-              {t('config.show_code')}
+              {t('config.showCode')}
             </Label>
           </FormGroup>
           <FormGroup switch>
@@ -166,7 +166,7 @@ function App(props: AppProps) {
               onChange={() => setHideIg(!hidePersonIg)}
             />
             <Label for="hidePersonIg-switch" check>
-              {t('config.show_ig')}
+              {t('config.showIg')}
             </Label>
           </FormGroup>
           <FormGroup switch className="mb-3">
@@ -177,25 +177,25 @@ function App(props: AppProps) {
               onChange={() => setEditModeValue(!editMode)}
             />
             <Label for="editMode-switch" check>
-              {t('config.edit_mode')}
+              {t('config.editMode')}
             </Label>
           </FormGroup>
           <FormGroup>
             <Button size="sm" onClick={() => openModalAddTree()}>
-              <i className="bi-person-plus-fill" /> {t('config.add_tree')}
+              <i className="bi-person-plus-fill" /> {t('config.addTree')}
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddChild(trees[0])}>
-              <i className="bi-person-plus-fill" /> {t('config.add_child')}
+              <i className="bi-person-plus-fill" /> {t('config.addChild')}
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
-              <i className="bi-person-plus-fill" /> {t('config.add_spouse')}
+              <i className="bi-person-plus-fill" /> {t('config.addSpouse')}
             </Button>{' '}
             <Button
               size="sm"
               onClick={() => openModalDeletePerson()}
               color="danger"
             >
-              <i className="bi-person-dash-fill" /> {t('config.delete_person')}
+              <i className="bi-person-dash-fill" /> {t('config.deletePerson')}
             </Button>
           </FormGroup>
           <FormGroup>
@@ -204,7 +204,7 @@ function App(props: AppProps) {
               onClick={() => openModalEditYaml()}
               color="warning"
             >
-              <i className="bi-filetype-yml" /> {t('config.edit_tree')}
+              <i className="bi-filetype-yml" /> {t('config.editTree')}
             </Button>{' '}
             <Button size="sm" tag="label">
               <i className="bi-upload" /> {t('config.import')}

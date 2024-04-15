@@ -1,36 +1,36 @@
 translation:
-  config.add_child: Tambah Anak
-  config.add_spouse: Tambah Pasangan
-  config.add_tree: Tambah Keluarga
+  config.addChild: Tambah Anak
+  config.addSpouse: Tambah Pasangan
+  config.addTree: Tambah Keluarga
   config.button.apply: Terapkan!
   config.button.delete: Hapus!
   config.button.submit: Terapkan!
-  config.delete_person: Hapus Orang
-  config.edit_mode: Mode Edit
-  config.edit_tree: Edit Pohon Keluarga
+  config.deletePerson: Hapus Orang
+  config.editMode: Mode Edit
+  config.editTree: Edit Pohon Keluarga
   config.export: Expor
   config.import: Impor
-  config.label.add_child: Tambah Anak
-  config.label.add_spouse: Tambah Pasangan
-  config.label.add_tree: Tambah Keluarga
+  config.label.addChild: Tambah Anak
+  config.label.addSpouse: Tambah Pasangan
+  config.label.addTree: Tambah Keluarga
   config.label.child: Anak
-  config.label.delete_person: Hapus Orang
-  config.label.edit_tree: Edit Pohon Keluarga
+  config.label.deletePerson: Hapus Orang
+  config.label.editTree: Edit Pohon Keluarga
   config.label.person: Orang
-  config.label.select_child: Pilih Anak
-  config.label.select_person: Pilih Orang
-  config.label.select_spouse: Pilih Pasangan
+  config.label.selectChild: Pilih Anak
+  config.label.selectPerson: Pilih Orang
+  config.label.selectSpouse: Pilih Pasangan
   config.label.spouse: Pasangan
-  config.label.tree_preview: Tampilan Diagram Pohon Keluarga
+  config.label.treePreview: Tampilan Diagram Pohon Keluarga
   config.placeholder.child: Masukkan nama panggilan anak
   config.placeholder.person: Masukkan nama panggilan orang
   config.placeholder.spouse: Masukkan nama panggilan pasangan
-  config.show_code: Tampilkan Kode
-  config.show_ig: Tampilkan Instagram
-  config.split_family: Pisah Per Keluarga
-  error.already_taken: '{{value}} sudah digunakan'
+  config.showCode: Tampilkan Kode
+  config.showIg: Tampilkan Instagram
+  config.splitFamily: Pisah Per Keluarga
+  error.alreadyTaken: '{{value}} sudah digunakan'
   header.family: 'Keluarga {{name}}'
-  header.general_family: Family Grid
+  header.family_general: Family Grid
   table.header.address: Alamat
   table.header.birthdate: Tgl Lahir
   table.header.birthplace: Tempat Lahir

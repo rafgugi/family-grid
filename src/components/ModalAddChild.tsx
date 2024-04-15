@@ -62,7 +62,7 @@ function ModalAddChild({
 
     setChildError('');
     if (Object.keys(treeMap).includes(value)) {
-      setChildError(t('error.already_taken', { value: value }));
+      setChildError(t('error.alreadyTaken', { value: value }));
     }
   };
 
@@ -92,7 +92,7 @@ function ModalAddChild({
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>{t('config.label.add_child')}</ModalHeader>
+      <ModalHeader toggle={toggle}>{t('config.label.addChild')}</ModalHeader>
       <ModalBody>
         <FormGroup>
           <Label for="select-person">{t('config.label.person')}</Label>
@@ -102,7 +102,7 @@ function ModalAddChild({
             value={person ? person.id : ''}
             onChange={handlePersonChange}
           >
-            <option value="">{t('config.label.select_person')}</option>
+            <option value="">{t('config.label.selectPerson')}</option>
             {marriedPeople.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}
@@ -119,7 +119,7 @@ function ModalAddChild({
               value={spouse ? spouse.id : ''}
               onChange={handleSpouseChange}
             >
-              <option value="">{t('config.label.select_spouse')}</option>
+              <option value="">{t('config.label.selectSpouse')}</option>
               {person.marriages.map(marriage => (
                 <option key={marriage.spouse.id} value={marriage.spouse.id}>
                   {marriage.spouse.id}

@@ -46,7 +46,7 @@ function ModalDeletePerson({
   return (
     <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
       <ModalHeader toggle={toggle}>
-        {t('config.label.delete_person')}
+        {t('config.label.deletePerson')}
       </ModalHeader>
       <ModalBody>
         <FormGroup>
@@ -57,7 +57,7 @@ function ModalDeletePerson({
             value={person ? person.id : ''}
             onChange={handlePersonChange}
           >
-            <option value="">{t('config.label.select_person')}</option>
+            <option value="">{t('config.label.selectPerson')}</option>
             {people.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}

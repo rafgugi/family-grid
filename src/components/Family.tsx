@@ -44,7 +44,7 @@ function BigFamily({ trees, ...props }: FamilyProps) {
   return (
     <Fragment>
       <hr className="d-print-none" />
-      <h3 className="text-center">{t('header.general_family')}</h3>
+      <h3 className="text-center">{t('header.family_general')}</h3>
       <FamilyDiagram trees={trees} />
       <FamilyGrid {...props} trees={trees} />
     </Fragment>

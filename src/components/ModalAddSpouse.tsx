@@ -46,7 +46,7 @@ function ModalAddSpouse({
 
     setSpouseError('');
     if (Object.keys(treeMap).includes(value)) {
-      setSpouseError(t('error.already_taken', { value: value }));
+      setSpouseError(t('error.alreadyTaken', { value: value }));
     }
   };
 
