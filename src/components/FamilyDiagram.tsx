@@ -5,6 +5,13 @@ import * as go from 'gojs';
 import { isEqual, cloneDeep } from 'lodash';
 import GenogramLayout from '../GenogramLayout';
 
+const SLASH_COLOR = '#d4071c'; // red
+const MALE_COLOR = '#c5ecff'; // Aesthetic Pastel non photo blue
+const FEMALE_COLOR = '#fee6ff'; // Aesthetic Pastel pink lavender
+const SHAPE_LINE_COLOR = '#a1a1a1';
+const MARRIAGE_LINE_COLOR = '#5d8cc1'; // blue
+const CHILD_LINE_COLOR = '#919191';
+
 interface FamilyDiagramProps {
   trees: Person[];
   depth?: number;
@@ -70,7 +77,7 @@ class DiagramUtil {
 
     // determine the color for each attribute shape
     function attrFill(a: String) {
-      if (a === 'S') return '#d4071c'; // red
+      if (a === 'S') return SLASH_COLOR; // red
       return 'transparent';
     }
 
@@ -90,17 +97,16 @@ class DiagramUtil {
           locationSpot: go.Spot.Center,
           locationObjectName: 'ICON',
           selectionObjectName: 'ICON',
+          selectable: false,
         },
-        new go.Binding('opacity', 'hide', h => (h ? 0 : 1)),
-        new go.Binding('pickable', 'hide', h => !h),
         $(go.Panel,
           { name: 'ICON' },
           $(go.Shape, 'Square', {
             width: 40,
             height: 40,
             strokeWidth: 2,
-            fill: 'white',
-            stroke: '#919191',
+            fill: MALE_COLOR,
+            stroke: SHAPE_LINE_COLOR,
             portId: '',
           }),
           $(go.Panel,
@@ -121,7 +127,6 @@ class DiagramUtil {
           {
             textAlign: 'center',
             maxSize: new go.Size(80, NaN),
-            background: 'rgba(255,255,255,0.5)',
           },
           new go.Binding('text', 'name')
         )
@@ -135,17 +140,16 @@ class DiagramUtil {
           locationSpot: go.Spot.Center,
           locationObjectName: 'ICON',
           selectionObjectName: 'ICON',
+          selectable: false,
         },
-        new go.Binding('opacity', 'hide', h => (h ? 0 : 1)),
-        new go.Binding('pickable', 'hide', h => !h),
         $(go.Panel,
           { name: 'ICON' },
           $(go.Shape, 'Circle', {
             width: 40,
             height: 40,
             strokeWidth: 2,
-            fill: 'white',
-            stroke: '#a1a1a1',
+            fill: FEMALE_COLOR,
+            stroke: SHAPE_LINE_COLOR,
             portId: '',
           }),
           $(go.Panel,
@@ -166,7 +170,6 @@ class DiagramUtil {
           {
             textAlign: 'center',
             maxSize: new go.Size(80, NaN),
-            background: 'rgba(255,255,255,0.5)',
           },
           new go.Binding('text', 'name')
         )
@@ -192,7 +195,7 @@ class DiagramUtil {
           layerName: 'Background',
           selectable: false,
         },
-        $(go.Shape, { stroke: 'gray', strokeWidth: 2 })
+        $(go.Shape, { stroke: CHILD_LINE_COLOR, strokeWidth: 2 })
       );
 
     myDiagram.linkTemplateMap.add(
@@ -208,7 +211,7 @@ class DiagramUtil {
           isTreeLink: false,
           layerName: 'Background',
         },
-        $(go.Shape, { strokeWidth: 2.5, stroke: '#5d8cc1' /* blue */ })
+        $(go.Shape, { strokeWidth: 2.5, stroke: MARRIAGE_LINE_COLOR })
       )
     );
 

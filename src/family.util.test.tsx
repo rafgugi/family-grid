@@ -2,6 +2,7 @@ import {
   deletePerson,
   enrichTreeData,
   explodeTrees,
+  idAsNickName,
   treesToPersonNode,
   treesToRecord,
   unrichTreeData,
@@ -305,24 +306,24 @@ describe('treesToPersonNode', () => {
   test('without depth', () => {
     const nodes = treesToPersonNode(trees);
     expect(nodes).toEqual([
-      { key: 'satyr', name: 'satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
-      { key: 'surtr', name: 'surtr', s: 'F', attributes: ['S'], spouses: [] },
-      { key: 'hound', name: 'hound', s: 'M', attributes: [], spouses: ['alpha'], father: 'satyr', mother: 'surtr' },
-      { key: 'alpha', name: 'alpha', s: 'F', attributes: [], spouses: [] },
-      { key: 'ryora', name: 'ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
-      { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
-      { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
+      { key: 'satyr', name: 'Satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
+      { key: 'surtr', name: 'Surtr', s: 'F', attributes: ['S'], spouses: [] },
+      { key: 'hound', name: 'Hound', s: 'M', attributes: [], spouses: ['alpha'], father: 'satyr', mother: 'surtr' },
+      { key: 'alpha', name: 'Alpha', s: 'F', attributes: [], spouses: [] },
+      { key: 'ryora', name: 'Ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
+      { key: 'nala', name: 'Nala', s: 'F', attributes: [], spouses: [] },
+      { key: 'mufasa', name: 'Mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
     ]);
   });
 
   test('with depth 2', () => {
     const nodes = treesToPersonNode(trees, 2);
     expect(nodes).toEqual([
-      { key: 'satyr', name: 'satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
-      { key: 'surtr', name: 'surtr', s: 'F', attributes: ['S'], spouses: [] },
-      { key: 'hound', name: 'hound', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'surtr' },
-      { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
-      { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
+      { key: 'satyr', name: 'Satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
+      { key: 'surtr', name: 'Surtr', s: 'F', attributes: ['S'], spouses: [] },
+      { key: 'hound', name: 'Hound', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'surtr' },
+      { key: 'nala', name: 'Nala', s: 'F', attributes: [], spouses: [] },
+      { key: 'mufasa', name: 'Mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
     ]);
   });
 
@@ -331,15 +332,15 @@ describe('treesToPersonNode', () => {
       const trees = enrichTreeData(doubleFamilyData.trees, enrichingPeople);
       const nodes = treesToPersonNode(trees);
       expect(nodes).toEqual([
-        { key: 'satyr', name: 'satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
-        { key: 'surtr', name: 'surtr', s: 'F', attributes: ['S'], spouses: [] },
-        { key: 'hound', name: 'hound', s: 'M', attributes: [], spouses: ['alpha'], father: 'satyr', mother: 'surtr' },
-        { key: 'alpha', name: 'alpha', s: 'F', attributes: [], spouses: [], father: 'saber', mother: 'angela' },
-        { key: 'ryora', name: 'ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
-        { key: 'nala', name: 'nala', s: 'F', attributes: [], spouses: [] },
-        { key: 'mufasa', name: 'mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
-        { key: 'angela', name: 'angela', s: 'F', attributes: [], spouses: ['saber'] },
-        { key: 'saber', name: 'saber', s: 'M', attributes: [], spouses: [] },
+        { key: 'satyr', name: 'Satyr', s: 'M', attributes: [], spouses: ['surtr', 'nala'] },
+        { key: 'surtr', name: 'Surtr', s: 'F', attributes: ['S'], spouses: [] },
+        { key: 'hound', name: 'Hound', s: 'M', attributes: [], spouses: ['alpha'], father: 'satyr', mother: 'surtr' },
+        { key: 'alpha', name: 'Alpha', s: 'F', attributes: [], spouses: [], father: 'saber', mother: 'angela' },
+        { key: 'ryora', name: 'Ryora', s: 'M', attributes: [], spouses: [], father: 'hound', mother: 'alpha' },
+        { key: 'nala', name: 'Nala', s: 'F', attributes: [], spouses: [] },
+        { key: 'mufasa', name: 'Mufasa', s: 'M', attributes: [], spouses: [], father: 'satyr', mother: 'nala' },
+        { key: 'angela', name: 'Angela', s: 'F', attributes: [], spouses: ['saber'] },
+        { key: 'saber', name: 'Saber', s: 'M', attributes: [], spouses: [] },
       ]);
     });
   });
@@ -443,5 +444,14 @@ describe('deletePerson', () => {
         }],
       }],
     }]);
+  });
+});
+
+describe('idAsNickName', () => {
+  test('convert correctly', () => {
+    expect(idAsNickName('satyr')).toEqual('Satyr');
+    expect(idAsNickName(' satyr123 ')).toEqual('Satyr');
+    expect(idAsNickName('sat123yr')).toEqual('Satyr');
+    expect(idAsNickName('m..satyr')).toEqual('M Satyr');
   });
 });

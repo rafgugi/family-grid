@@ -190,7 +190,7 @@ export function treesToPersonNode(
     if (!nodes[person.id]) {
       nodes[person.id] = {
         key: person.id,
-        name: person.id,
+        name: idAsNickName(person.id),
         s: person.sex ?? 'M',
         attributes: [],
         spouses: [],
@@ -230,4 +230,13 @@ export function treesToPersonNode(
   trees.forEach(person => personToPersonNode(nodes, person, [], 1, depth));
 
   return Object.values(nodes);
+}
+
+// remove number and capitalize first letter
+export function idAsNickName(id: string): string {
+  return id
+    .trim()
+    .replace(/\d/g, '')
+    .replace(/[-_. ]+/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
 }

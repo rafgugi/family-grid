@@ -5,6 +5,7 @@ interface AppContextValue {
   split: boolean;
   editMode: boolean;
   hidePersonCode: boolean;
+  hidePersonIg: boolean;
   setTreesValue: (ps: Person[]) => void;
   upsertPerson: (p: Person) => void;
   deletePerson: (p: Person) => void;
@@ -15,6 +16,7 @@ const AppContext = createContext<AppContextValue>({
   split: false,
   editMode: false,
   hidePersonCode: false,
+  hidePersonIg: false,
   setTreesValue: () => {},
   upsertPerson: () => {},
   deletePerson: () => {},
