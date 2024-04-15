@@ -4,7 +4,7 @@ import en from './lang-en.yml';
 import id from './lang-id.yml';
 
 i18n.use(initReactI18next).init({
-  lng: 'en',
+  fallbackLng: ['en', 'id'],
   resources: { en, id },
   interpolation: {
     escapeValue: false,

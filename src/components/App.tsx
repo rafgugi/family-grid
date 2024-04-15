@@ -1,5 +1,13 @@
-import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
-import { useMemo, useState } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from 'reactstrap';
+import { useEffect, useMemo, useState } from 'react';
 import { parse, stringify } from 'yaml';
 import { saveAs } from 'file-saver';
 import { Person } from '../family.interface';
@@ -37,7 +45,13 @@ function App(props: AppProps) {
   const [modalSpouse, setModalSpouse] = useState(null as Person | null);
   const [treeYaml, setTreeYaml] = useState('');
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const languages = [...i18n.languages].sort();
+  const [language, setLanguage] = useCache('language', 'en');
+  useEffect(() => {
+    // TODO: this kept being called maybe because of changed i18n
+    i18n.changeLanguage(language);
+  }, [language, i18n]);
 
   const [showModalAddTree, setShowModalAddTree] = useState(false);
   const toggleModalAddTree = () => setShowModalAddTree(!showModalAddTree);
@@ -136,6 +150,21 @@ function App(props: AppProps) {
     >
       <Container className="d-print-none" fluid="sm">
         <Form>
+          <FormGroup>
+            <ButtonGroup>
+              {languages.map(lang => (
+                <Button
+                  outline
+                  size="sm"
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  active={lang === language}
+                >
+                  {lang}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </FormGroup>
           <FormGroup switch>
             <Input
               type="switch"
