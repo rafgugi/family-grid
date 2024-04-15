@@ -4,6 +4,7 @@ import AppContext from './AppContext';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
 import { explodeTrees, idAsNickName } from '../family.util';
+import { useTranslation } from 'react-i18next';
 
 interface FamilyProps {
   trees: Person[];
@@ -15,9 +16,11 @@ export default function Family(props: FamilyProps) {
 }
 
 function SplitFamilies({ trees, ...props }: FamilyProps) {
+  const { t } = useTranslation();
   const people = explodeTrees(trees).filter(
     person => person.marriages.length !== 0
   );
+  const getName = (p: Person) => p.name ?? idAsNickName(p.id);
 
   return (
     <>
@@ -25,7 +28,7 @@ function SplitFamilies({ trees, ...props }: FamilyProps) {
         <Fragment key={tree.id}>
           <hr className="d-print-none" />
           <h3 className="text-center">
-            {tree.name ?? idAsNickName(tree.id)} Family
+            {t('header.family', { name: getName(tree) })}
           </h3>
           <FamilyDiagram trees={[tree]} depth={2} />
           <FamilyGrid {...props} trees={[tree]} />
@@ -36,10 +39,12 @@ function SplitFamilies({ trees, ...props }: FamilyProps) {
 }
 
 function BigFamily({ trees, ...props }: FamilyProps) {
+  const { t } = useTranslation();
+
   return (
     <Fragment>
       <hr className="d-print-none" />
-      <h3 className="text-center">Family Grid</h3>
+      <h3 className="text-center">{t('header.general_family')}</h3>
       <FamilyDiagram trees={trees} />
       <FamilyGrid {...props} trees={trees} />
     </Fragment>

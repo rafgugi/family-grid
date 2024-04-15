@@ -10,6 +10,7 @@ import {
   ModalHeader,
 } from 'reactstrap';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
 
@@ -22,6 +23,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
   const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
+  const { t } = useTranslation();
 
   const handleChildChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -29,7 +31,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
 
     setChildError('');
     if (Object.keys(treeMap).includes(value)) {
-      setChildError(value + ' is already taken');
+      setChildError(t('error.already_taken', { value: value }));
     }
   };
 
@@ -51,14 +53,14 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>Add a tree</ModalHeader>
+      <ModalHeader toggle={toggle}>{t('config.label.add_tree')}</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="input-tree">Child</Label>
+          <Label for="input-tree">{t('config.label.person')}</Label>
           <Input
             id="input-tree"
             type="text"
-            placeholder="Insert tree nickname"
+            placeholder={t('config.placeholder.person')}
             value={child}
             onChange={handleChildChange}
             invalid={childError !== ''}
@@ -68,7 +70,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
       </ModalBody>
       <ModalFooter>
         <Button disabled={!validForm} onClick={handleSubmit}>
-          Submit
+          {t('config.button.apply')}
         </Button>
       </ModalFooter>
     </Modal>

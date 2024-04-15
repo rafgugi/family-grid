@@ -17,6 +17,7 @@ import {
   unrichTreeData,
 } from '../family.util';
 import { useCache } from '../useCache';
+import { useTranslation } from 'react-i18next';
 import Footer from './Footer';
 
 interface AppProps {
@@ -35,6 +36,8 @@ function App(props: AppProps) {
   const [modalPerson, setModalPerson] = useState(null as Person | null);
   const [modalSpouse, setModalSpouse] = useState(null as Person | null);
   const [treeYaml, setTreeYaml] = useState('');
+
+  const { t } = useTranslation();
 
   const [showModalAddTree, setShowModalAddTree] = useState(false);
   const toggleModalAddTree = () => setShowModalAddTree(!showModalAddTree);
@@ -141,7 +144,7 @@ function App(props: AppProps) {
               onChange={() => setSplitValue(!split)}
             />
             <Label for="split-switch" check>
-              Split Family
+              {t('config.split_family')}
             </Label>
           </FormGroup>
           <FormGroup switch>
@@ -152,7 +155,7 @@ function App(props: AppProps) {
               onChange={() => setHideCode(!hidePersonCode)}
             />
             <Label for="hidePersonCode-switch" check>
-              Show Code
+              {t('config.show_code')}
             </Label>
           </FormGroup>
           <FormGroup switch>
@@ -163,7 +166,7 @@ function App(props: AppProps) {
               onChange={() => setHideIg(!hidePersonIg)}
             />
             <Label for="hidePersonIg-switch" check>
-              Show Instagram
+              {t('config.show_ig')}
             </Label>
           </FormGroup>
           <FormGroup switch className="mb-3">
@@ -174,25 +177,25 @@ function App(props: AppProps) {
               onChange={() => setEditModeValue(!editMode)}
             />
             <Label for="editMode-switch" check>
-              Edit Mode
+              {t('config.edit_mode')}
             </Label>
           </FormGroup>
           <FormGroup>
             <Button size="sm" onClick={() => openModalAddTree()}>
-              <i className="bi-person-plus-fill" /> Add tree
+              <i className="bi-person-plus-fill" /> {t('config.add_tree')}
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddChild(trees[0])}>
-              <i className="bi-person-plus-fill" /> Add child
+              <i className="bi-person-plus-fill" /> {t('config.add_child')}
             </Button>{' '}
             <Button size="sm" onClick={() => openModalAddSpouse(trees[0])}>
-              <i className="bi-person-plus-fill" /> Add spouse
+              <i className="bi-person-plus-fill" /> {t('config.add_spouse')}
             </Button>{' '}
             <Button
               size="sm"
               onClick={() => openModalDeletePerson()}
               color="danger"
             >
-              <i className="bi-person-dash-fill" /> Delete person
+              <i className="bi-person-dash-fill" /> {t('config.delete_person')}
             </Button>
           </FormGroup>
           <FormGroup>
@@ -201,10 +204,10 @@ function App(props: AppProps) {
               onClick={() => openModalEditYaml()}
               color="warning"
             >
-              <i className="bi-filetype-yml" /> Edit tree
+              <i className="bi-filetype-yml" /> {t('config.edit_tree')}
             </Button>{' '}
             <Button size="sm" tag="label">
-              <i className="bi-upload" /> Import
+              <i className="bi-upload" /> {t('config.import')}
               <Input
                 type="file"
                 className="d-none"
@@ -213,7 +216,7 @@ function App(props: AppProps) {
               />
             </Button>{' '}
             <Button size="sm" onClick={handleSave}>
-              <i className="bi-download" /> Export
+              <i className="bi-download" /> {t('config.export')}
             </Button>
           </FormGroup>
         </Form>

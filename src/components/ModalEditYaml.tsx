@@ -21,6 +21,7 @@ import {
 import { Person } from '../family.interface';
 import { enrichTreeData } from '../family.util';
 import { parse } from 'yaml';
+import { useTranslation } from 'react-i18next';
 import AppContext from './AppContext';
 import FamilyDiagram from './FamilyDiagram';
 
@@ -43,6 +44,7 @@ function ModalEditYaml({
   const { setTreesValue } = useContext(AppContext);
   const [yamlError, setYamlError] = useState('');
   const [trees, setTrees] = useState([] as Person[]);
+  const { t } = useTranslation();
   const deferredTree = useDeferredValue(trees);
   const deferredTreeYaml = useDeferredValue(treeYaml);
   const loading = deferredTreeYaml !== treeYaml;
@@ -85,10 +87,12 @@ function ModalEditYaml({
 
   return (
     <Modal size="xl" isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>Edit tree</ModalHeader>
+      <ModalHeader toggle={toggle}>{t('config.edit_tree')}</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <span className="mb-2 d-inline-block">Tree preview</span>
+          <span className="mb-2 d-inline-block">
+            {t('config.label.tree_preview')}
+          </span>
           <Card outline color={validForm ? '' : 'danger'}>
             <CardBody style={{ opacity: validForm ? 1 : 0.3 }}>
               <FamilyDiagram trees={deferredTree} />
@@ -96,7 +100,7 @@ function ModalEditYaml({
           </Card>
         </FormGroup>
         <FormGroup>
-          <Label for="edit-tree">Edit tree</Label>
+          <Label for="edit-tree">{t('config.label.edit_tree')}</Label>
           <Input
             type="textarea"
             id="edit-tree"
@@ -115,7 +119,7 @@ function ModalEditYaml({
       </ModalBody>
       <ModalFooter>
         <Button color="warning" disabled={!validForm} onClick={handleSubmit}>
-          Apply
+          {t('config.button.apply')}
         </Button>
       </ModalFooter>
     </Modal>

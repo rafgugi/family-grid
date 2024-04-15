@@ -2,6 +2,7 @@ import { ChangeEvent, useContext } from 'react';
 import { Input, Table } from 'reactstrap';
 import { Person } from '../family.interface';
 import { explodeTrees, idAsNickName } from '../family.util';
+import { useTranslation } from 'react-i18next';
 import AppContext from './AppContext';
 
 interface FamilyGridProps {
@@ -10,21 +11,22 @@ interface FamilyGridProps {
 
 export default function FamilyGrid({ trees }: FamilyGridProps) {
   const { hidePersonCode, hidePersonIg } = useContext(AppContext);
+  const { t } = useTranslation();
 
   return (
     <Table size="sm" bordered hover responsive>
       <thead>
         <tr>
           <th style={{ width: '7em' }} hidden={hidePersonCode}>
-            Code
+            {t('table.header.code')}
           </th>
-          <th style={{ width: '15.5em' }}>Name</th>
-          <th style={{ width: '7em' }}>Birthplace</th>
-          <th style={{ width: '7em' }}>Birthdate</th>
-          <th style={{ width: '8.5em' }}>Phone</th>
-          <th style={{ width: '18.5em' }}>Address</th>
+          <th style={{ width: '15.5em' }}>{t('table.header.name')}</th>
+          <th style={{ width: '7em' }}>{t('table.header.birthplace')}</th>
+          <th style={{ width: '7em' }}>{t('table.header.birthdate')}</th>
+          <th style={{ width: '8.5em' }}>{t('table.header.phone')}</th>
+          <th style={{ width: '18.5em' }}>{t('table.header.address')}</th>
           <th style={{ width: '8.5em' }} hidden={hidePersonIg}>
-            IG
+            {t('table.header.ig')}
           </th>
         </tr>
       </thead>
