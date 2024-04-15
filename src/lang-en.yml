@@ -3,7 +3,7 @@ translation:
   config.add_spouse: Add Spouse
   config.add_tree: Add Family
   config.button.apply: Apply!
-  config.button.delete: Hapus!
+  config.button.delete: Delete!
   config.button.submit: Submit!
   config.delete_person: Delete Person
   config.edit_mode: Edit Mode
