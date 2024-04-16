@@ -10,6 +10,7 @@ import {
   ModalHeader,
 } from 'reactstrap';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
 
@@ -29,6 +30,7 @@ function ModalAddSpouse({
   const { treeMap, upsertPerson } = useContext(AppContext);
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
+  const { t } = useTranslation();
 
   const people = Object.values(treeMap);
 
@@ -44,7 +46,7 @@ function ModalAddSpouse({
 
     setSpouseError('');
     if (Object.keys(treeMap).includes(value)) {
-      setSpouseError(value + ' is already taken');
+      setSpouseError(t('error.alreadyTaken', { value: value }));
     }
   };
 
@@ -95,7 +97,7 @@ function ModalAddSpouse({
             <Input
               id="input-spouse"
               type="text"
-              placeholder="Insert spouse unique nickname"
+              placeholder={t('config.placeholder.spouse')}
               value={spouse}
               onChange={handleSpouseChange}
               invalid={spouseError !== ''}
@@ -106,7 +108,7 @@ function ModalAddSpouse({
       </ModalBody>
       <ModalFooter>
         <Button disabled={!validForm} onClick={handleSubmit}>
-          Submit
+          {t('config.button.submit')}
         </Button>
       </ModalFooter>
     </Modal>

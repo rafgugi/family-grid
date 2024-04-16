@@ -4,6 +4,7 @@ import App from './components/App';
 import { Person } from './family.interface';
 import { enrichTreeData } from './family.util';
 import rawFamilyData from './data.yml';
+import './i18n';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.min.css';

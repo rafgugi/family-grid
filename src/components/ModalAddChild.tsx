@@ -10,6 +10,7 @@ import {
   ModalHeader,
 } from 'reactstrap';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
 
@@ -33,6 +34,7 @@ function ModalAddChild({
   const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
+  const { t } = useTranslation();
 
   const marriedPeople = Object.values(treeMap).filter(
     person => person.marriages.length > 0
@@ -60,7 +62,7 @@ function ModalAddChild({
 
     setChildError('');
     if (Object.keys(treeMap).includes(value)) {
-      setChildError(value + ' is already taken');
+      setChildError(t('error.alreadyTaken', { value: value }));
     }
   };
 
@@ -90,17 +92,17 @@ function ModalAddChild({
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>Add a child</ModalHeader>
+      <ModalHeader toggle={toggle}>{t('config.label.addChild')}</ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="select-person">Person</Label>
+          <Label for="select-person">{t('config.label.person')}</Label>
           <Input
             type="select"
             id="select-person"
             value={person ? person.id : ''}
             onChange={handlePersonChange}
           >
-            <option value="">Select a person</option>
+            <option value="">{t('config.label.selectPerson')}</option>
             {marriedPeople.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}
@@ -110,14 +112,14 @@ function ModalAddChild({
         </FormGroup>
         {person && (
           <FormGroup>
-            <Label for="select-spouse">Spouse</Label>
+            <Label for="select-spouse">{t('config.label.spouse')}</Label>
             <Input
               type="select"
               id="select-spouse"
               value={spouse ? spouse.id : ''}
               onChange={handleSpouseChange}
             >
-              <option value="">Select a spouse</option>
+              <option value="">{t('config.label.selectSpouse')}</option>
               {person.marriages.map(marriage => (
                 <option key={marriage.spouse.id} value={marriage.spouse.id}>
                   {marriage.spouse.id}
@@ -128,11 +130,11 @@ function ModalAddChild({
         )}
         {person && spouse && (
           <FormGroup>
-            <Label for="input-child">Child</Label>
+            <Label for="input-child">{t('config.label.child')}</Label>
             <Input
               id="input-child"
               type="text"
-              placeholder="Insert child unique nickname"
+              placeholder={t('config.placeholder.child')}
               value={child}
               onChange={handleChildChange}
               invalid={childError !== ''}
@@ -143,7 +145,7 @@ function ModalAddChild({
       </ModalBody>
       <ModalFooter>
         <Button disabled={!validForm} onClick={handleSubmit}>
-          Submit
+          {t('config.button.submit')}
         </Button>
       </ModalFooter>
     </Modal>

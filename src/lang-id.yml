@@ -1,0 +1,41 @@
+translation:
+  config.addChild: Tambah Anak
+  config.addSpouse: Tambah Pasangan
+  config.addTree: Tambah Keluarga
+  config.button.apply: Terapkan!
+  config.button.delete: Hapus!
+  config.button.submit: Terapkan!
+  config.deletePerson: Hapus Orang
+  config.editMode: Mode Edit
+  config.editTree: Edit Pohon Keluarga
+  config.export: Expor
+  config.import: Impor
+  config.label.addChild: Tambah Anak
+  config.label.addSpouse: Tambah Pasangan
+  config.label.addTree: Tambah Keluarga
+  config.label.child: Anak
+  config.label.deletePerson: Hapus Orang
+  config.label.editTree: Edit Pohon Keluarga
+  config.label.person: Orang
+  config.label.selectChild: Pilih Anak
+  config.label.selectPerson: Pilih Orang
+  config.label.selectSpouse: Pilih Pasangan
+  config.label.spouse: Pasangan
+  config.label.treePreview: Tampilan Diagram Pohon Keluarga
+  config.placeholder.child: Masukkan nama panggilan anak
+  config.placeholder.person: Masukkan nama panggilan orang
+  config.placeholder.spouse: Masukkan nama panggilan pasangan
+  config.showCode: Tampilkan Kode
+  config.showIg: Tampilkan Instagram
+  config.splitFamily: Pisah Per Keluarga
+  error.alreadyTaken: '{{value}} sudah digunakan'
+  header.family: 'Keluarga {{name}}'
+  header.family_general: Family Grid
+  table.header.address: Alamat
+  table.header.birthdate: Tgl Lahir
+  table.header.birthplace: Tempat Lahir
+  table.header.code: Kode
+  table.header.deathdate: Tgl Kematian
+  table.header.ig: Instagram
+  table.header.name: Nama
+  table.header.phone: Telpon

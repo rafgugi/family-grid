@@ -1,0 +1,41 @@
+translation:
+  config.addChild: Add Child
+  config.addSpouse: Add Spouse
+  config.addTree: Add Family
+  config.button.apply: Apply!
+  config.button.delete: Delete!
+  config.button.submit: Submit!
+  config.deletePerson: Delete Person
+  config.editMode: Edit Mode
+  config.editTree: Edit Family Tree
+  config.export: Export
+  config.import: Import
+  config.label.addChild: Add a Child
+  config.label.addSpouse: Add a Spouse
+  config.label.addTree: Add a Family
+  config.label.child: Child
+  config.label.deletePerson: Delete a Person
+  config.label.editTree: Edit Tree
+  config.label.person: Person
+  config.label.selectChild: Select a Child
+  config.label.selectPerson: Select a Person
+  config.label.selectSpouse: Select a Spouse
+  config.label.spouse: Spouse
+  config.label.treePreview: Show Family Tree Diagram
+  config.placeholder.child: Insert the child unique nickname
+  config.placeholder.person: Insert the person unique nickname
+  config.placeholder.spouse: Insert the spouse unique nickname
+  config.showCode: Show Code
+  config.showIg: Show Instagram
+  config.splitFamily: Split Family
+  error.alreadyTaken: '{{value}} is already taken'
+  header.family: '{{name}} Family'
+  header.family_general: Family Grid
+  table.header.address: Address
+  table.header.birthdate: Birthdate
+  table.header.birthplace: Birthplace
+  table.header.code: Code
+  table.header.deathdate: Death Date
+  table.header.ig: Instagram
+  table.header.name: Name
+  table.header.phone: Phone

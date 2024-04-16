@@ -1,8 +1,25 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
 import * as go from 'gojs';
 
 go.Palette.useDOM(false);
+
+i18n.use(initReactI18next).init({
+  fallbackLng: ['dev'],
+  resources: {
+    dev: {
+      translation: {
+        'header.family': '{{name}} Family',
+        'header.family_general': 'Family Grid'
+      },
+    },
+  },
+  interpolation: {
+    escapeValue: false,
+  },
+});
 
 const trees = [{
   id: 'satyr',

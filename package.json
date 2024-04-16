@@ -7,9 +7,11 @@
     "bootstrap-icons": "^1.10.5",
     "file-saver": "^2.0.5",
     "gojs": "^2.3.6",
+    "i18next": "^23.11.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^14.1.0",
     "reactstrap": "^9.1.9",
     "yaml": "^2.3.1"
   },

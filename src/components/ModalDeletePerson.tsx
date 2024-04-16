@@ -9,6 +9,7 @@ import {
   ModalHeader,
 } from 'reactstrap';
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Person } from '../family.interface';
 import AppContext from './AppContext';
 
@@ -26,6 +27,7 @@ function ModalDeletePerson({
   toggle,
 }: ModalDeletePersonProps) {
   const { treeMap, deletePerson } = useContext(AppContext);
+  const { t } = useTranslation();
   const people = Object.values(treeMap);
 
   const handlePersonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,17 +45,19 @@ function ModalDeletePerson({
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} unmountOnClose>
-      <ModalHeader toggle={toggle}>Delete a person</ModalHeader>
+      <ModalHeader toggle={toggle}>
+        {t('config.label.deletePerson')}
+      </ModalHeader>
       <ModalBody>
         <FormGroup>
-          <Label for="select-person">Person</Label>
+          <Label for="select-person">{t('config.label.person')}</Label>
           <Input
             type="select"
             id="select-person"
             value={person ? person.id : ''}
             onChange={handlePersonChange}
           >
-            <option value="">Select a person</option>
+            <option value="">{t('config.label.selectPerson')}</option>
             {people.map(person => (
               <option key={person.id} value={person.id}>
                 {person.id}
@@ -64,7 +68,7 @@ function ModalDeletePerson({
       </ModalBody>
       <ModalFooter>
         <Button color="danger" disabled={!person} onClick={handleSubmit}>
-          Delete!
+          {t('config.button.delete')}
         </Button>
       </ModalFooter>
     </Modal>
