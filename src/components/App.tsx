@@ -46,7 +46,7 @@ function App(props: AppProps) {
   const [treeYaml, setTreeYaml] = useState('');
 
   const { t, i18n } = useTranslation();
-  const [language, setLanguage] = useCache('language', 'en');
+  const [language, setLanguage] = useCache('language', i18n.language);
   i18n.on('languageChanged', (lang: string) => setLanguage(lang));
   useEffect(() => {
     i18n.changeLanguage(language);
