@@ -19,7 +19,7 @@ import {
   ModalHeader,
 } from 'reactstrap';
 import { Person } from '../family.interface';
-import { enrichTreeData } from '../family.util';
+import { enrichTreeData } from '../utils/family-tree';
 import { parse } from 'yaml';
 import { useTranslation } from 'react-i18next';
 import AppContext from './AppContext';

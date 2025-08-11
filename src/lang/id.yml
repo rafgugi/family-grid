@@ -30,12 +30,12 @@ translation:
   config.splitFamily: Pisah Per Keluarga
   error.alreadyTaken: '{{value}} sudah digunakan'
   header.family: 'Keluarga {{name}}'
-  header.family_general: Family Grid
+  header.familyGeneral: Family Grid
   table.header.address: Alamat
   table.header.birthdate: Tgl Lahir
   table.header.birthplace: Tempat Lahir
   table.header.code: Kode
-  table.header.deathdate: Tgl Kematian
+  table.header.deathdate: Tgl Wafat
   table.header.ig: Instagram
   table.header.name: Nama
   table.header.phone: Telpon

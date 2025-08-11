@@ -12,7 +12,7 @@ i18n.use(initReactI18next).init({
     dev: {
       translation: {
         'header.family': '{{name}} Family',
-        'header.family_general': 'Family Grid'
+        'header.familyGeneral': 'Family Grid'
       },
     },
   },

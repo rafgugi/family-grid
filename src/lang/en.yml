@@ -30,7 +30,7 @@ translation:
   config.splitFamily: Split Family
   error.alreadyTaken: '{{value}} is already taken'
   header.family: '{{name}} Family'
-  header.family_general: Family Grid
+  header.familyGeneral: Family Grid
   table.header.address: Address
   table.header.birthdate: Birthdate
   table.header.birthplace: Birthplace

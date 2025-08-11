@@ -23,8 +23,8 @@ import {
   enrichTreeData,
   treesToRecord,
   unrichTreeData,
-} from '../family.util';
-import { useCache } from '../useCache';
+} from '../utils/family-tree';
+import { useCache } from '../hooks/useCache';
 import { useTranslation } from 'react-i18next';
 import Footer from './Footer';
 

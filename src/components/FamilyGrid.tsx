@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext } from 'react';
 import { Input, Table } from 'reactstrap';
 import { Person } from '../family.interface';
-import { explodeTrees, idAsNickName } from '../family.util';
+import { explodeTrees, idAsNickName } from '../utils/family-tree';
 import { useTranslation } from 'react-i18next';
 import AppContext from './AppContext';
 

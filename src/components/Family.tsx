@@ -3,7 +3,7 @@ import { Person } from '../family.interface';
 import AppContext from './AppContext';
 import FamilyGrid from './FamilyGrid';
 import FamilyDiagram from './FamilyDiagram';
-import { explodeTrees, idAsNickName } from '../family.util';
+import { explodeTrees, idAsNickName } from '../utils/family-tree';
 import { useTranslation } from 'react-i18next';
 
 interface FamilyProps {
@@ -44,7 +44,7 @@ function BigFamily({ trees, ...props }: FamilyProps) {
   return (
     <Fragment>
       <hr className="d-print-none" />
-      <h3 className="text-center">{t('header.family_general')}</h3>
+      <h3 className="text-center">{t('header.familyGeneral')}</h3>
       <FamilyDiagram trees={trees} />
       <FamilyGrid {...props} trees={trees} />
     </Fragment>

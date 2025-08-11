@@ -2,9 +2,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './components/App';
 import { Person } from './family.interface';
-import { enrichTreeData } from './family.util';
+import { enrichTreeData } from './utils/family-tree';
 import rawFamilyData from './data.yml';
-import './i18n';
+import './lang';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.min.css';

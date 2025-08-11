@@ -1,4 +1,4 @@
-import { Person, Marriage, PersonNode } from './family.interface';
+import { Person, Marriage, PersonNode } from '../family.interface';
 
 // Enrich the trees from the people. Try to make trees unchanged.
 export function enrichTreeData(
