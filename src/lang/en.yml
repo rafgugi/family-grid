@@ -2,10 +2,16 @@ translation:
   config.addChild: Add Child
   config.addSpouse: Add Spouse
   config.addTree: Add Family
+  config.button.addPhoto: Add Photo
   config.button.apply: Apply!
+  config.button.cancel: Cancel
+  config.button.changePhoto: Change
+  config.button.close: Close
+  config.button.confirm: Apply!
   config.button.delete: Delete!
   config.button.submit: Submit!
   config.deletePerson: Delete Person
+  config.deletePhoto: Remove Photo
   config.editMode: Edit Mode
   config.editTree: Edit Family Tree
   config.export: Export
@@ -16,7 +22,9 @@ translation:
   config.label.child: Child
   config.label.deletePerson: Delete a Person
   config.label.editTree: Edit Tree
+  config.label.optional: optional
   config.label.person: Person
+  config.label.photo: Photo
   config.label.selectChild: Select a Child
   config.label.selectPerson: Select a Person
   config.label.selectSpouse: Select a Spouse
@@ -29,8 +37,21 @@ translation:
   config.showIg: Show Instagram
   config.splitFamily: Split Family
   error.alreadyTaken: '{{value}} is already taken'
+  error.photoProcessing: Error processing photo. Please try again.
+  error.photoStorageFull: Storage full. Use photo URL instead.
   header.family: '{{name}} Family'
   header.familyGeneral: Family Grid
+  photo.compressing: Compressing photo...
+  photo.cropInstructions: Drag and zoom to position your photo in the square
+  photo.cropTitle: Crop Photo
+  photo.storageWarning: Storage {{percent}}% full. Consider using photo URL option.
+  photo.uploadOption: Upload photo (stored in file)
+  photo.uploadOptionDesc: Max {{maxKB}}KB, works offline, included in exports
+  photo.urlInvalid: Please enter a valid URL starting with http:// or https://
+  photo.urlOption: Use photo URL (link to external image)
+  photo.urlOptionDesc: Minimal storage, requires internet
+  photo.urlPlaceholder: Enter photo URL (https://...)
+  photo.zoom: Zoom
   table.header.address: Address
   table.header.birthdate: Birthdate
   table.header.birthplace: Birthplace
@@ -39,3 +60,4 @@ translation:
   table.header.ig: Instagram
   table.header.name: Name
   table.header.phone: Phone
+  table.header.photo: Photo
