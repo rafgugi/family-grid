@@ -10,6 +10,7 @@ export interface Person {
   email?: string;
   ig?: string;
   address?: string;
+  photo?: string;
   marriages: Marriage[];
 }
 
