@@ -2,12 +2,20 @@ import imageCompression from 'browser-image-compression';
 import { Area } from 'react-easy-crop';
 
 /**
+ * Get the maximum photo size in KB from environment variable
+ * @returns Maximum photo size in KB
+ */
+export function getMaxPhotoKB(): number {
+  return parseInt(process.env.REACT_APP_MAX_PHOTO_KB || '100', 10);
+}
+
+/**
  * Compress an image file to meet the target size specified in environment variable
  * @param file The image file to compress
  * @returns Compressed file as Blob
  */
 export async function compressImage(file: File): Promise<Blob> {
-  const maxSizeKB = parseInt(process.env.REACT_APP_MAX_PHOTO_KB || '100', 10);
+  const maxSizeKB = getMaxPhotoKB();
   const maxSizeMB = maxSizeKB / 1024;
 
   const options = {
