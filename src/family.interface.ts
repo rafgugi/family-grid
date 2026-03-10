@@ -26,4 +26,5 @@ export interface PersonNode {
   father?: string;
   spouses: string[];
   attributes: string[];
+  photo?: string;
 }
