@@ -2,6 +2,7 @@ import * as go from 'gojs';
 
 class GenogramLayout extends go.LayeredDigraphLayout {
   spouseSpacing: number;
+  childOrderMap: Map<any, number>;
 
   constructor() {
     super();
@@ -9,6 +10,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     this.initializeOption = go.LayeredDigraphLayout.InitDepthFirstIn;
     this.spouseSpacing = 30; // minimum space between spouses
     this.isRouting = false;
+    this.childOrderMap = new Map();
   }
 
   makeNetwork(coll: any) {
@@ -84,6 +86,10 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     }
     // now do all Links
     it.reset();
+    // Track the order of children for each parent to preserve data order
+    this.childOrderMap.clear();
+    let globalOrder = 0;
+
     while (it.next()) {
       const link = it.value;
       if (!(link instanceof go.Link)) continue;
@@ -93,24 +99,38 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (link.category === '' && link.data) {
         const parent = net.findVertex(link.fromNode); // should be a label node
         const child = net.findVertex(link.toNode);
+
+        let childVertex = null;
         if (child !== null) {
-          // an unmarried child
+          // an unmarried child - link directly to the child vertex
+          childVertex = child;
           net.linkVertexes(parent, child, link);
         } else {
-          // a married child
-          link.toNode?.linksConnected.each(l => {
-            // if it has no label node, it's a parent-child link
-            if (l.category !== 'Marriage' || !l.data) return;
-
-            // found the Marriage Link, now get its label Node
-            const mlab = l.labelNodes.first();
-            // parent-child link should connect with the label node,
-            // so the LayoutEdge should connect with the LayoutVertex representing the label node
-            const mlabvert = net.findVertex(mlab);
-            if (mlabvert !== null) {
-              net.linkVertexes(parent, mlabvert, link);
+          // a married child - need to find their marriage label node
+          // The child node exists but doesn't have a vertex (because married people are represented by label nodes)
+          const childNode = link.toNode;
+          if (childNode) {
+            // Find the marriage link for this child
+            let marriageLabelVertex = null;
+            childNode.linksConnected.each((l: any) => {
+              if (l.category === 'Marriage' && l.data) {
+                // Found the marriage link - get its label node
+                const mlab = l.labelNodes.first();
+                marriageLabelVertex = net.findVertex(mlab);
+              }
+            });
+            // Link parent to the marriage label vertex (representing the married couple)
+            if (marriageLabelVertex !== null) {
+              childVertex = marriageLabelVertex;
+              net.linkVertexes(parent, marriageLabelVertex, link);
             }
-          });
+          }
+        }
+
+        // Store the order of this child to preserve data sequence
+        if (childVertex !== null && !this.childOrderMap.has(childVertex)) {
+          this.childOrderMap.set(childVertex, globalOrder);
+          globalOrder++;
         }
       }
     }
@@ -186,6 +206,17 @@ class GenogramLayout extends go.LayeredDigraphLayout {
 
   initializeIndices() {
     super.initializeIndices();
+
+    // Apply the preserved child order to both column and index
+    // GoJS uses 'index' for final positioning, not 'column'
+    this.network?.vertexes.each((v: any) => {
+      if (this.childOrderMap.has(v)) {
+        const order = this.childOrderMap.get(v);
+        v.column = order;
+        v.index = order;
+      }
+    });
+
     const vertical = this.direction === 90 || this.direction === 270;
     this.network?.edges.each((e: any) => {
       if (e.fromVertex?.node && e.fromVertex?.node.isLinkLabel) {
