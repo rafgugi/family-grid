@@ -62,17 +62,38 @@ The edges need to be added in the same order as the children appear in the origi
 
 ## FIX IMPLEMENTED
 
+### Attempt 1: Refactor link processing order (INCOMPLETE)
+
 **Changes Made**: Refactored `GenogramLayout.ts` lines 85-116
 
 - Removed nested `linksConnected.each()` callback that could reorder links
 - Process married children inline, finding their marriage label vertex directly
 - Both married and unmarried children now processed in sequential order as links are iterated
 
+**Result**: ❌ Links added in correct order, BUT GoJS LayeredDigraphLayout still reordered siblings internally
+
+### Attempt 2: Explicitly set column indices (COMPLETE)
+
+**Root Cause Discovered**: GoJS LayeredDigraphLayout has its own internal ordering algorithm that runs AFTER edges are added. Simply preserving edge addition order is insufficient.
+
+**The Real Fix**:
+
+1. Added `childOrderMap: Map<any, number>` property to GenogramLayout class
+2. Track the order of child vertices as links are processed (store in map)
+3. In `initializeIndices()` method, explicitly set `v.column = order` for each vertex
+4. This **forces** GoJS to respect our desired order when positioning siblings
+
+**Code Changes**:
+
+- Constructor: Initialize `childOrderMap`
+- `add()` method (lines 91-134): Track child vertex order in map as links are processed
+- `initializeIndices()` method (lines 206-216): Apply column indices from map to vertices
+
 **Verification**:
 
-- ✅ Code compiles successfully (`npm run build`)
+- ✅ Code compiles successfully
 - ✅ App loads without errors
-- ✅ Code review confirms order preservation logic
+- ⏳ **Manual testing required**: User needs to verify sibling order is correct
 
 ## Testing Approach
 
