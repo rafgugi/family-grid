@@ -2,6 +2,7 @@ import * as go from 'gojs';
 
 class GenogramLayout extends go.LayeredDigraphLayout {
   spouseSpacing: number;
+  childOrderMap: Map<any, number>;
 
   constructor() {
     super();
@@ -9,6 +10,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     this.initializeOption = go.LayeredDigraphLayout.InitDepthFirstIn;
     this.spouseSpacing = 30; // minimum space between spouses
     this.isRouting = false;
+    this.childOrderMap = new Map();
   }
 
   makeNetwork(coll: any) {
@@ -84,6 +86,10 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     }
     // now do all Links
     it.reset();
+    // Track the order of children for each parent to preserve data order
+    this.childOrderMap.clear();
+    let globalOrder = 0;
+
     while (it.next()) {
       const link = it.value;
       if (!(link instanceof go.Link)) continue;
@@ -93,8 +99,11 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (link.category === '' && link.data) {
         const parent = net.findVertex(link.fromNode); // should be a label node
         const child = net.findVertex(link.toNode);
+
+        let childVertex = null;
         if (child !== null) {
           // an unmarried child - link directly to the child vertex
+          childVertex = child;
           net.linkVertexes(parent, child, link);
         } else {
           // a married child - need to find their marriage label node
@@ -112,9 +121,15 @@ class GenogramLayout extends go.LayeredDigraphLayout {
             });
             // Link parent to the marriage label vertex (representing the married couple)
             if (marriageLabelVertex !== null) {
+              childVertex = marriageLabelVertex;
               net.linkVertexes(parent, marriageLabelVertex, link);
             }
           }
+        }
+
+        // Store the order of this child to preserve data sequence
+        if (childVertex !== null && !this.childOrderMap.has(childVertex)) {
+          this.childOrderMap.set(childVertex, globalOrder++);
         }
       }
     }
@@ -190,6 +205,15 @@ class GenogramLayout extends go.LayeredDigraphLayout {
 
   initializeIndices() {
     super.initializeIndices();
+
+    // Apply the preserved child order to column indices
+    // This ensures siblings maintain their data array order
+    this.network?.vertexes.each((v: any) => {
+      if (this.childOrderMap.has(v)) {
+        v.column = this.childOrderMap.get(v);
+      }
+    });
+
     const vertical = this.direction === 90 || this.direction === 270;
     this.network?.edges.each((e: any) => {
       if (e.fromVertex?.node && e.fromVertex?.node.isLinkLabel) {

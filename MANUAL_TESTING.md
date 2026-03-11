@@ -27,6 +27,8 @@ Siblings should appear LEFT-TO-RIGHT in this order:
 **Bug Behavior** (if fix didn't work):
 Siblings would appear as: Eve, Charlie, Frank (unmarried first)
 
+Actual: Eve Charlie Frank
+
 ### Test Case 2: Original Data
 
 **Steps**:
@@ -42,23 +44,25 @@ Siblings would appear as: Eve, Charlie, Frank (unmarried first)
 - Multi-generation layout correct
 - No visual glitches or misalignments
 
+seems like good so far, other than ordering
+
 ### Test Case 3: Edge Cases
 
 Create test data for:
 
 1. **Single unmarried child** - should display correctly
-2. **All siblings married** - should maintain data order
-3. **All siblings unmarried** - should maintain data order
+2. **All siblings married** - should maintain data order PASSED
+3. **All siblings unmarried** - should maintain data order PASSED
 4. **Multiple generations** - each generation's siblings maintain their order independently
 
 ## Verification Checklist
 
 - [ ] Mixed sibling test shows correct order (Charlie, Eve, Frank)
-- [ ] Original data displays without errors
-- [ ] Parent-child relationships preserved
+- [x] Original data displays without errors
+- [x] Parent-child relationships preserved
 - [ ] Generation alignment correct
-- [ ] No console errors
-- [ ] Diagram renders smoothly
+- [x] No console errors
+- [x] Diagram renders smoothly
 
 ## Notes
 
