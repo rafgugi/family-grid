@@ -1,16 +1,17 @@
-import { ChangeEvent, useContext } from 'react';
-import { Input, Table } from 'reactstrap';
+import { ChangeEvent, useContext, useState } from 'react';
+import { Button, Input, Table } from 'reactstrap';
 import { Person } from '../family.interface';
 import { explodeTrees, idAsNickName } from '../utils/family-tree';
 import { useTranslation } from 'react-i18next';
 import AppContext from './AppContext';
+import PhotoUpload from './PhotoUpload';
 
 interface FamilyGridProps {
   trees: Person[];
 }
 
 export default function FamilyGrid({ trees }: FamilyGridProps) {
-  const { hidePersonCode, hidePersonIg } = useContext(AppContext);
+  const { hidePersonCode, hidePersonIg, editMode } = useContext(AppContext);
   const { t } = useTranslation();
 
   return (
@@ -28,6 +29,9 @@ export default function FamilyGrid({ trees }: FamilyGridProps) {
           <th style={{ width: '8.5em' }} hidden={hidePersonIg}>
             {t('table.header.ig')}
           </th>
+          {editMode && (
+            <th style={{ width: '10em' }}>{t('table.header.photo')}</th>
+          )}
         </tr>
       </thead>
       <tbody>
@@ -64,11 +68,17 @@ function FamilyRows({ person, ...props }: PersonRowProps) {
 function PersonRow({ person }: PersonRowProps) {
   const { editMode, hidePersonCode, hidePersonIg, upsertPerson } =
     useContext(AppContext);
+  const { t } = useTranslation();
   const nickName = idAsNickName(person.id);
   const name = person.name || nickName;
+  const [isEditingPhoto, setIsEditingPhoto] = useState(false);
 
   const updatePerson = function (e: ChangeEvent<any>, key: string) {
     upsertPerson({ ...person, [key]: e.target.value });
+  };
+
+  const handlePhotoChange = (photoData: string | null) => {
+    upsertPerson({ ...person, photo: photoData || undefined });
   };
 
   let inputClass = 'd-none';
@@ -141,6 +151,50 @@ function PersonRow({ person }: PersonRowProps) {
         />
         <span className={spanClass}>{person.ig}</span>
       </td>
+      {editMode && (
+        <td>
+          {isEditingPhoto ? (
+            <div style={{ minWidth: '200px' }}>
+              <PhotoUpload
+                photoData={person.photo || null}
+                onPhotoChange={handlePhotoChange}
+                show={true}
+              />
+              <Button
+                size="sm"
+                color="secondary"
+                onClick={() => setIsEditingPhoto(false)}
+                className="mt-2"
+              >
+                {t('config.button.close')}
+              </Button>
+            </div>
+          ) : (
+            <div className="d-flex align-items-center gap-2">
+              {person.photo && (
+                <img
+                  src={person.photo}
+                  alt="Preview"
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    objectFit: 'cover',
+                    borderRadius: '4px',
+                  }}
+                />
+              )}
+              <Button
+                size="sm"
+                color="primary"
+                outline
+                onClick={() => setIsEditingPhoto(true)}
+              >
+                {person.photo ? t('config.button.changePhoto') : t('config.button.addPhoto')}
+              </Button>
+            </div>
+          )}
+        </td>
+      )}
     </tr>
   );
 }

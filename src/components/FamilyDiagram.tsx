@@ -118,7 +118,7 @@ class DiagramUtil {
                 height: 36,
                 imageStretch: go.GraphObject.UniformToFill,
               },
-              new go.Binding('source', 'photo').makeTwoWay(),
+              new go.Binding('source', 'photo'),
               new go.Binding('visible', 'photo', (p) => !!p)
             )
           ),
@@ -175,7 +175,7 @@ class DiagramUtil {
                 height: 36,
                 imageStretch: go.GraphObject.UniformToFill,
               },
-              new go.Binding('source', 'photo').makeTwoWay(),
+              new go.Binding('source', 'photo'),
               new go.Binding('visible', 'photo', (p) => !!p)
             )
           ),
