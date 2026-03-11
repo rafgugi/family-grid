@@ -6,9 +6,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- Enable translation (#22)
-- Reformat nickname (#20)
-- Add color to the diagram (#20)
+
+## [1.1.0] 2026-03-12
+
+### Added
+
+- Add photo support for persons with upload and URL methods (#25)
+- Add photo editing for existing persons (#25)
+- Add photo cropping and compression utilities (#25)
+- Enable translation and internationalization support (EN/ID) (#22)
+- Add language switcher in UI (#22)
+- Add toggle to show/hide Instagram handles (#20)
+- Add color coding to family diagram (#20)
+- Add nickname formatting with capitalization and number removal (#20)
+
+### Fixed
+
+- Fix sibling order preservation in family diagram (#27)
+- Fix GitHub Actions CI cache service error (#26)
+- Fix i18n initialization from cache (#22)
+
+### Changed
+
+- Reorganize source code structure into utils, hooks, and lang folders
+- Update build configuration for proper root path (#26)
 
 ## [1.0.0] 2023-08-09
 
