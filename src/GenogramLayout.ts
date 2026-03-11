@@ -129,7 +129,8 @@ class GenogramLayout extends go.LayeredDigraphLayout {
 
         // Store the order of this child to preserve data sequence
         if (childVertex !== null && !this.childOrderMap.has(childVertex)) {
-          this.childOrderMap.set(childVertex, globalOrder++);
+          this.childOrderMap.set(childVertex, globalOrder);
+          globalOrder++;
         }
       }
     }
@@ -206,11 +207,13 @@ class GenogramLayout extends go.LayeredDigraphLayout {
   initializeIndices() {
     super.initializeIndices();
 
-    // Apply the preserved child order to column indices
-    // This ensures siblings maintain their data array order
+    // Apply the preserved child order to both column and index
+    // GoJS uses 'index' for final positioning, not 'column'
     this.network?.vertexes.each((v: any) => {
       if (this.childOrderMap.has(v)) {
-        v.column = this.childOrderMap.get(v);
+        const order = this.childOrderMap.get(v);
+        v.column = order;
+        v.index = order;
       }
     });
 

@@ -72,28 +72,44 @@ The edges need to be added in the same order as the children appear in the origi
 
 **Result**: ❌ Links added in correct order, BUT GoJS LayeredDigraphLayout still reordered siblings internally
 
-### Attempt 2: Explicitly set column indices (COMPLETE)
+### Attempt 2: Set column indices (FAILED - wrong property)
 
-**Root Cause Discovered**: GoJS LayeredDigraphLayout has its own internal ordering algorithm that runs AFTER edges are added. Simply preserving edge addition order is insufficient.
+**Changes Made**: Added `childOrderMap` and set `v.column` in `initializeIndices()`
+
+**Result**: ❌ Still rendered incorrectly. Diagnostic logging revealed GoJS uses `v.index` for positioning, not `v.column`!
+
+### Attempt 3: Set BOTH column AND index (SUCCESS ✅)
+
+**Root Cause Discovered via Systematic Debugging**:
+
+Using diagnostic logging, discovered that:
+
+```
+Eve: column=1, index=0  <- rendered first despite column=1
+Charlie: column=0, index=1  <- rendered second despite column=0
+Frank: column=2, index=2
+```
+
+**GoJS uses `v.index` for final positioning, NOT `v.column`!**
 
 **The Real Fix**:
 
 1. Added `childOrderMap: Map<any, number>` property to GenogramLayout class
 2. Track the order of child vertices as links are processed (store in map)
-3. In `initializeIndices()` method, explicitly set `v.column = order` for each vertex
-4. This **forces** GoJS to respect our desired order when positioning siblings
+3. In `initializeIndices()` method, explicitly set **BOTH** `v.column` AND `v.index` to our preserved order
+4. Setting `v.index` directly controls final sibling positioning
 
 **Code Changes**:
 
 - Constructor: Initialize `childOrderMap`
-- `add()` method (lines 91-134): Track child vertex order in map as links are processed
-- `initializeIndices()` method (lines 206-216): Apply column indices from map to vertices
+- `add()` method (lines 91-138): Track child vertex order in map as links are processed
+- `initializeIndices()` method (lines 213-223): Apply order to BOTH column AND index properties
 
 **Verification**:
 
 - ✅ Code compiles successfully
 - ✅ App loads without errors
-- ⏳ **Manual testing required**: User needs to verify sibling order is correct
+- ✅ **Manual testing PASSED**: Siblings now render as Charlie, Eve, Frank (correct data order)
 
 ## Testing Approach
 
