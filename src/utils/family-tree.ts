@@ -35,6 +35,7 @@ export function enrichTreeData(
       email: person.email,
       ig: person.ig,
       address: person.address,
+      photo: person.photo,
       marriages: person.marriages,
     });
     const detail = people[p.id];
@@ -194,6 +195,7 @@ export function treesToPersonNode(
         s: person.sex ?? 'M',
         attributes: [],
         spouses: [],
+        ...(person.photo && { photo: person.photo }),
       };
     }
     const node: PersonNode = nodes[person.id];

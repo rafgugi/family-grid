@@ -101,14 +101,28 @@ class DiagramUtil {
         },
         $(go.Panel,
           { name: 'ICON' },
-          $(go.Shape, 'Square', {
-            width: 40,
-            height: 40,
-            strokeWidth: 2,
-            fill: MALE_COLOR,
-            stroke: SHAPE_LINE_COLOR,
-            portId: '',
-          }),
+          // Photo or shape background
+          $(go.Panel, 'Auto',
+            $(go.Shape, 'Square', {
+              width: 40,
+              height: 40,
+              strokeWidth: 2,
+              fill: MALE_COLOR,
+              stroke: SHAPE_LINE_COLOR,
+              portId: '',
+            }),
+            // Photo - shown only if photo exists
+            $(go.Picture,
+              {
+                width: 36,
+                height: 36,
+                imageStretch: go.GraphObject.UniformToFill,
+              },
+              new go.Binding('source', 'photo'),
+              new go.Binding('visible', 'photo', (p) => !!p)
+            )
+          ),
+          // Attributes overlay (e.g., slash for separated/divorced)
           $(go.Panel,
             {
               itemTemplate: $(go.Panel,
@@ -144,14 +158,28 @@ class DiagramUtil {
         },
         $(go.Panel,
           { name: 'ICON' },
-          $(go.Shape, 'Circle', {
-            width: 40,
-            height: 40,
-            strokeWidth: 2,
-            fill: FEMALE_COLOR,
-            stroke: SHAPE_LINE_COLOR,
-            portId: '',
-          }),
+          // Photo or shape background
+          $(go.Panel, 'Auto',
+            $(go.Shape, 'Square', {
+              width: 40,
+              height: 40,
+              strokeWidth: 2,
+              fill: FEMALE_COLOR,
+              stroke: SHAPE_LINE_COLOR,
+              portId: '',
+            }),
+            // Photo - shown only if photo exists
+            $(go.Picture,
+              {
+                width: 36,
+                height: 36,
+                imageStretch: go.GraphObject.UniformToFill,
+              },
+              new go.Binding('source', 'photo'),
+              new go.Binding('visible', 'photo', (p) => !!p)
+            )
+          ),
+          // Attributes overlay (e.g., slash for separated/divorced)
           $(go.Panel,
             {
               itemTemplate: $(go.Panel,

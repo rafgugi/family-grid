@@ -10,6 +10,7 @@ export interface Person {
   email?: string;
   ig?: string;
   address?: string;
+  photo?: string;
   marriages: Marriage[];
 }
 
@@ -26,4 +27,5 @@ export interface PersonNode {
   father?: string;
   spouses: string[];
   attributes: string[];
+  photo?: string;
 }

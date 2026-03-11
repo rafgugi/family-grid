@@ -2,10 +2,16 @@ translation:
   config.addChild: Tambah Anak
   config.addSpouse: Tambah Pasangan
   config.addTree: Tambah Keluarga
+  config.button.addPhoto: Tambah Foto
   config.button.apply: Terapkan!
+  config.button.cancel: Batal
+  config.button.changePhoto: Ubah
+  config.button.close: Tutup
+  config.button.confirm: Terapkan!
   config.button.delete: Hapus!
   config.button.submit: Terapkan!
   config.deletePerson: Hapus Orang
+  config.deletePhoto: Hapus Foto
   config.editMode: Mode Edit
   config.editTree: Edit Pohon Keluarga
   config.export: Expor
@@ -16,7 +22,9 @@ translation:
   config.label.child: Anak
   config.label.deletePerson: Hapus Orang
   config.label.editTree: Edit Pohon Keluarga
+  config.label.optional: opsional
   config.label.person: Orang
+  config.label.photo: Foto
   config.label.selectChild: Pilih Anak
   config.label.selectPerson: Pilih Orang
   config.label.selectSpouse: Pilih Pasangan
@@ -29,8 +37,21 @@ translation:
   config.showIg: Tampilkan Instagram
   config.splitFamily: Pisah Per Keluarga
   error.alreadyTaken: '{{value}} sudah digunakan'
+  error.photoProcessing: Error memproses foto. Silakan coba lagi.
+  error.photoStorageFull: Penyimpanan penuh. Gunakan URL foto sebagai gantinya.
   header.family: 'Keluarga {{name}}'
   header.familyGeneral: Family Grid
+  photo.compressing: Mengompresi foto...
+  photo.cropInstructions: Seret dan zoom untuk memposisikan foto Anda dalam kotak
+  photo.cropTitle: Potong Foto
+  photo.storageWarning: Penyimpanan {{percent}}% penuh. Pertimbangkan menggunakan opsi URL foto.
+  photo.uploadOption: Unggah foto (disimpan dalam file)
+  photo.uploadOptionDesc: Maks {{maxKB}}KB, bekerja offline, termasuk dalam ekspor
+  photo.urlInvalid: Silakan masukkan URL yang valid dimulai dengan http:// atau https://
+  photo.urlOption: Gunakan URL foto (tautan ke gambar eksternal)
+  photo.urlOptionDesc: Penyimpanan minimal, memerlukan internet
+  photo.urlPlaceholder: Masukkan URL foto (https://...)
+  photo.zoom: Zoom
   table.header.address: Alamat
   table.header.birthdate: Tgl Lahir
   table.header.birthplace: Tempat Lahir
@@ -39,3 +60,4 @@ translation:
   table.header.ig: Instagram
   table.header.name: Nama
   table.header.phone: Telpon
+  table.header.photo: Foto

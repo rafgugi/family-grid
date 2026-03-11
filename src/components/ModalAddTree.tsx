@@ -13,6 +13,8 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
+import PhotoUpload from './PhotoUpload';
+import { usePhotoUpload } from '../hooks/usePhotoUpload';
 
 interface ModalAddTreeProps {
   isOpen: boolean;
@@ -23,6 +25,7 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
   const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
+  const { photoData, setPhotoData, resetPhotoState } = usePhotoUpload();
   const { t } = useTranslation();
 
   const handleChildChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,10 +47,12 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
       id: child,
       code: '',
       marriages: [] as Marriage[],
+      ...(photoData && { photo: photoData }),
     };
 
     upsertPerson(tree);
     setChild('');
+    resetPhotoState();
     toggle();
   };
 
@@ -67,6 +72,11 @@ function ModalAddTree({ isOpen, toggle }: ModalAddTreeProps) {
           />
           {childError !== '' && <FormFeedback>{childError}</FormFeedback>}
         </FormGroup>
+        <PhotoUpload
+          photoData={photoData}
+          onPhotoChange={setPhotoData}
+          show={!!(child && !childError)}
+        />
       </ModalBody>
       <ModalFooter>
         <Button disabled={!validForm} onClick={handleSubmit}>

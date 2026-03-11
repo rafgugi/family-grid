@@ -13,6 +13,8 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
+import PhotoUpload from './PhotoUpload';
+import { usePhotoUpload } from '../hooks/usePhotoUpload';
 
 interface ModalAddSpouseProps {
   person: Person | null;
@@ -30,6 +32,7 @@ function ModalAddSpouse({
   const { treeMap, upsertPerson } = useContext(AppContext);
   const [spouse, setSpouse] = useState('');
   const [spouseError, setSpouseError] = useState('');
+  const { photoData, setPhotoData, resetPhotoState } = usePhotoUpload();
   const { t } = useTranslation();
 
   const people = Object.values(treeMap);
@@ -59,6 +62,7 @@ function ModalAddSpouse({
       id: spouse,
       code: '',
       marriages: [] as Marriage[],
+      ...(photoData && { photo: photoData }),
     };
     person.marriages.push({
       spouse: spousePerson,
@@ -68,6 +72,7 @@ function ModalAddSpouse({
     upsertPerson(person);
     setPerson(null);
     setSpouse('');
+    resetPhotoState();
     toggle();
   };
 
@@ -105,6 +110,11 @@ function ModalAddSpouse({
             {spouseError !== '' && <FormFeedback>{spouseError}</FormFeedback>}
           </FormGroup>
         )}
+        <PhotoUpload
+          photoData={photoData}
+          onPhotoChange={setPhotoData}
+          show={!!(person && spouse && !spouseError)}
+        />
       </ModalBody>
       <ModalFooter>
         <Button disabled={!validForm} onClick={handleSubmit}>

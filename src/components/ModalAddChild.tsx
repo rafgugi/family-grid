@@ -13,6 +13,8 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Marriage, Person } from '../family.interface';
 import AppContext from './AppContext';
+import PhotoUpload from './PhotoUpload';
+import { usePhotoUpload } from '../hooks/usePhotoUpload';
 
 interface ModalAddChildProps {
   person: Person | null;
@@ -34,6 +36,7 @@ function ModalAddChild({
   const { treeMap, upsertPerson } = useContext(AppContext);
   const [child, setChild] = useState('');
   const [childError, setChildError] = useState('');
+  const { photoData, setPhotoData, resetPhotoState } = usePhotoUpload();
   const { t } = useTranslation();
 
   const marriedPeople = Object.values(treeMap).filter(
@@ -80,6 +83,7 @@ function ModalAddChild({
       id: child,
       code: '',
       marriages: [] as Marriage[],
+      ...(photoData && { photo: photoData }),
     };
     marriage.children.push(childPerson);
 
@@ -87,6 +91,7 @@ function ModalAddChild({
     setPerson(null);
     setSpouse(null);
     setChild('');
+    resetPhotoState();
     toggle();
   };
 
@@ -142,6 +147,11 @@ function ModalAddChild({
             {childError !== '' && <FormFeedback>{childError}</FormFeedback>}
           </FormGroup>
         )}
+        <PhotoUpload
+          photoData={photoData}
+          onPhotoChange={setPhotoData}
+          show={!!(person && spouse && child && !childError)}
+        />
       </ModalBody>
       <ModalFooter>
         <Button disabled={!validForm} onClick={handleSubmit}>
