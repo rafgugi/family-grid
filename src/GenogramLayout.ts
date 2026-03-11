@@ -94,23 +94,27 @@ class GenogramLayout extends go.LayeredDigraphLayout {
         const parent = net.findVertex(link.fromNode); // should be a label node
         const child = net.findVertex(link.toNode);
         if (child !== null) {
-          // an unmarried child
+          // an unmarried child - link directly to the child vertex
           net.linkVertexes(parent, child, link);
         } else {
-          // a married child
-          link.toNode?.linksConnected.each(l => {
-            // if it has no label node, it's a parent-child link
-            if (l.category !== 'Marriage' || !l.data) return;
-
-            // found the Marriage Link, now get its label Node
-            const mlab = l.labelNodes.first();
-            // parent-child link should connect with the label node,
-            // so the LayoutEdge should connect with the LayoutVertex representing the label node
-            const mlabvert = net.findVertex(mlab);
-            if (mlabvert !== null) {
-              net.linkVertexes(parent, mlabvert, link);
+          // a married child - need to find their marriage label node
+          // The child node exists but doesn't have a vertex (because married people are represented by label nodes)
+          const childNode = link.toNode;
+          if (childNode) {
+            // Find the marriage link for this child
+            let marriageLabelVertex = null;
+            childNode.linksConnected.each((l: any) => {
+              if (l.category === 'Marriage' && l.data) {
+                // Found the marriage link - get its label node
+                const mlab = l.labelNodes.first();
+                marriageLabelVertex = net.findVertex(mlab);
+              }
+            });
+            // Link parent to the marriage label vertex (representing the married couple)
+            if (marriageLabelVertex !== null) {
+              net.linkVertexes(parent, marriageLabelVertex, link);
             }
-          });
+          }
         }
       }
     }
