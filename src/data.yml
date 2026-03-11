@@ -1,44 +1,99 @@
 ---
-# Test data to demonstrate sibling sorting bug
-# Expected order: Charlie (married), Eve (unmarried), Frank (married)
-# Bug behavior: Would show Eve first because she's unmarried
-
 trees:
-- id: parent1
+- id: satyr
   marriages:
   - spouse:
-      id: parent2
+      id: surtr
     children:
-    # Intentional order: married, unmarried, married
-    - id: charlie    # First child - MARRIED
+    - id: hound
       marriages:
       - spouse:
-          id: diana
-    - id: eve        # Second child - UNMARRIED
-    - id: frank      # Third child - MARRIED
+          id: alpha
+        children:
+        - id: ryora
+  - spouse:
+      id: nala
+    children:
+    - id: mufasa
       marriages:
       - spouse:
-          id: grace
-
+          id: sarabi
+        children:
+        - id: scar
+        - id: simba
 people:
-  parent1:
-    name: Parent One
+  satyr:
+    name: Muhammad Satyr
+    birthplace: Surabaya
+    birthdate: '1982-02-13'
     sex: M
-  parent2:
-    name: Parent Two
+    phone: '085123456121'
+    address: |
+      Jl Redis no 6379 Bekasi
+    ig: '@satyr_ecom'
+  surtr:
+    name: Amalia Surtrain
+    birthplace: Surabaya
+    birthdate: '1987-11-21'
+    deathdate: '2021-01-13'
     sex: F
-  charlie:
-    name: Charlie (Married - 1st)
+  hound:
+    name: Muhammad Hound
+    birthplace: Surabaya
+    birthdate: '2007-06-09'
     sex: M
-  diana:
-    name: Diana
+    phone: '085123456121'
+    address: |
+      Jl MySql no 3306 Jakarta Barat
+    ig: '@huntofhounds'
+  alpha:
+    name: Siti Alphabeirt
+    birthplace: Surabaya
+    birthdate: '2008-06-19'
     sex: F
-  eve:
-    name: Eve (Unmarried - 2nd)
-    sex: F
-  frank:
-    name: Frank (Married - 3rd)
+    phone: '085123456121'
+    address: |
+      Jl MySql no 3306 Jakarta Barat
+    ig: '@siti_alphabeirt08'
+  ryora:
+    name: Muhammad Ryorachman
+    birthplace: Surabaya
+    birthdate: '2030-03-12'
     sex: M
-  grace:
-    name: Grace
+    address: |
+      Jl Mongo no 27017 Jakarta Barat
+    ig: '@ryorachman'
+  nala:
     sex: F
+  mufasa:
+    name: Mufasa Satyr
+    birthplace: Surabaya
+    birthdate: '2005-10-25'
+    sex: M
+    address: |
+      Jl Redis no 6379 Bekasi
+    ig: '@mufasa_satyr'
+  scar:
+    name: Scar Lion
+    birthplace: Surabaya
+    birthdate: '2009-07-30'
+    sex: M
+    address: |
+      Jl Lion King no 123 Pride Lands
+    ig: '@scarlion'
+  sarabi:
+    name: Sarabi Lioness
+    birthplace: Surabaya
+    birthdate: '2010-03-15'
+    sex: F
+    address: |
+      Jl Lion King no 123 Pride Lands
+    ig: '@sarabilioness'
+  simba:
+    name: Simba Lion
+    birthplace: Surabaya
+    birthdate: '2035-08-08'
+    sex: M
+    address: |
+      Jl Lion King no 123 Pride Lands
+    ig: '@simbalion'
