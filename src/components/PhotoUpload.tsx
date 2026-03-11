@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from 'reactstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Cropper from 'react-easy-crop';
 import { Area } from 'react-easy-crop/types';
@@ -50,13 +50,24 @@ export default function PhotoUpload({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [isProcessingPhoto, setIsProcessingPhoto] = useState(false);
 
+  // Initialize UI state based on existing photo type
+  useEffect(() => {
+    if (photoData) {
+      if (isValidPhotoUrl(photoData)) {
+        setPhotoMethod('url');
+        setPhotoUrl(photoData);
+      } else {
+        setPhotoMethod('upload');
+      }
+    }
+  }, [photoData]);
+
   if (!show) return null;
 
   const handlePhotoMethodChange = (method: 'upload' | 'url') => {
     setPhotoMethod(method);
     setPhotoError('');
     setPhotoUrlError('');
-    onPhotoChange(null);
   };
 
   const handleFileSelect = async (
