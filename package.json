@@ -1,6 +1,7 @@
 {
   "name": "family-grid",
   "version": "1.0.0",
+  "homepage": "https://rafgugi.github.io/family-grid",
   "private": false,
   "dependencies": {
     "bootstrap": "^5.2.3",
