@@ -9,26 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Migrated from Create React App to Vite for faster builds and modern tooling (#29)
-- Migrated test suite from Jest to Vitest (#29)
-- Build output folder changed from `build/` to `dist/` (#29)
-- Development server command changed from `npm start` to `npm run dev` (#29)
-- Environment variables now use `VITE_` prefix instead of `REACT_APP_` (#29)
-- Updated TypeScript target from ES5 to ES2020 (#29)
-- Updated module resolution to bundler strategy (#29)
-- Replaced `lodash` with `lodash-es` for better tree-shaking (#29)
-
-### Added
-
-- Added `npm run dev` command for development server (#29)
-- Added `npm run preview` command for production preview (#29)
-- Added code splitting for better caching (5 vendor chunks) (#29)
-
-### Removed
-
-- Removed deprecated Create React App and CRACO dependencies (#29)
-- Removed Jest and related testing dependencies (#29)
-- Removed `npm start` script (use `npm run dev` instead) (#29)
+- Migrate from Create React App to Vite (#29)
+- Migrate from Jest to Vitest (#29)
 
 ## [1.1.0] 2026-03-12
 
