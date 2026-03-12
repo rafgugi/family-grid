@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Migrated from Create React App to Vite for faster builds and modern tooling
+- Build output folder changed from `build/` to `dist/`
+- Development server command changed from `npm start` to `npm run dev`
+- Environment variables now use `VITE_` prefix instead of `REACT_APP_`
+- Updated TypeScript target from ES5 to ES2020
+- Updated module resolution to bundler strategy
+
+### Added
+
+- Added `npm run dev` command for development server
+- Added `npm run preview` command for production preview
+
+### Removed
+
+- Removed deprecated Create React App and CRACO dependencies
+- Removed `npm start` script (use `npm run dev` instead)
+
+### Note
+
+- Tests require migration to Vitest (see `docs/plans/` for migration guide)
+
 ## [1.1.0] 2026-03-12
 
 ### Added
