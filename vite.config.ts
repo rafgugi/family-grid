@@ -6,12 +6,13 @@ export default defineConfig({
   plugins: [react(), ViteYaml()],
   build: {
     outDir: 'build',
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-gojs': ['gojs'],
-          'vendor-ui': ['bootstrap', 'reactstrap', 'bootstrap-icons'],
+          'vendor-ui': ['bootstrap', 'reactstrap'],
           'vendor-utils': ['lodash-es', 'i18next', 'react-i18next'],
         },
       },
