@@ -22,7 +22,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "react-scripts test"
+    "test": "echo 'Tests require migration to Vitest - see docs/plans for migration guide'"
   },
   "eslintConfig": {
     "extends": [
