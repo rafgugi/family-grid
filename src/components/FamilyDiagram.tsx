@@ -2,7 +2,8 @@ import { Person, PersonNode } from '../family.interface';
 import { treesToPersonNode } from '../utils/family-tree';
 import { useRef, useEffect, useDeferredValue, useState } from 'react';
 import * as go from 'gojs';
-import { isEqual, cloneDeep } from 'lodash';
+import isEqual from 'lodash-es/isEqual';
+import cloneDeep from 'lodash-es/cloneDeep';
 import GenogramLayout from '../GenogramLayout';
 
 const SLASH_COLOR = '#d4071c'; // red
@@ -21,6 +22,7 @@ function FamilyDiagram({ trees, depth }: FamilyDiagramProps) {
   const deferredTrees = useDeferredValue(trees);
   const [personNodes, setPersonNodes] = useState([] as PersonNode[]);
   const divRef = useRef<HTMLDivElement>(null);
+  const isRendering = useRef(false);
 
   useEffect(() => {
     const nodes = treesToPersonNode(deferredTrees, depth || 0);
@@ -34,20 +36,46 @@ function FamilyDiagram({ trees, depth }: FamilyDiagramProps) {
    * from it and append to the div element.
    */
   useEffect(() => {
-    const diagram = DiagramUtil.initDiagram();
-    DiagramUtil.setupDiagram(diagram, personNodes);
+    if (!personNodes || personNodes.length === 0 || isRendering.current) {
+      return;
+    }
 
-    // We need to host the diagram into a temprary element so it can be rendered
-    const tempDiv = document.createElement('div');
-    diagram.div = tempDiv;
+    isRendering.current = true;
+    let diagram: go.Diagram | null = null;
+    let tempDiv: HTMLDivElement | null = null;
 
-    // Create svg from the diagram, then finally delete the div
-    const svg = diagram.makeSvg({ scale: 1 });
-    tempDiv.remove();
-    if (svg) {
-      svg.setAttribute('class', 'my-3 m-auto img-fluid');
-      divRef.current?.replaceChildren(svg);
-      return () => svg.remove();
+    try {
+      diagram = DiagramUtil.initDiagram();
+      DiagramUtil.setupDiagram(diagram, personNodes);
+
+      // We need to host the diagram into a temprary element so it can be rendered
+      tempDiv = document.createElement('div');
+      diagram.div = tempDiv;
+
+      // Create svg from the diagram, then finally delete the div
+      const svg = diagram.makeSvg({ scale: 1 });
+
+      if (svg) {
+        svg.setAttribute('class', 'my-3 m-auto img-fluid');
+        divRef.current?.replaceChildren(svg);
+
+        return () => {
+          isRendering.current = false;
+          svg.remove();
+          if (tempDiv) tempDiv.remove();
+          if (diagram) diagram.div = null;
+        };
+      }
+    } catch (error) {
+      // Only log in development, silently handle in production
+      if (import.meta.env.DEV) {
+        console.warn('GoJS diagram render skipped due to StrictMode double-render:', error);
+      }
+    } finally {
+      if (tempDiv) tempDiv.remove();
+      if (!diagram || !diagram.div) {
+        isRendering.current = false;
+      }
     }
   }, [personNodes]);
 
