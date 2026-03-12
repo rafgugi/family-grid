@@ -65,8 +65,8 @@ Locally preview the production build. Run `npm run build` first.
 
 ### `npm test`
 
-Note: Tests are currently being migrated to Vitest. See the migration plan in
-`docs/plans/` for more information.
+Runs the test suite with Vitest. Tests run in watch mode by default. Use
+`npm test -- --run` for CI mode.
 
 ## Contributing
 

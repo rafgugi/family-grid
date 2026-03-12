@@ -6,22 +6,32 @@
 ## What Changed
 
 ### Build System
+
 - **Before:** Create React App 5.0.1 + CRACO 7.1.0
 - **After:** Vite 7.3.1
 
+### Test Framework
+
+- **Before:** Jest
+- **After:** Vitest 4.0.18
+
 ### Commands
+
 - `npm start` → `npm run dev` (development)
 - `npm run build` (unchanged, now uses Vite)
 - Added: `npm run preview` (preview production build)
 
 ### Environment Variables
+
 - `REACT_APP_*` → `VITE_*` prefix
 - `process.env` → `import.meta.env`
 
 ### Build Output
+
 - `build/` → `dist/`
 
 ### Configuration Files
+
 - **Removed:** `craco.config.js`
 - **Added:** `vite.config.ts`
 - **Updated:** `tsconfig.json`, `index.html` (moved to root)
@@ -35,21 +45,22 @@
 ✅ Production preview works: `http://localhost:4173/family-grid/`  
 ✅ All assets load correctly (manifest.json, robots.txt)  
 ✅ Build time: ~2 seconds (previously ~15+ seconds)  
+✅ All 25 tests pass with Vitest
 
 ## Known Issues
 
-⚠️ **Tests:** Tests require migration from Jest to Vitest. Current `npm test` shows a placeholder message. See `docs/plans/2026-03-12-vite-migration.md` for future test migration guide.
+None - migration complete!
 
 ## Next Steps (Optional)
 
-1. Migrate tests to Vitest
-2. Optimize bundle size (currently 1.75MB)
-3. Add code splitting for better performance
-4. Consider PWA support with vite-plugin-pwa
+1. Further optimize bundle size (currently 459 KB gzipped)
+2. Consider PWA support with vite-plugin-pwa
+3. Explore additional code splitting opportunities
 
 ## Deployment Notes
 
 When deploying to GitHub Pages:
+
 - Deploy the `dist/` folder (not `build/`)
 - Base path is configured as `/family-grid/` in `vite.config.ts`
 - Run `npm run build` then deploy `dist/` contents
@@ -57,6 +68,7 @@ When deploying to GitHub Pages:
 ## Rollback Instructions
 
 If needed, rollback using:
+
 ```bash
 git log --oneline  # Find commit before migration
 git reset --hard <commit-hash>
