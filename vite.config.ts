@@ -17,5 +17,22 @@ export default defineConfig({
   base: '/family-grid/',
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor code from app code for better caching
+          'vendor-react': ['react', 'react-dom', 'react-i18next', 'i18next'],
+          'vendor-bootstrap': ['bootstrap', 'reactstrap'],
+          'vendor-gojs': ['gojs'],
+          'vendor-utils': [
+            'lodash',
+            'file-saver',
+            'yaml',
+            'browser-image-compression',
+            'react-easy-crop',
+          ],
+        },
+      },
+    },
   },
 });
