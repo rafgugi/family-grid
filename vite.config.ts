@@ -25,7 +25,7 @@ export default defineConfig({
           'vendor-bootstrap': ['bootstrap', 'reactstrap'],
           'vendor-gojs': ['gojs'],
           'vendor-utils': [
-            'lodash',
+            'lodash-es',
             'file-saver',
             'yaml',
             'browser-image-compression',

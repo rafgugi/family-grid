@@ -2,7 +2,8 @@ import { Person, PersonNode } from '../family.interface';
 import { treesToPersonNode } from '../utils/family-tree';
 import { useRef, useEffect, useDeferredValue, useState } from 'react';
 import * as go from 'gojs';
-import { isEqual, cloneDeep } from 'lodash';
+import isEqual from 'lodash-es/isEqual';
+import cloneDeep from 'lodash-es/cloneDeep';
 import GenogramLayout from '../GenogramLayout';
 
 const SLASH_COLOR = '#d4071c'; // red
