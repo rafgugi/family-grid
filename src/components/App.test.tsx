@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import App from './App';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -35,9 +36,11 @@ const trees = [{
 }]
 
 // Mock FamilyDiagram
-jest.mock('./FamilyDiagram', () => () => {
-  return <svg />;
-});
+vi.mock('./FamilyDiagram', () => ({
+  default: () => {
+    return <svg />;
+  }
+}));
 
 describe('App', () => {
   beforeEach(() => {
