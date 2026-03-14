@@ -91,9 +91,13 @@ function App(props: AppProps) {
   const handleSave = () => {
     try {
       const unrichedTrees = unrichTreeData(trees);
+      const topNPeople = trees
+        .slice(0, 3)
+        .map(p => p.id)
+        .join('_');
       const treeYaml = stringify(unrichedTrees as {});
       const blob = new Blob([treeYaml], { type: 'text/yaml;charset=utf-8' });
-      saveAs(blob, 'family_data.yaml');
+      saveAs(blob, `family_${topNPeople}.yaml`);
     } catch (error) {
       console.error('Error saving YAML file:', error);
     }
