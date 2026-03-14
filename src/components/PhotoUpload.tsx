@@ -31,6 +31,7 @@ interface PhotoUploadProps {
 }
 
 const MAX_PHOTO_KB = getMaxPhotoKB();
+const MAX_ZOOM = 6;
 
 export default function PhotoUpload({
   photoData,
@@ -286,7 +287,7 @@ export default function PhotoUpload({
               id="zoom-slider"
               type="range"
               min={1}
-              max={3}
+              max={MAX_ZOOM}
               step={0.1}
               value={zoom}
               onChange={e => setZoom(Number(e.target.value))}
