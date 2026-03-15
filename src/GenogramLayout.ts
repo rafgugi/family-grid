@@ -108,22 +108,20 @@ class GenogramLayout extends go.LayeredDigraphLayout {
         } else {
           // a married child - need to find their marriage label node
           // The child node exists but doesn't have a vertex (because married people are represented by label nodes)
-          const childNode = link.toNode;
-          if (childNode) {
-            // Find the marriage link for this child
-            let marriageLabelVertex = null;
-            childNode.linksConnected.each((l: any) => {
-              if (l.category === 'Marriage' && l.data) {
-                // Found the marriage link - get its label node
-                const mlab = l.labelNodes.first();
-                marriageLabelVertex = net.findVertex(mlab);
-              }
-            });
-            // Link parent to the marriage label vertex (representing the married couple)
-            if (marriageLabelVertex !== null) {
-              childVertex = marriageLabelVertex;
-              net.linkVertexes(parent, marriageLabelVertex, link);
-            }
+          // Find the marriage link for this child
+          let mlabvert = null;
+          link.toNode?.linksConnected.each(l => {
+            // if it has no label node, it's a parent-child link
+            if (l.category !== 'Marriage' || !l.data) return;
+
+            // found the Marriage Link, now get its label Node
+            const mlab = l.labelNodes.first();
+            mlabvert = net.findVertex(mlab);
+          });
+          // Link parent to the marriage label vertex (representing the married couple)
+          if (mlabvert !== null) {
+            childVertex = mlabvert;
+            net.linkVertexes(parent, mlabvert, link);
           }
         }
 
@@ -207,14 +205,40 @@ class GenogramLayout extends go.LayeredDigraphLayout {
   initializeIndices() {
     super.initializeIndices();
 
-    // Apply the preserved child order to both column and index
-    // GoJS uses 'index' for final positioning, not 'column'
+    // Group vertices by layer and sort by preserved order
+    const verticesByLayer = new Map<number, any[]>();
     this.network?.vertexes.each((v: any) => {
-      if (this.childOrderMap.has(v)) {
-        const order = this.childOrderMap.get(v);
-        v.column = order;
-        v.index = order;
+      if (!verticesByLayer.has(v.layer)) {
+        verticesByLayer.set(v.layer, []);
       }
+      verticesByLayer.get(v.layer)?.push(v);
+    });
+
+    // For each layer, sort vertices by preserved order and assign layer-specific indices
+    verticesByLayer.forEach((vertices, _layer) => {
+      // Separate vertices into those with preserved order and those without
+      const withOrder = vertices.filter(v => this.childOrderMap.has(v));
+      const withoutOrder = vertices.filter(v => !this.childOrderMap.has(v));
+
+      // Sort vertices with preserved order
+      withOrder.sort((a, b) => {
+        const orderA = this.childOrderMap.get(a) ?? 0;
+        const orderB = this.childOrderMap.get(b) ?? 0;
+        return orderA - orderB;
+      });
+
+      // Assign layer-specific indices: first to ordered vertices, then to unordered ones
+      let layerIndex = 0;
+      withOrder.forEach(v => {
+        v.column = layerIndex;
+        v.index = layerIndex;
+        layerIndex++;
+      });
+      withoutOrder.forEach(v => {
+        v.column = layerIndex;
+        v.index = layerIndex;
+        layerIndex++;
+      });
     });
 
     const vertical = this.direction === 90 || this.direction === 270;
