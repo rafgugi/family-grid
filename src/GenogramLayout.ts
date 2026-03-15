@@ -2,6 +2,7 @@ import * as go from 'gojs';
 
 class GenogramLayout extends go.LayeredDigraphLayout {
   spouseSpacing: number;
+  childOrderMap: Map<any, number>;
 
   constructor() {
     super();
@@ -9,6 +10,7 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     this.initializeOption = go.LayeredDigraphLayout.InitDepthFirstIn;
     this.spouseSpacing = 30; // minimum space between spouses
     this.isRouting = false;
+    this.childOrderMap = new Map();
   }
 
   makeNetwork(coll: any) {
@@ -84,6 +86,10 @@ class GenogramLayout extends go.LayeredDigraphLayout {
     }
     // now do all Links
     it.reset();
+    // Track the order of children for each parent to preserve data order
+    this.childOrderMap.clear();
+    let globalOrder = 0;
+
     while (it.next()) {
       const link = it.value;
       if (!(link instanceof go.Link)) continue;
@@ -93,24 +99,36 @@ class GenogramLayout extends go.LayeredDigraphLayout {
       if (link.category === '' && link.data) {
         const parent = net.findVertex(link.fromNode); // should be a label node
         const child = net.findVertex(link.toNode);
+
+        let childVertex = null;
         if (child !== null) {
-          // an unmarried child
+          // an unmarried child - link directly to the child vertex
+          childVertex = child;
           net.linkVertexes(parent, child, link);
         } else {
-          // a married child
+          // a married child - need to find their marriage label node
+          // The child node exists but doesn't have a vertex (because married people are represented by label nodes)
+          // Find the marriage link for this child
+          let mlabvert = null;
           link.toNode?.linksConnected.each(l => {
             // if it has no label node, it's a parent-child link
             if (l.category !== 'Marriage' || !l.data) return;
 
             // found the Marriage Link, now get its label Node
             const mlab = l.labelNodes.first();
-            // parent-child link should connect with the label node,
-            // so the LayoutEdge should connect with the LayoutVertex representing the label node
-            const mlabvert = net.findVertex(mlab);
-            if (mlabvert !== null) {
-              net.linkVertexes(parent, mlabvert, link);
-            }
+            mlabvert = net.findVertex(mlab);
           });
+          // Link parent to the marriage label vertex (representing the married couple)
+          if (mlabvert !== null) {
+            childVertex = mlabvert;
+            net.linkVertexes(parent, mlabvert, link);
+          }
+        }
+
+        // Store the order of this child to preserve data sequence
+        if (childVertex !== null && !this.childOrderMap.has(childVertex)) {
+          this.childOrderMap.set(childVertex, globalOrder);
+          globalOrder++;
         }
       }
     }
@@ -186,6 +204,43 @@ class GenogramLayout extends go.LayeredDigraphLayout {
 
   initializeIndices() {
     super.initializeIndices();
+
+    // Group vertices by layer and sort by preserved order
+    const verticesByLayer = new Map<number, any[]>();
+    this.network?.vertexes.each((v: any) => {
+      if (!verticesByLayer.has(v.layer)) {
+        verticesByLayer.set(v.layer, []);
+      }
+      verticesByLayer.get(v.layer)?.push(v);
+    });
+
+    // For each layer, sort vertices by preserved order and assign layer-specific indices
+    verticesByLayer.forEach((vertices, _layer) => {
+      // Separate vertices into those with preserved order and those without
+      const withOrder = vertices.filter(v => this.childOrderMap.has(v));
+      const withoutOrder = vertices.filter(v => !this.childOrderMap.has(v));
+
+      // Sort vertices with preserved order
+      withOrder.sort((a, b) => {
+        const orderA = this.childOrderMap.get(a) ?? 0;
+        const orderB = this.childOrderMap.get(b) ?? 0;
+        return orderA - orderB;
+      });
+
+      // Assign layer-specific indices: first to ordered vertices, then to unordered ones
+      let layerIndex = 0;
+      withOrder.forEach(v => {
+        v.column = layerIndex;
+        v.index = layerIndex;
+        layerIndex++;
+      });
+      withoutOrder.forEach(v => {
+        v.column = layerIndex;
+        v.index = layerIndex;
+        layerIndex++;
+      });
+    });
+
     const vertical = this.direction === 90 || this.direction === 270;
     this.network?.edges.each((e: any) => {
       if (e.fromVertex?.node && e.fromVertex?.node.isLinkLabel) {
