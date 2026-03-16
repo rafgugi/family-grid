@@ -61,7 +61,8 @@ optimized, minified, and includes content hashes in filenames.
 
 ### `npm run preview`
 
-Locally preview the production build. Useful for testing the production bundle before deployment.
+Locally preview the production build. Useful for testing the production bundle
+before deployment.
 
 ### `npm test`
 
