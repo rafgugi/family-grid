@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fix genogram crash with multi-spouse families by using layer-specific indices (#31)
 
+### Changed
+
+- Migrate from Create React App to Vite (#29)
+- Migrate from Jest to Vitest (#29)
+
 ## [1.1.0] 2026-03-12
 
 ### Added
