@@ -5,7 +5,6 @@ import ViteYaml from '@modyfi/vite-plugin-yaml';
 export default defineConfig({
   plugins: [react(), ViteYaml()],
   build: {
-    outDir: 'build',
     sourcemap: true,
     rollupOptions: {
       output: {
@@ -34,5 +33,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/setupTests.ts',
+    css: true,
   },
 });

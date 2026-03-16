@@ -31,35 +31,42 @@ members, and explore your family's history in a user-friendly interface.
 
 ## Installation
 
-Run the app in the development mode.
+Install dependencies:
 
 ```sh
-npm start
+npm install
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to open app in the browser.
+Run the app in development mode:
+
+```sh
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
-Starts the development server using Vite. The app will open at `http://localhost:5173` with fast Hot Module Replacement (HMR).
-
-### `npm test`
-
-Launches the test runner using Vitest in interactive watch mode.
+Runs the app in development mode with Vite's fast HMR (Hot Module Replacement).
+Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder. It correctly bundles React
-in production mode and optimizes the build for the best performance. The build
-is minified and the filenames include the hashes.
+Builds the app for production to the `dist` folder using Vite. The build is
+optimized, minified, and includes content hashes in filenames.
 
 ### `npm run preview`
 
 Locally preview the production build. Useful for testing the production bundle before deployment.
+
+### `npm test`
+
+Runs the test suite with Vitest. Tests run in watch mode by default. Use
+`npm test -- --run` for CI mode.
 
 ## Contributing
 
