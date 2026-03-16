@@ -4,8 +4,8 @@ import ViteYaml from '@modyfi/vite-plugin-yaml';
 
 export default defineConfig({
   plugins: [react(), ViteYaml()],
+  base: './', // app is served from a subdirectory when deployed on GitHub Pages
   build: {
-    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
