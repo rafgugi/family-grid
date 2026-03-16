@@ -31,5 +31,11 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/setupTests.ts',
     css: true,
+    pool: 'forks',
+    server: {
+      deps: {
+        inline: ['html-encoding-sniffer', '@exodus/bytes'],
+      },
+    },
   },
 });
