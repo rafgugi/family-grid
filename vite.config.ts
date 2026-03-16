@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import ViteYaml from '@modyfi/vite-plugin-yaml';
 
@@ -11,16 +11,8 @@ export default defineConfig({
         manualChunks: {
           'vendor-react': ['react', 'react-dom'],
           'vendor-gojs': ['gojs'],
-          'vendor-ui': ['bootstrap', 'bootstrap-icons', 'reactstrap'],
-          'vendor-utils': [
-            'browser-image-compression',
-            'file-saver',
-            'i18next',
-            'lodash-es',
-            'react-easy-crop',
-            'react-i18next',
-            'yaml',
-          ],
+          'vendor-ui': ['bootstrap', 'reactstrap'],
+          'vendor-utils': ['lodash-es', 'i18next', 'react-i18next'],
         },
       },
     },
