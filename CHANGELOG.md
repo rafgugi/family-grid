@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.1] 2026-03-16
+
 ### Fixed
 
-- Fix genogram crash with multi-spouse families by using layer-specific indices
+- Fix genogram crash with multi-spouse families by using layer-specific indices (#31)
 
 ## [1.1.0] 2026-03-12
 
