@@ -6,7 +6,7 @@ import { Area } from 'react-easy-crop';
  * @returns Maximum photo size in KB
  */
 export function getMaxPhotoKB(): number {
-  return parseInt(process.env.REACT_APP_MAX_PHOTO_KB || '100', 10);
+  return parseInt(import.meta.env.VITE_MAX_PHOTO_KB || '100', 10);
 }
 
 /**

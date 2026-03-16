@@ -5,7 +5,6 @@ import ViteYaml from '@modyfi/vite-plugin-yaml';
 export default defineConfig({
   plugins: [react(), ViteYaml()],
   build: {
-    outDir: 'build',
     sourcemap: true,
     rollupOptions: {
       output: {
@@ -25,14 +24,7 @@ export default defineConfig({
     },
   },
   define: {
-    // Inject version from package.json at build time
-    'process.env.REACT_APP_VERSION': JSON.stringify(
-      process.env.npm_package_version
-    ),
-    // User-configurable env var (from .env file)
-    'process.env.REACT_APP_MAX_PHOTO_KB': JSON.stringify(
-      process.env.VITE_MAX_PHOTO_KB || '100'
-    ),
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
   },
   test: {
     environment: 'jsdom',
