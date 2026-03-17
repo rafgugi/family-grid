@@ -15,7 +15,12 @@ translation:
   config.editMode: Edit Mode
   config.editTree: Edit Family Tree
   config.export: Export
+  config.exportCsv: Export CSV
+  config.exportCsvTooltip: Person details for spreadsheet editing
+  config.exportYaml: Export YAML
+  config.exportYamlTooltip: Complete tree backup with all relationships
   config.import: Import
+  config.importTooltip: 'Import YAML for full backup/restore, or CSV to edit person details (name, phone, dates, etc.)'
   config.label.addChild: Add a Child
   config.label.addSpouse: Add a Spouse
   config.label.addTree: Add a Family
@@ -36,6 +41,24 @@ translation:
   config.showCode: Show Code
   config.showIg: Show Instagram
   config.splitFamily: Split Family
+  csv.emptyFile: CSV file is empty
+  csv.exportSuccess: CSV exported successfully
+  csv.field.address: 'address: Physical address'
+  csv.field.birthdate: 'birthdate: Date of birth'
+  csv.field.birthplace: 'birthplace: Place of birth'
+  csv.field.code: 'code: Tree position code (read-only, changes ignored on import)'
+  csv.field.deathdate: 'deathdate: Date of death'
+  csv.field.email: 'email: Email address'
+  csv.field.id: 'id: Unique person identifier (required for import matching)'
+  csv.field.ig: 'ig: Instagram handle'
+  csv.field.name: 'name: Person''s full name'
+  csv.field.phone: 'phone: Phone number'
+  csv.field.sex: 'sex: Gender (M/F)'
+  csv.helpText: 'CSV files can be edited in spreadsheet applications like Google Sheets or Excel. The file includes these columns:'
+  csv.helpTitle: CSV Export Help
+  csv.importFailed: Import failed
+  csv.importSuccess: 'Import successful! Updated {{count}} people.'
+  csv.note: 'Note: Only columns present in your CSV will be updated. Missing columns remain unchanged.'
   error.alreadyTaken: '{{value}} is already taken. Try adding a number (e.g., {{value}}3) - numbers are hidden in display'
   error.photoProcessing: Error processing photo. Please try again.
   error.photoStorageFull: Storage full. Use photo URL instead.
