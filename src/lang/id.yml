@@ -36,7 +36,7 @@ translation:
   config.showCode: Tampilkan Kode
   config.showIg: Tampilkan Instagram
   config.splitFamily: Pisah Per Keluarga
-  error.alreadyTaken: '{{value}} sudah digunakan'
+  error.alreadyTaken: '{{value}} sudah digunakan. Coba tambahkan angka (contoh: {{value}}3) - angka disembunyikan saat ditampilkan'
   error.photoProcessing: Error memproses foto. Silakan coba lagi.
   error.photoStorageFull: Penyimpanan penuh. Gunakan URL foto sebagai gantinya.
   header.family: 'Keluarga {{name}}'

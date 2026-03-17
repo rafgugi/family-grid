@@ -36,7 +36,7 @@ translation:
   config.showCode: Show Code
   config.showIg: Show Instagram
   config.splitFamily: Split Family
-  error.alreadyTaken: '{{value}} is already taken'
+  error.alreadyTaken: '{{value}} is already taken. Try adding a number (e.g., {{value}}3) - numbers are hidden in display'
   error.photoProcessing: Error processing photo. Please try again.
   error.photoStorageFull: Storage full. Use photo URL instead.
   header.family: '{{name}} Family'
