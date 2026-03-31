@@ -6,6 +6,7 @@ import {
   treesToPersonNode,
   treesToRecord,
   unrichTreeData,
+  getTopNPeopleIds,
 } from './family-tree';
 
 const familyData = [
@@ -649,5 +650,24 @@ describe('idAsNickName', () => {
     expect(idAsNickName(' satyr123 ')).toEqual('Satyr');
     expect(idAsNickName('sat123yr')).toEqual('Satyr');
     expect(idAsNickName('m..satyr')).toEqual('M Satyr');
+  });
+});
+
+describe('treesToPersonNode', () => {
+  test('one tree', () => {
+    const trees = enrichTreeData(familyData, enrichingPeople);
+    const nodes = getTopNPeopleIds(trees, 3);
+    expect(nodes).toEqual('satyr');
+  });
+
+  test('two trees', () => {
+    const trees = enrichTreeData(doubleFamilyData.trees, enrichingPeople);
+    const nodes = getTopNPeopleIds(trees, 3);
+    expect(nodes).toEqual('satyr_angela');
+  });
+
+  test('zero trees', () => {
+    const nodes = getTopNPeopleIds([], 3);
+    expect(nodes).toEqual('');
   });
 });

@@ -2,10 +2,16 @@ import {
   Button,
   ButtonGroup,
   Container,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
   Form,
   FormGroup,
   Input,
   Label,
+  Alert,
+  UncontrolledDropdown,
+  UncontrolledTooltip,
 } from 'reactstrap';
 import { useEffect, useMemo, useState } from 'react';
 import { parse, stringify } from 'yaml';
@@ -21,12 +27,15 @@ import ModalEditYaml from './ModalEditYaml';
 import {
   deletePerson,
   enrichTreeData,
+  getTopNPeopleIds,
   treesToRecord,
   unrichTreeData,
 } from '../utils/family-tree';
+import { importCsvToTree } from '../utils/csv.util';
 import { useCache } from '../hooks/useCache';
 import { useTranslation } from 'react-i18next';
 import Footer from './Footer';
+import ModalExportCsv from './ModalExportCsv';
 
 interface AppProps {
   trees: Person[];
@@ -88,13 +97,18 @@ function App(props: AppProps) {
     setShowModalDeletePerson(true);
   };
 
-  const handleSave = () => {
+  const [showCsvHelpModal, setShowCsvHelpModal] = useState(false);
+  const toggleCsvHelpModal = () => setShowCsvHelpModal(!showCsvHelpModal);
+
+  const [csvImportMessage, setCsvImportMessage] = useState<{
+    type: 'success' | 'danger';
+    message: string;
+  } | null>(null);
+
+  const handleExportYaml = () => {
     try {
       const unrichedTrees = unrichTreeData(trees);
-      const topNPeople = trees
-        .slice(0, 3)
-        .map(p => p.id)
-        .join('_');
+      const topNPeople = getTopNPeopleIds(trees, 3);
       const treeYaml = stringify(unrichedTrees as {});
       const blob = new Blob([treeYaml], { type: 'text/yaml;charset=utf-8' });
       saveAs(blob, `family_${topNPeople}.yaml`);
@@ -103,14 +117,20 @@ function App(props: AppProps) {
     }
   };
 
-  const handleLoad = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleExportCsv = () => {
+    setShowCsvHelpModal(true);
+  };
+
+  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (!file) return;
+
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (extension === 'yaml' || extension === 'yml') {
       const reader = new FileReader();
       reader.onload = () => {
         try {
           const treeYaml = reader.result as string;
-          // assert valid treeYaml
           const rawFamilyData = parse(treeYaml);
           const trees = enrichTreeData(
             rawFamilyData?.trees,
@@ -122,10 +142,37 @@ function App(props: AppProps) {
           setShowModalEditYaml(true);
         } catch (error) {
           console.error('Error loading YAML file:', error);
+          setCsvImportMessage({
+            type: 'danger',
+            message: `${t('csv.importFailed')}: ${error}`,
+          });
+        }
+      };
+      reader.readAsText(file);
+    } else if (extension === 'csv') {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const csvContent = reader.result as string;
+          const result = importCsvToTree(csvContent, trees);
+
+          setTreesValue(result.trees);
+          setCsvImportMessage({
+            type: 'success',
+            message: t('csv.importSuccess', { count: result.updatedCount }),
+          });
+        } catch (error) {
+          console.error('Error loading CSV file:', error);
+          setCsvImportMessage({
+            type: 'danger',
+            message: `${t('csv.importFailed')}: ${error}`,
+          });
         }
       };
       reader.readAsText(file);
     }
+
+    event.target.value = '';
   };
 
   const treeMap = useMemo(() => treesToRecord(trees), [trees]);
@@ -239,19 +286,50 @@ function App(props: AppProps) {
             >
               <i className="bi-filetype-yml" /> {t('config.editTree')}
             </Button>{' '}
-            <Button size="sm" tag="label">
+            <Button size="sm" tag="label" id="import-btn">
               <i className="bi-upload" /> {t('config.import')}
               <Input
                 type="file"
                 className="d-none"
-                accept=".yaml, .yml"
-                onChange={handleLoad}
+                accept=".yaml, .yml, .csv"
+                onChange={handleImport}
               />
-            </Button>{' '}
-            <Button size="sm" onClick={handleSave}>
-              <i className="bi-download" /> {t('config.export')}
             </Button>
+            <UncontrolledTooltip placement="top" target="import-btn">
+              {t('config.importTooltip')}
+            </UncontrolledTooltip>{' '}
+            <UncontrolledDropdown direction="down" group>
+              <DropdownToggle caret size="sm">
+                <i className="bi-download" /> {t('config.export')}
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem id="export-yaml-item" onClick={handleExportYaml}>
+                  {t('config.exportYaml')}
+                </DropdownItem>
+                <UncontrolledTooltip
+                  placement="right"
+                  target="export-yaml-item"
+                >
+                  {t('config.exportYamlTooltip')}
+                </UncontrolledTooltip>
+                <DropdownItem id="export-csv-item" onClick={handleExportCsv}>
+                  {t('config.exportCsv')}
+                </DropdownItem>
+                <UncontrolledTooltip placement="right" target="export-csv-item">
+                  {t('config.exportCsvTooltip')}
+                </UncontrolledTooltip>
+              </DropdownMenu>
+            </UncontrolledDropdown>
           </FormGroup>
+          {csvImportMessage && (
+            <Alert
+              color={csvImportMessage.type}
+              toggle={() => setCsvImportMessage(null)}
+              style={{ whiteSpace: 'pre-line' }}
+            >
+              {csvImportMessage.message}
+            </Alert>
+          )}
         </Form>
       </Container>
 
@@ -288,6 +366,8 @@ function App(props: AppProps) {
         person={modalPerson}
         setPerson={setModalPerson}
       />
+
+      <ModalExportCsv trees={trees} isOpen={showCsvHelpModal} toggle={toggleCsvHelpModal} />
     </AppContext.Provider>
   );
 }

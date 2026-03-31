@@ -15,7 +15,12 @@ translation:
   config.editMode: Mode Edit
   config.editTree: Edit Pohon Keluarga
   config.export: Expor
+  config.exportCsv: Expor CSV
+  config.exportCsvTooltip: Detail orang untuk diedit di spreadsheet
+  config.exportYaml: Expor YAML
+  config.exportYamlTooltip: Cadangan lengkap pohon keluarga dengan semua hubungan
   config.import: Impor
+  config.importTooltip: 'Impor YAML untuk cadangan/pemulihan lengkap, atau CSV untuk edit detail orang (nama, telpon, tanggal, dll.)'
   config.label.addChild: Tambah Anak
   config.label.addSpouse: Tambah Pasangan
   config.label.addTree: Tambah Keluarga
@@ -36,7 +41,25 @@ translation:
   config.showCode: Tampilkan Kode
   config.showIg: Tampilkan Instagram
   config.splitFamily: Pisah Per Keluarga
-  error.alreadyTaken: '{{value}} sudah digunakan'
+  csv.emptyFile: File CSV kosong
+  csv.exportSuccess: CSV berhasil diekspor
+  csv.field.address: 'address: Alamat fisik'
+  csv.field.birthdate: 'birthdate: Tanggal lahir'
+  csv.field.birthplace: 'birthplace: Tempat lahir'
+  csv.field.code: 'code: Kode posisi pohon keluarga (hanya-baca, perubahan diabaikan saat impor)'
+  csv.field.deathdate: 'deathdate: Tanggal wafat'
+  csv.field.email: 'email: Alamat email'
+  csv.field.id: 'id: Identitas unik orang (diperlukan untuk pencocokan impor)'
+  csv.field.ig: 'ig: Akun Instagram'
+  csv.field.name: 'name: Nama lengkap'
+  csv.field.phone: 'phone: Nomor telepon'
+  csv.field.sex: 'sex: Jenis kelamin (M/F)'
+  csv.helpText: 'File CSV dapat diedit dalam aplikasi spreadsheet seperti Google Sheets atau Excel. File ini memiliki kolom berikut:'
+  csv.helpTitle: Bantuan Expor CSV
+  csv.importFailed: Impor gagal
+  csv.importSuccess: 'Impor berhasil! Memperbarui {{count}} orang.'
+  csv.note: 'Catatan: Hanya kolom yang ada di CSV Anda yang akan diperbarui. Kolom yang hilang tetap tidak berubah.'
+  error.alreadyTaken: '{{value}} sudah digunakan. Coba tambahkan angka (contoh: {{value}}3) - angka disembunyikan saat ditampilkan'
   error.photoProcessing: Error memproses foto. Silakan coba lagi.
   error.photoStorageFull: Penyimpanan penuh. Gunakan URL foto sebagai gantinya.
   header.family: 'Keluarga {{name}}'
