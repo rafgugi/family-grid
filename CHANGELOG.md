@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Add CSV export/import for person details (#33)
+
 ## [1.1.1] 2026-03-16
 
 ### Fixed
