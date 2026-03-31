@@ -21,6 +21,7 @@ import ModalEditYaml from './ModalEditYaml';
 import {
   deletePerson,
   enrichTreeData,
+  getTopNPeopleIds,
   treesToRecord,
   unrichTreeData,
 } from '../utils/family-tree';
@@ -91,10 +92,7 @@ function App(props: AppProps) {
   const handleSave = () => {
     try {
       const unrichedTrees = unrichTreeData(trees);
-      const topNPeople = trees
-        .slice(0, 3)
-        .map(p => p.id)
-        .join('_');
+      const topNPeople = getTopNPeopleIds(trees, 3);
       const treeYaml = stringify(unrichedTrees as {});
       const blob = new Blob([treeYaml], { type: 'text/yaml;charset=utf-8' });
       saveAs(blob, `family_${topNPeople}.yaml`);

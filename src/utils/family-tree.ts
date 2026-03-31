@@ -242,3 +242,11 @@ export function idAsNickName(id: string): string {
     .replace(/[-_. ]+/g, ' ')
     .replace(/\b\w/g, c => c.toUpperCase());
 }
+
+// gets the IDs of the top N people from the tree array in string
+export function getTopNPeopleIds(trees: Person[], n: number = 0): string {
+  return trees
+    .slice(0, n)
+    .map(p => p.id)
+    .join('_');
+}
