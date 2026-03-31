@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.2.0] 2026-03-31
+
 ### Added
 
 - Add CSV export/import for person details (#33)
+
+### Changed
+
+- Change max photo zoom from 3 to 6
 
 ## [1.1.1] 2026-03-16
 
